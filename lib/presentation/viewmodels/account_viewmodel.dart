@@ -11,6 +11,11 @@ class AccountViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
 
+  @visibleForTesting
+  void setAccount(Account? account) {
+    _account = account;
+  }
+
   AccountViewModel({required GetAccount getAccount, required UpdateAccountBalance updateAccountBalance})
     : _getAccount = getAccount,
       _updateAccountBalance = updateAccountBalance;

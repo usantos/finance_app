@@ -48,6 +48,11 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  @visibleForTesting
+  void setCurrentUser(User? user) {
+    _currentUser = user;
+  }
+
   Future<bool> register(String username, String email, String password) async {
     _isLoading = true;
     _errorMessage = null;

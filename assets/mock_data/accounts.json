@@ -1,0 +1,18 @@
+
+{
+  "accounts": [
+    {
+      "id": "acc1",
+      "userId": "user1",
+      "accountNumber": "12345-6",
+      "balance": 1500.75
+    },
+    {
+      "id": "acc2",
+      "userId": "user2",
+      "accountNumber": "12345-7",
+      "balance": 1400.75
+    }
+  ]
+}
+

@@ -1,16 +1,18 @@
-# financial_app
+# Desafio Mobile – Flutter Finance Test
 
-A new Flutter project.
+## Contexto
+A empresa atua no ramo financeiro e busca um desenvolvedor mobile sênior. O objetivo deste teste é avaliar boas práticas, arquitetura, testes e lógica de transações financeiras.
 
-## Getting Started
+## Desafio
+Implemente um app de transações financeiras, onde o usuário pode:
+- Visualizar saldo e extrato
+- Realizar transferências entre contas
+- Visualizar histórico de transações
+- (Opcional) Autenticação e cadastro
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Requisitos Técnicos
+- Flutter (iOS e Android)
+- Gerenciamento de estado à escolha (Provider, Bloc, Riverpod, etc)
+- Integração com API (mock ou real)
+- Testes unitários e/ou de integração
+- Boas práticas de código

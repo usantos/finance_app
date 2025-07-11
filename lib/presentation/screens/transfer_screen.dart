@@ -86,13 +86,34 @@ class _TransferScreenState extends State<TransferScreen> {
                                 ),
                               );
                             }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text('Transferência realizada com sucesso!',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.green,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            );
 
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transferência realizada com sucesso!')));
-                            Navigator.pop(context);
                           } else {
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(SnackBar(content: Text(accountViewModel.errorMessage ?? 'Erro na transferência')));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  accountViewModel.errorMessage ?? 'Erro na transferência',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            );
+
                           }
                         },
                         child: const Text('Transferir'),

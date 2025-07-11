@@ -25,7 +25,7 @@ class HistoryScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tipo: ${transaction.type}', style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('Tipo: ${transaction.typeLabel}', style: TextStyle(fontWeight: FontWeight.bold)),
                         Text('Valor: R\$${transaction.amount.toStringAsFixed(2)}'),
                         Text('Data: ${transaction.date.toLocal().toString().split(' ')[0]}'),
                         Text('Descrição: ${transaction.description}'),

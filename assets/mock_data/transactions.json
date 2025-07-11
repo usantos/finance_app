@@ -20,6 +20,22 @@
     {
       "id": "trans3",
       "accountId": "acc1",
+      "type": "withdrawal",
+      "amount": 50.25,
+      "date": "2025-07-02T14:30:00Z",
+      "description": "Compras no supermercado"
+    },
+    {
+      "id": "trans4",
+      "accountId": "acc1",
+      "type": "withdrawal",
+      "amount": 50.25,
+      "date": "2025-07-02T14:30:00Z",
+      "description": "Compras no supermercado"
+    },
+    {
+      "id": "trans5",
+      "accountId": "acc1",
       "type": "transfer",
       "amount": 200.00,
       "date": "2025-07-03T11:00:00Z",

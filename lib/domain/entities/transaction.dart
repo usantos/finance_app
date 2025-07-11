@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Transaction {
   final String id;
   final String accountId;
@@ -43,5 +45,20 @@ class Transaction {
       "fromAccount": fromAccount,
       "toAccount": toAccount,
     };
+  }
+
+  String get formattedDate => DateFormat('dd/MM/yyyy').format(date);
+
+  String get typeLabel {
+    switch (type) {
+      case 'deposit':
+        return 'Depósito';
+      case 'withdrawal':
+        return 'Compra';
+      case 'transfer':
+        return 'Transferência';
+      default:
+        return 'Desconhecido';
+    }
   }
 }

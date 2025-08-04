@@ -2,15 +2,15 @@
   "users": [
     {
       "id": "user1",
-      "username": "testuser",
+      "username": "user",
       "email": "test@example.com",
-      "password": "password123"
+      "password": "123"
     },
     {
       "id": "user2",
-      "username": "testuser2",
+      "username": "user2",
       "email": "test2@example.com",
-      "password": "password123"
+      "password": "123"
     }
   ]
 }

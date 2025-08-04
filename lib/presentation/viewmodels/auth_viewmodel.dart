@@ -1,4 +1,6 @@
+import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
+import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
@@ -10,20 +12,24 @@ class AuthViewModel extends ChangeNotifier {
   final RegisterUser _registerUser;
   final LogoutUser _logoutUser;
   final GetCurrentUser _getCurrentUser;
+  final GetAccount _getAccount;
 
   User? _currentUser;
   bool _isLoading = false;
   String? _errorMessage;
+  Account? _account;
 
   AuthViewModel({
     required LoginUser loginUser,
     required RegisterUser registerUser,
     required LogoutUser logoutUser,
     required GetCurrentUser getCurrentUser,
+    required GetAccount getAccount,
   }) : _loginUser = loginUser,
        _registerUser = registerUser,
        _logoutUser = logoutUser,
-       _getCurrentUser = getCurrentUser;
+       _getCurrentUser = getCurrentUser,
+       _getAccount = getAccount;
 
   User? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
@@ -35,10 +41,11 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _currentUser = await _loginUser(username, password);
-      if (_currentUser == null) {
+      _account = await _getAccount(currentUser?.id ?? "");
+      if (_currentUser == null || _account == null) {
         _errorMessage = 'Credenciais inválidas.';
       }
-      return _currentUser != null;
+      return _currentUser != null && _account != null;
     } catch (e) {
       _errorMessage = e.toString();
       return false;

@@ -20,8 +20,7 @@ class _StatementScreenState extends State<StatementScreen> {
       final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
       final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
       if (authViewModel.currentUser != null && accountViewModel.account != null) {
-        Provider.of<TransactionViewModel>(context, listen: false)
-            .fetchTransactions(accountViewModel.account!.id);
+        Provider.of<TransactionViewModel>(context, listen: false).fetchTransactions(accountViewModel.account!.id);
       }
     });
   }
@@ -63,25 +62,16 @@ class _StatementScreenState extends State<StatementScreen> {
 
                     return Card(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 3,
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         leading: Icon(icon, color: iconColor, size: 28),
-                        title: Text(
-                          transaction.description,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(transaction.formattedDate,),
+                        title: Text(transaction.description, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text(transaction.formattedDate),
                         trailing: Text(
                           'R\$ ${transaction.amount.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            color: iconColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                          style: TextStyle(color: iconColor, fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),
                     );

@@ -30,10 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 Icon(Icons.person_add_alt_1, size: 64, color: colorScheme.primary),
                 const SizedBox(height: 16),
-                Text(
-                  'Crie sua conta',
-                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                ),
+                Text('Crie sua conta', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 32),
 
                 TextField(
@@ -73,42 +70,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return authViewModel.isLoading
                         ? const CircularProgressIndicator()
                         : SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: FilledButton.icon(
-                        icon: const Icon(Icons.app_registration),
-                        label: const Text('Cadastrar'),
-                        onPressed: () async {
-                          final success = await authViewModel.register(
-                            _usernameController.text,
-                            _emailController.text,
-                            _passwordController.text,
-                          );
+                            width: double.infinity,
+                            height: 48,
+                            child: FilledButton.icon(
+                              icon: const Icon(Icons.app_registration),
+                              label: const Text('Cadastrar'),
+                              onPressed: () async {
+                                final success = await authViewModel.register(
+                                  _usernameController.text,
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
 
-                          if (success) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Cadastro realizado com sucesso! Faça login.')),
-                            );
-                            Navigator.pop(context);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
-                                backgroundColor: Colors.redAccent,
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    );
+                                if (success) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Cadastro realizado com sucesso! Faça login.')),
+                                  );
+                                  Navigator.pop(context);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          );
                   },
                 ),
                 const SizedBox(height: 16),
 
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Já tem uma conta? Fazer login'),
-                ),
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Já tem uma conta? Fazer login')),
               ],
             ),
           ),

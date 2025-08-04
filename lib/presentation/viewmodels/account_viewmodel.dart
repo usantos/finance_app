@@ -21,7 +21,9 @@ class AccountViewModel extends ChangeNotifier {
       _updateAccountBalance = updateAccountBalance;
 
   Account? get account => _account;
+
   bool get isLoading => _isLoading;
+
   String? get errorMessage => _errorMessage;
 
   Future<void> fetchAccount(String userId) async {
@@ -54,4 +56,31 @@ class AccountViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<String> get nomes => [
+    'Área Pix e \nTransferir',
+    'Pagar',
+    'Pegar \nemprestado',
+    'Caixinha \nTurbo',
+    'Recarga de \ncelular',
+    'Caixinhas e \nInvestir',
+  ];
+
+  List<IconData> get icons => [
+    Icons.qr_code,
+    Icons.qr_code,
+    Icons.qr_code,
+    Icons.qr_code,
+    Icons.qr_code,
+    Icons.qr_code,
+  ];
+
+  List<String> get iconAssets => [
+    'assets/icons/pix.svg',
+    'assets/icons/barcode.svg',
+    'assets/icons/pay_money.svg',
+    'assets/icons/wallet.svg',
+    'assets/icons/cellphone.svg',
+    'assets/icons/wallet.svg',
+  ];
 }

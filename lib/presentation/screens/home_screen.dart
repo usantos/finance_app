@@ -39,11 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: theme.colorScheme.primary,
-        title: Text(
-          'Financial App',
-          style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
-        ),
         actions: [
+          SizedBox(width: 16),
+          const CircleAvatar(radius: 18, backgroundImage: AssetImage('assets/avatar_placeholder.png')),
+          Spacer(),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
@@ -51,19 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
-          const SizedBox(width: 8),
-          const CircleAvatar(
-            radius: 18,
-            backgroundImage: AssetImage('assets/avatar_placeholder.png'),
-          ),
-          const SizedBox(width: 16),
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: _widgetOptions[_selectedIndex],
-        ),
+        child: Padding(padding: const EdgeInsets.all(12.0), child: _widgetOptions[_selectedIndex]),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
@@ -80,11 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIcon: Icon(Icons.receipt_long),
             label: 'Extrato',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.send_outlined),
-            selectedIcon: Icon(Icons.send),
-            label: 'Transferir',
-          ),
+          NavigationDestination(icon: Icon(Icons.send_outlined), selectedIcon: Icon(Icons.send), label: 'Transferir'),
           NavigationDestination(
             icon: Icon(Icons.history_toggle_off),
             selectedIcon: Icon(Icons.history),

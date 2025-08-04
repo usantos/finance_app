@@ -12,6 +12,30 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late AuthViewModel _authViewModel;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    _authViewModel.addListener(_authListener);
+  }
+
+  void _authListener() {
+    if (!mounted) return;
+    setState(() {
+      _isLoading = _authViewModel.isLoading;
+    });
+  }
+
+  @override
+  void dispose() {
+    _authViewModel.removeListener(_authListener);
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,42 +79,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-
-                Consumer<AuthViewModel>(
-                  builder: (context, authViewModel, child) {
-                    return authViewModel.isLoading
-                        ? const CircularProgressIndicator()
-                        : SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: FilledButton.icon(
-                        icon: const Icon(Icons.login),
-                        label: const Text('Entrar'),
-                        onPressed: () async {
-                          final success = await authViewModel.login(
-                            _usernameController.text,
-                            _passwordController.text,
-                          );
-
-                          if (success) {
-                            Navigator.pushReplacementNamed(context, '/home');
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  authViewModel.errorMessage ?? 'Erro de login',
-                                ),
-                                backgroundColor: Colors.redAccent,
-                              ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: FilledButton(
+                    onPressed: _isLoading
+                        ? null
+                        : () async {
+                            final success = await _authViewModel.login(
+                              _usernameController.text,
+                              _passwordController.text,
                             );
-                          }
-                        },
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
 
+                            if (!mounted) return;
+
+                            if (success) {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(_authViewModel.errorMessage ?? 'Erro de login'),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
+                          },
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [Icon(Icons.login), SizedBox(width: 8), Text('Entrar')],
+                          ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/register');

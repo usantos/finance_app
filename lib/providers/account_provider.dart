@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../domain/entities/account.dart';
 import '../domain/entities/transaction.dart';
 import '../services/mock_api.dart';
@@ -10,83 +9,95 @@ class AccountProvider with ChangeNotifier {
   String? _errorMessage;
   List<Transaction> _transactions = [];
 
+  final MockApi _mockApi = MockApi();
+
   Account? get account => _account;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   List<Transaction> get transactions => _transactions;
 
-  final MockApi _mockApi = MockApi();
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setError(String? message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  void _setAccount(Account? account) {
+    _account = account;
+    notifyListeners();
+  }
+
+  void _setTransactions(List<Transaction> transactions) {
+    _transactions = transactions;
+    notifyListeners();
+  }
 
   Future<void> fetchAccountBalance(String userId) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final response = await _mockApi.getAccount(userId);
       if (response != null) {
-        _account = Account.fromJson(response);
+        _setAccount(Account.fromJson(response));
       } else {
-        _errorMessage = "Conta não encontrada";
+        _setError("Conta não encontrada");
       }
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
     }
 
-    _isLoading = false;
-    notifyListeners();
+    _setLoading(false);
   }
 
   Future<bool> transferFunds(String fromAccountId, String toAccountId, double amount) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final response = await _mockApi.transferFunds(fromAccountId, toAccountId, amount);
       if (response["success"]) {
         await fetchAccountBalance(fromAccountId);
-        _isLoading = false;
-        notifyListeners();
+        _setLoading(false);
         return true;
       } else {
-        _errorMessage = response["message"];
+        _setError(response["message"]);
       }
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
     }
 
-    _isLoading = false;
-    notifyListeners();
+    _setLoading(false);
     return false;
   }
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final user = await _mockApi.login(username, password);
       if (user != null) {
         await fetchAccountBalance(user["id"]);
       } else {
-        _errorMessage = "Usuário ou senha inválidos";
+        _setError("Usuário ou senha inválidos");
       }
       return user;
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
       return null;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
   Future<Map<String, dynamic>?> register(String username, String email, String password) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final user = await _mockApi.register(username, email, password);
@@ -95,35 +106,32 @@ class AccountProvider with ChangeNotifier {
       }
       return user;
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
       return null;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
   Future<void> logout() async {
-    _account = null;
-    _transactions = [];
+    _setAccount(null);
+    _setTransactions([]);
     await _mockApi.logout();
-    notifyListeners();
   }
 
   Future<void> getTransactions() async {
     if (_account == null) return;
-    _isLoading = true;
-    notifyListeners();
+
+    _setLoading(true);
 
     try {
       final data = await _mockApi.getTransactions(_account!.id);
-      _transactions = data.map((e) => Transaction.fromJson(e)).toList();
+      _setTransactions(data.map((e) => Transaction.fromJson(e)).toList());
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
     }
 
-    _isLoading = false;
-    notifyListeners();
+    _setLoading(false);
   }
 
   Future<void> addTransaction(Transaction transaction) async {
@@ -131,7 +139,7 @@ class AccountProvider with ChangeNotifier {
       await _mockApi.addTransaction(transaction.toJson());
       await getTransactions();
     } catch (e) {
-      _errorMessage = e.toString();
+      _setError(e.toString());
     }
   }
 

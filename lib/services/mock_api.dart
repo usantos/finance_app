@@ -68,7 +68,12 @@ class MockApi {
 
   Future<Map<String, dynamic>?> register(String username, String email, String password) async {
     await Future.delayed(const Duration(seconds: 1));
-    return {'id': DateTime.now().millisecondsSinceEpoch.toString(), 'username': username, 'email': email, 'password': password};
+    return {
+      'id': DateTime.now().millisecondsSinceEpoch.toString(),
+      'username': username,
+      'email': email,
+      'password': password,
+    };
   }
 
   Future<void> logout() async {

@@ -1,4 +1,5 @@
 import 'package:financial_app/domain/entities/user.dart';
+import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
@@ -8,14 +9,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'auth_viewmodel_test.mocks.dart';
+import 'account_viewmodel_test.mocks.dart';
+import 'auth_viewmodel_test.mocks.dart' hide MockGetAccount;
 
-@GenerateMocks([LoginUser, RegisterUser, LogoutUser, GetCurrentUser])
+@GenerateMocks([LoginUser, RegisterUser, LogoutUser, GetCurrentUser, GetAccount])
 void main() {
   late MockLoginUser mockLoginUser;
   late MockRegisterUser mockRegisterUser;
   late MockLogoutUser mockLogoutUser;
   late MockGetCurrentUser mockGetCurrentUser;
+
+  late MockGetAccount mockGetAccount;
   late AuthViewModel authViewModel;
 
   final testUser = User(
@@ -29,12 +33,14 @@ void main() {
     mockRegisterUser = MockRegisterUser();
     mockLogoutUser = MockLogoutUser();
     mockGetCurrentUser = MockGetCurrentUser();
+    mockGetAccount = MockGetAccount();
 
     authViewModel = AuthViewModel(
       loginUser: mockLoginUser,
       registerUser: mockRegisterUser,
       logoutUser: mockLogoutUser,
       getCurrentUser: mockGetCurrentUser,
+      getAccount: mockGetAccount,
     );
   });
 
@@ -119,6 +125,7 @@ void main() {
         registerUser: mockRegisterUser,
         logoutUser: mockLogoutUser,
         getCurrentUser: mockGetCurrentUser,
+        getAccount: mockGetAccount,
       );
 
       authViewModel.setCurrentUser(testUser);

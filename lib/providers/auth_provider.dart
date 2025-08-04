@@ -1,74 +1,78 @@
+import 'package:flutter/material.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/services/mock_api.dart';
-import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
   User? _user;
   bool _isLoading = false;
   String? _errorMessage;
 
+  final MockApi _mockApi = MockApi();
+
   User? get user => _user;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  final MockApi _mockApi = MockApi();
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setError(String? message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  void _setUser(User? user) {
+    _user = user;
+    notifyListeners();
+  }
 
   Future<bool> login(String username, String password) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final response = await _mockApi.login(username, password);
-
       if (response != null) {
-        _user = User.fromJson(response);
-        _isLoading = false;
-        notifyListeners();
+        _setUser(User.fromJson(response));
+        _setLoading(false);
         return true;
       } else {
-        _errorMessage = "Usuário ou senha inválidos";
-        _isLoading = false;
-        notifyListeners();
+        _setError("Usuário ou senha inválidos");
+        _setLoading(false);
         return false;
       }
     } catch (e) {
-      _errorMessage = e.toString();
-      _isLoading = false;
-      notifyListeners();
+      _setError(e.toString());
+      _setLoading(false);
       return false;
     }
   }
 
   Future<bool> register(String username, String email, String password) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _setLoading(true);
+    _setError(null);
 
     try {
       final response = await _mockApi.register(username, email, password);
-
       if (response != null) {
-        _user = User.fromJson(response);
-        _isLoading = false;
-        notifyListeners();
+        _setUser(User.fromJson(response));
+        _setLoading(false);
         return true;
       } else {
-        _errorMessage = "Erro ao registrar usuário";
-        _isLoading = false;
-        notifyListeners();
+        _setError("Erro ao registrar usuário");
+        _setLoading(false);
         return false;
       }
     } catch (e) {
-      _errorMessage = e.toString();
-      _isLoading = false;
-      notifyListeners();
+      _setError(e.toString());
+      _setLoading(false);
       return false;
     }
   }
 
   void logout() {
-    _user = null;
-    notifyListeners();
+    _setUser(null);
   }
 }

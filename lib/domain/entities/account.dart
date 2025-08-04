@@ -7,7 +7,12 @@ class Account {
   Account({required this.id, required this.userId, required this.accountNumber, required this.balance});
 
   factory Account.fromJson(Map<String, dynamic> json) {
-    return Account(id: json["id"], userId: json["userId"], accountNumber: json["accountNumber"], balance: json["balance"].toDouble());
+    return Account(
+      id: json["id"],
+      userId: json["userId"],
+      accountNumber: json["accountNumber"],
+      balance: json["balance"].toDouble(),
+    );
   }
 
   Map<String, dynamic> toJson() {

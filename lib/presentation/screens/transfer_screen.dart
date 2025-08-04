@@ -45,7 +45,9 @@ class _TransferScreenState extends State<TransferScreen> {
                         onPressed: () async {
                           final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
                           if (authViewModel.currentUser == null || accountViewModel.account == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Usuário ou conta não logados.')));
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(const SnackBar(content: Text('Usuário ou conta não logados.')));
                             return;
                           }
 
@@ -88,17 +90,15 @@ class _TransferScreenState extends State<TransferScreen> {
                             }
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: const Text('Transferência realizada com sucesso!',
+                                content: const Text(
+                                  'Transferência realizada com sucesso!',
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 backgroundColor: Colors.green,
                                 behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               ),
                             );
-
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -108,12 +108,9 @@ class _TransferScreenState extends State<TransferScreen> {
                                 ),
                                 backgroundColor: Colors.red,
                                 behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               ),
                             );
-
                           }
                         },
                         child: const Text('Transferir'),

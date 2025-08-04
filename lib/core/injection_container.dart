@@ -28,7 +28,9 @@ final sl = GetIt.instance;
 
 void init() {
   // ViewModels
-  sl.registerFactory(() => AuthViewModel(loginUser: sl(), registerUser: sl(), logoutUser: sl(), getCurrentUser: sl()));
+  sl.registerFactory(
+    () => AuthViewModel(loginUser: sl(), registerUser: sl(), logoutUser: sl(), getCurrentUser: sl(), getAccount: sl()),
+  );
   sl.registerFactory(() => AccountViewModel(getAccount: sl(), updateAccountBalance: sl()));
   sl.registerFactory(() => TransactionViewModel(getTransactions: sl(), addTransaction: sl()));
 

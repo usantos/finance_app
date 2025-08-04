@@ -29,13 +29,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Financial App',
-      theme: ThemeData(primarySwatch: Colors.blueGrey,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
       initialRoute: '/',
-      routes: {'/': (context) => const LoginScreen(), '/register': (context) => const RegisterScreen(), '/home': (context) => const HomeScreen()},
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/home': (context) => const HomeScreen(),
+      },
     );
   }
 }

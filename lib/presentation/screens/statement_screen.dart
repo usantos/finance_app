@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -70,7 +71,7 @@ class _StatementScreenState extends State<StatementScreen> {
                         title: Text(transaction.description, style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(transaction.formattedDate),
                         trailing: Text(
-                          'R\$ ${transaction.amount.toStringAsFixed(2)}',
+                          transaction.amount.toReal(),
                           style: TextStyle(color: iconColor, fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),

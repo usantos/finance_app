@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/update_account_balance.dart';
@@ -11,6 +12,9 @@ class AccountViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
 
+  bool _isHidden = true;
+  bool get isHidden => _isHidden;
+
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;
@@ -21,6 +25,8 @@ class AccountViewModel extends ChangeNotifier {
       _updateAccountBalance = updateAccountBalance;
 
   Account? get account => _account;
+
+  String get _balance => '${_account?.balance.toReal()}';
 
   bool get isLoading => _isLoading;
 
@@ -66,15 +72,6 @@ class AccountViewModel extends ChangeNotifier {
     'Caixinhas e \nInvestir',
   ];
 
-  List<IconData> get icons => [
-    Icons.qr_code,
-    Icons.qr_code,
-    Icons.qr_code,
-    Icons.qr_code,
-    Icons.qr_code,
-    Icons.qr_code,
-  ];
-
   List<String> get iconAssets => [
     'assets/icons/pix.svg',
     'assets/icons/barcode.svg',
@@ -83,4 +80,14 @@ class AccountViewModel extends ChangeNotifier {
     'assets/icons/cellphone.svg',
     'assets/icons/wallet.svg',
   ];
+
+  void toggleVisibility() {
+    _isHidden = !_isHidden;
+    notifyListeners();
+  }
+
+  String get displayBalance {
+    if (_isHidden) return '••••••';
+    return _balance;
+  }
 }

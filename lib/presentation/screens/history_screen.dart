@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -59,7 +60,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             const SizedBox(height: 4),
-                            Text('Valor: R\$${transaction.amount.toStringAsFixed(2)}'),
+                            Text('Valor: ${transaction.amount.toReal()}'),
                             Text('Data: ${transaction.formattedDate}'),
                             Text('Descrição: ${transaction.description}'),
                             if (transaction.fromAccount != null) Text('De: ${transaction.fromAccount}'),

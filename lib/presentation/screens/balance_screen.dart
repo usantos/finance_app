@@ -14,6 +14,7 @@ class BalanceScreen extends StatefulWidget {
 class _BalanceScreenState extends State<BalanceScreen> {
   late AccountViewModel _accountViewModel;
   bool _isLoading = false;
+  bool _saldoVisivel = true;
 
   void _accountListener() {
     if (!mounted) return;
@@ -60,13 +61,50 @@ class _BalanceScreenState extends State<BalanceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Saldo em conta',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  Text(
-                    'R\$ ${accountViewModel.account!.balance.toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Saldo em conta',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
+                          _saldoVisivel == true
+                              ? Text(
+                                  'R\$ ${accountViewModel.account!.balance.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              : Text(
+                                  '•••••',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                        ],
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          if (_saldoVisivel == true) {
+                            setState(() {
+                              _saldoVisivel = false;
+                            });
+                          } else {
+                            setState(() {
+                              _saldoVisivel = true;
+                            });
+                          }
+                        },
+                        icon: _saldoVisivel == true ? Icon(Icons.remove_red_eye_outlined) : Icon(Icons.remove_red_eye),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 15),
                   Padding(

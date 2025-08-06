@@ -32,6 +32,7 @@ class AuthViewModel extends ChangeNotifier {
        _getAccount = getAccount;
 
   User? get currentUser => _currentUser;
+  Account? get account => _account;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 

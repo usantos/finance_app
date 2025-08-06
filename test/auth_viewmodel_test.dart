@@ -1,3 +1,4 @@
+import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
@@ -28,6 +29,13 @@ void main() {
     email: 'test@example.com',
   );
 
+  final testAccount = Account(
+      id: "acc1",
+      userId: "user1",
+      accountNumber: "12345-6",
+      balance: 1500.75
+  );
+
   setUp(() {
     mockLoginUser = MockLoginUser();
     mockRegisterUser = MockRegisterUser();
@@ -49,10 +57,14 @@ void main() {
       when(mockLoginUser('username', 'password'))
           .thenAnswer((_) async => testUser);
 
+      when(mockGetAccount('user1'))
+          .thenAnswer((_) async => testAccount);
+
       final result = await authViewModel.login('username', 'password');
 
       expect(result, true);
       expect(authViewModel.currentUser, testUser);
+      expect(authViewModel.account, testAccount);
       expect(authViewModel.errorMessage, isNull);
       expect(authViewModel.isLoading, false);
     });
@@ -61,10 +73,14 @@ void main() {
       when(mockLoginUser('username', 'password'))
           .thenAnswer((_) async => null);
 
+      when(mockGetAccount(any))
+          .thenAnswer((_) async => null);
+
       final result = await authViewModel.login('username', 'password');
 
       expect(result, false);
       expect(authViewModel.currentUser, isNull);
+      expect(authViewModel.account, isNull);
       expect(authViewModel.errorMessage, 'Credenciais inválidas.');
       expect(authViewModel.isLoading, false);
     });
@@ -72,6 +88,9 @@ void main() {
     test('login returns false and sets errorMessage on exception', () async {
       when(mockLoginUser('username', 'password'))
           .thenThrow(Exception('Erro no login'));
+
+      when(mockGetAccount(any))
+          .thenAnswer((_) async => null);
 
       final result = await authViewModel.login('username', 'password');
 

@@ -12,6 +12,12 @@
       "userId": "user2",
       "accountNumber": "12345-7",
       "balance": 1400.75
+    },
+    {
+      "id": "acc3",
+      "userId": "user6",
+      "accountNumber": "12345-7",
+      "balance": 2000.75
     }
   ]
 }

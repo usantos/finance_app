@@ -1,24 +1,34 @@
 import 'package:dio/dio.dart';
+import 'package:financial_app/domain/entities/logout.dart';
 
 class RealApi {
   final Dio _dio;
 
   RealApi({Dio? dio})
-      : _dio = dio ?? Dio(BaseOptions(baseUrl: 'https://mocki.io/v1'));
+      : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
-      try {
-        final response = await _dio.post('/login', data: {
+    try {
+      final response = await _dio.post(
+        '/login',
+        data: {
           'username': username,
           'password': password,
-        });
+        },
+      );
 
-        return response.data as Map<String, dynamic>;
-      } catch (e) {
-        print('Erro no login: $e');
-        return null;
+      if (response.data != null && response.data is Map<String, dynamic>) {
+        return response.data;
       }
+
+      print('Resposta inesperada do servidor: ${response.data}');
+      return null;
+    } catch (e) {
+      print('Erro no login: $e');
+      return null;
     }
+  }
+
 
   Future<Map<String, dynamic>?> register(String username, String email, String password) async {
     try {
@@ -35,11 +45,20 @@ class RealApi {
     }
   }
 
-  Future<void> logout() async {
+  Future<Map<String, dynamic>?> logout(String token) async {
     try {
-      await _dio.post('/logout');
+      final response = await _dio.post(
+        '/logout',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      return response.data;
     } catch (e) {
       print('Erro no logout: $e');
+      return null;
     }
   }
 

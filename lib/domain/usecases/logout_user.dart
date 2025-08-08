@@ -5,7 +5,7 @@ class LogoutUser {
 
   LogoutUser(this.repository);
 
-  Future<void> call() {
+  Future<bool> call() {
     return repository.logout();
   }
 }

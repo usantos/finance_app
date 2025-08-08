@@ -1,3 +1,4 @@
+import 'package:financial_app/services/real_api.dart';
 import 'package:flutter/material.dart';
 import '../domain/entities/account.dart';
 import '../domain/entities/transaction.dart';
@@ -9,7 +10,7 @@ class AccountProvider with ChangeNotifier {
   String? _errorMessage;
   List<Transaction> _transactions = [];
 
-  final MockApi _mockApi = MockApi();
+  final RealApi _realApi = RealApi();
 
   Account? get account => _account;
   bool get isLoading => _isLoading;
@@ -41,7 +42,7 @@ class AccountProvider with ChangeNotifier {
     _setError(null);
 
     try {
-      final response = await _mockApi.getAccount(userId);
+      final response = await _realApi.getAccount(userId);
       if (response != null) {
         _setAccount(Account.fromJson(response));
       } else {
@@ -59,7 +60,7 @@ class AccountProvider with ChangeNotifier {
     _setError(null);
 
     try {
-      final response = await _mockApi.transferFunds(fromAccountId, toAccountId, amount);
+      final response = await _realApi.transferFunds(fromAccountId, toAccountId, amount);
       if (response["success"]) {
         await fetchAccountBalance(fromAccountId);
         _setLoading(false);
@@ -80,7 +81,7 @@ class AccountProvider with ChangeNotifier {
     _setError(null);
 
     try {
-      final user = await _mockApi.login(username, password);
+      final user = await _realApi.login(username, password);
       if (user != null) {
         await fetchAccountBalance(user["id"]);
       } else {
@@ -100,7 +101,7 @@ class AccountProvider with ChangeNotifier {
     _setError(null);
 
     try {
-      final user = await _mockApi.register(username, email, password);
+      final user = await _realApi.register(username, email, password);
       if (user != null) {
         await fetchAccountBalance(user["id"]);
       }
@@ -116,7 +117,7 @@ class AccountProvider with ChangeNotifier {
   Future<void> logout() async {
     _setAccount(null);
     _setTransactions([]);
-    await _mockApi.logout();
+    await _realApi.logout("");
   }
 
   Future<void> getTransactions() async {
@@ -125,7 +126,7 @@ class AccountProvider with ChangeNotifier {
     _setLoading(true);
 
     try {
-      final data = await _mockApi.getTransactions(_account!.id);
+      final data = await _realApi.getTransactions(_account!.id);
       _setTransactions(data.map((e) => Transaction.fromJson(e)).toList());
     } catch (e) {
       _setError(e.toString());
@@ -136,7 +137,7 @@ class AccountProvider with ChangeNotifier {
 
   Future<void> addTransaction(Transaction transaction) async {
     try {
-      await _mockApi.addTransaction(transaction.toJson());
+      await _realApi.addTransaction(transaction.toJson());
       await getTransactions();
     } catch (e) {
       _setError(e.toString());

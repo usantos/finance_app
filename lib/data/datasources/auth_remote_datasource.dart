@@ -3,6 +3,6 @@ import 'package:financial_app/domain/entities/user.dart';
 abstract class AuthRemoteDataSource {
   Future<User?> login(String username, String password);
   Future<User?> register(String username, String email, String password);
-  Future<void> logout();
+  Future<bool> logout();
   Future<User?> getCurrentUser();
 }

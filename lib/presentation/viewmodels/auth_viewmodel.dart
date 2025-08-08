@@ -5,6 +5,7 @@ import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -13,6 +14,7 @@ class AuthViewModel extends ChangeNotifier {
   final LogoutUser _logoutUser;
   final GetCurrentUser _getCurrentUser;
   final GetAccount _getAccount;
+  final AccountViewModel _accountViewModel;
 
   User? _currentUser;
   bool _isLoading = false;
@@ -25,11 +27,13 @@ class AuthViewModel extends ChangeNotifier {
     required LogoutUser logoutUser,
     required GetCurrentUser getCurrentUser,
     required GetAccount getAccount,
+    required AccountViewModel accountViewModel,
   }) : _loginUser = loginUser,
        _registerUser = registerUser,
        _logoutUser = logoutUser,
        _getCurrentUser = getCurrentUser,
-       _getAccount = getAccount;
+       _getAccount = getAccount,
+       _accountViewModel = accountViewModel;
 
   User? get currentUser => _currentUser;
   Account? get account => _account;
@@ -80,19 +84,26 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      await _logoutUser();
-      _currentUser = null;
+      final logout = await _logoutUser();
+      if (logout) {
+        _currentUser = null;
+        _account = null;
+        _accountViewModel.isHidden = false;
+        return true;
+      }
     } catch (e) {
       _errorMessage = e.toString();
+      return false;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+    return false;
   }
 
   Future<void> checkCurrentUser() async {

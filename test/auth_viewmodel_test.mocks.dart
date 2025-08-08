@@ -123,13 +123,12 @@ class MockLogoutUser extends _i1.Mock implements _i8.LogoutUser {
           as _i2.AuthRepository);
 
   @override
-  _i5.Future<void> call() =>
+  _i5.Future<bool> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
+            returnValue: _i5.Future<bool>.value(false),
           )
-          as _i5.Future<void>);
+          as _i5.Future<bool>);
 }
 
 /// A class which mocks [GetCurrentUser].

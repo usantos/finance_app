@@ -9,7 +9,6 @@ import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
 import 'account_viewmodel_test.mocks.dart';
 import 'auth_viewmodel_test.mocks.dart' hide MockGetAccount;
 
@@ -137,7 +136,7 @@ void main() {
     });
 
     test('logout sets currentUser to null on success', () async {
-      when(mockLogoutUser()).thenAnswer((_) async => Future.value());
+      when(mockLogoutUser()).thenAnswer((_) async => true);
 
       authViewModel = AuthViewModel(
         loginUser: mockLoginUser,
@@ -149,23 +148,35 @@ void main() {
 
       authViewModel.setCurrentUser(testUser);
 
-      await authViewModel.logout();
+      final result = await authViewModel.logout();
 
+      expect(result, isTrue);
       expect(authViewModel.currentUser, isNull);
       expect(authViewModel.errorMessage, isNull);
-      expect(authViewModel.isLoading, false);
+      expect(authViewModel.isLoading, isFalse);
     });
+
 
     test('logout sets errorMessage on exception', () async {
       when(mockLogoutUser()).thenThrow(Exception('Erro no logout'));
 
+      authViewModel = AuthViewModel(
+        loginUser: mockLoginUser,
+        registerUser: mockRegisterUser,
+        logoutUser: mockLogoutUser,
+        getCurrentUser: mockGetCurrentUser,
+        getAccount: mockGetAccount,
+      );
+
       authViewModel.setCurrentUser(testUser);
 
-      await authViewModel.logout();
+      final result = await authViewModel.logout();
 
-      expect(authViewModel.errorMessage, contains('Exception'));
-      expect(authViewModel.isLoading, false);
+      expect(result, isFalse);
+      expect(authViewModel.errorMessage, contains('Erro no logout'));
+      expect(authViewModel.isLoading, isFalse);
     });
+
 
     test('checkCurrentUser sets currentUser on success', () async {
       when(mockGetCurrentUser()).thenAnswer((_) async => testUser);

@@ -15,6 +15,12 @@ class AccountViewModel extends ChangeNotifier {
   bool _isHidden = true;
   bool get isHidden => _isHidden;
 
+  set isHidden(bool value) {
+    _isHidden = value;
+    notifyListeners();
+  }
+
+
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;

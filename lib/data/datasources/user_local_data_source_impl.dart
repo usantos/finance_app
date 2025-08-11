@@ -1,0 +1,30 @@
+import 'package:financial_app/data/datasources/user_local_data_source.dart';
+import 'package:financial_app/domain/entities/user.dart';
+import 'package:financial_app/domain/models/account_response.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+class UserLocalDataSourceImpl implements UserLocalDataSource {
+  static const String _userKey = 'user_data';
+
+  UserLocalDataSourceImpl();
+
+  Future<void> saveUser(UserResponse? user) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_userKey, jsonEncode(user?.toJson()));
+  }
+
+  Future<UserResponse?> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userJson = prefs.getString(_userKey);
+    if (userJson != null) {
+      return UserResponse.fromJson(jsonDecode(userJson));
+    }
+    return null;
+  }
+
+  Future<void> clearUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(_userKey);
+  }
+}

@@ -1,10 +1,12 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
+import 'package:financial_app/domain/models/account_response.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -12,13 +14,15 @@ import 'package:mockito/mockito.dart';
 import 'account_viewmodel_test.mocks.dart';
 import 'auth_viewmodel_test.mocks.dart' hide MockGetAccount;
 
+class MockAccountViewModel extends Mock implements AccountViewModel {}
+
 @GenerateMocks([LoginUser, RegisterUser, LogoutUser, GetCurrentUser, GetAccount])
 void main() {
   late MockLoginUser mockLoginUser;
   late MockRegisterUser mockRegisterUser;
   late MockLogoutUser mockLogoutUser;
   late MockGetCurrentUser mockGetCurrentUser;
-
+  late MockAccountViewModel mockAccountViewModel;
   late MockGetAccount mockGetAccount;
   late AuthViewModel authViewModel;
 
@@ -41,6 +45,7 @@ void main() {
     mockLogoutUser = MockLogoutUser();
     mockGetCurrentUser = MockGetCurrentUser();
     mockGetAccount = MockGetAccount();
+    mockAccountViewModel = MockAccountViewModel();
 
     authViewModel = AuthViewModel(
       loginUser: mockLoginUser,
@@ -48,6 +53,7 @@ void main() {
       logoutUser: mockLogoutUser,
       getCurrentUser: mockGetCurrentUser,
       getAccount: mockGetAccount,
+      accountViewModel: mockAccountViewModel,
     );
   });
 
@@ -67,6 +73,7 @@ void main() {
       expect(authViewModel.errorMessage, isNull);
       expect(authViewModel.isLoading, false);
     });
+
 
     test('login returns false and sets errorMessage on invalid credentials', () async {
       when(mockLoginUser('username', 'password'))
@@ -144,6 +151,7 @@ void main() {
         logoutUser: mockLogoutUser,
         getCurrentUser: mockGetCurrentUser,
         getAccount: mockGetAccount,
+        accountViewModel: mockAccountViewModel,
       );
 
       authViewModel.setCurrentUser(testUser);
@@ -166,6 +174,7 @@ void main() {
         logoutUser: mockLogoutUser,
         getCurrentUser: mockGetCurrentUser,
         getAccount: mockGetAccount,
+        accountViewModel: mockAccountViewModel,
       );
 
       authViewModel.setCurrentUser(testUser);

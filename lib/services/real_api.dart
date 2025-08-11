@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:financial_app/domain/entities/logout.dart';
 
 class RealApi {
   final Dio _dio;

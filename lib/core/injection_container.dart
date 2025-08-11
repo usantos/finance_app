@@ -4,6 +4,8 @@ import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
 import 'package:financial_app/data/datasources/auth_remote_datasource_impl.dart';
 import 'package:financial_app/data/datasources/transaction_remote_datasource.dart';
 import 'package:financial_app/data/datasources/transaction_remote_datasource_impl.dart';
+import 'package:financial_app/data/datasources/user_local_data_source.dart';
+import 'package:financial_app/data/datasources/user_local_data_source_impl.dart';
 import 'package:financial_app/data/repositories/impl/account_repository_impl.dart';
 import 'package:financial_app/data/repositories/impl/auth_repository_impl.dart';
 import 'package:financial_app/data/repositories/impl/transaction_repository_impl.dart';
@@ -36,9 +38,9 @@ void init() {
   sl.registerFactory(() => TransactionViewModel(getTransactions: sl(), addTransaction: sl()));
 
   // Use cases
-  sl.registerLazySingleton(() => LoginUser(sl()));
+  sl.registerLazySingleton(() => LoginUser(sl(), sl()));
   sl.registerLazySingleton(() => RegisterUser(sl()));
-  sl.registerLazySingleton(() => LogoutUser(sl()));
+  sl.registerLazySingleton(() => LogoutUser(sl(), sl()));
   sl.registerLazySingleton(() => GetCurrentUser(sl()));
   sl.registerLazySingleton(() => GetAccount(sl()));
   sl.registerLazySingleton(() => UpdateAccountBalance(sl()));
@@ -54,6 +56,7 @@ void init() {
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl(), sl()));
   sl.registerLazySingleton<AccountRemoteDataSource>(() => AccountRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<UserLocalDataSource>(() => UserLocalDataSourceImpl());
 
   // Internal
   sl.registerLazySingleton(() => MockApi());

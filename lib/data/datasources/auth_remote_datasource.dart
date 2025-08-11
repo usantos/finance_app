@@ -1,5 +1,5 @@
+import 'package:financial_app/data/models/account_response.dart';
 import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/domain/models/account_response.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserResponse?> login(String username, String password);

@@ -20,7 +20,6 @@ class AccountViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;

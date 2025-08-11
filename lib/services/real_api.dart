@@ -3,18 +3,11 @@ import 'package:dio/dio.dart';
 class RealApi {
   final Dio _dio;
 
-  RealApi({Dio? dio})
-      : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
-      final response = await _dio.post(
-        '/login',
-        data: {
-          'username': username,
-          'password': password,
-        },
-      );
+      final response = await _dio.post('/login', data: {'username': username, 'password': password});
 
       if (response.data != null && response.data is Map<String, dynamic>) {
         return response.data;
@@ -28,14 +21,9 @@ class RealApi {
     }
   }
 
-
   Future<Map<String, dynamic>?> register(String username, String email, String password) async {
     try {
-      final response = await _dio.post('/register', data: {
-        'username': username,
-        'email': email,
-        'password': password,
-      });
+      final response = await _dio.post('/register', data: {'username': username, 'email': email, 'password': password});
 
       return response.data;
     } catch (e) {
@@ -46,14 +34,7 @@ class RealApi {
 
   Future<Map<String, dynamic>?> logout(String token) async {
     try {
-      final response = await _dio.post(
-        '/logout',
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
-      );
+      final response = await _dio.post('/logout', options: Options(headers: {'Authorization': 'Bearer $token'}));
       return response.data;
     } catch (e) {
       print('Erro no logout: $e');
@@ -83,9 +64,7 @@ class RealApi {
 
   Future<void> updateAccountBalance(String accountId, double newBalance) async {
     try {
-      await _dio.put('/accounts/$accountId/balance', data: {
-        'balance': newBalance,
-      });
+      await _dio.put('/accounts/$accountId/balance', data: {'balance': newBalance});
     } catch (e) {
       print('Erro ao atualizar saldo: $e');
     }
@@ -109,22 +88,17 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> transferFunds(
-      String fromAccountId, String toAccountId, double amount) async {
+  Future<Map<String, dynamic>> transferFunds(String fromAccountId, String toAccountId, double amount) async {
     try {
-      final response = await _dio.post('/transfer', data: {
-        'fromAccountId': fromAccountId,
-        'toAccountId': toAccountId,
-        'amount': amount,
-      });
+      final response = await _dio.post(
+        '/transfer',
+        data: {'fromAccountId': fromAccountId, 'toAccountId': toAccountId, 'amount': amount},
+      );
 
       return response.data;
     } catch (e) {
       print('Erro na transferência: $e');
-      return {
-        "success": false,
-        "message": "Erro ao realizar transferência"
-      };
+      return {"success": false, "message": "Erro ao realizar transferência"};
     }
   }
 }

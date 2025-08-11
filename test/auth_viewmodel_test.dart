@@ -1,6 +1,5 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/domain/models/account_response.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';

@@ -1,5 +1,6 @@
 import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
-import 'package:financial_app/data/models/account_response.dart';
+import 'package:financial_app/data/models/user_response.dart';
+import 'package:financial_app/data/models/logout_response.dart';
 import 'package:financial_app/domain/entities/logout.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/services/mock_api.dart';
@@ -31,12 +32,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<bool> logout(String token) async {
+  Future<LogoutResponse?> logout(String token) async {
     final response = await realApi.logout(token);
     if (response != null) {
-      return Logout.fromJson(response["status"]) as bool;
+      return LogoutResponse.fromJson(response);
     }
-    return false;
+    return null;
   }
 
   @override

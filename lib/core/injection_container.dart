@@ -1,3 +1,5 @@
+import 'package:financial_app/data/datasources/account_local_data_source.dart';
+import 'package:financial_app/data/datasources/account_local_data_source_impl.dart';
 import 'package:financial_app/data/datasources/account_remote_datasource.dart';
 import 'package:financial_app/data/datasources/account_remote_datasource_impl.dart';
 import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
@@ -19,7 +21,7 @@ import 'package:financial_app/domain/usecases/get_transactions.dart';
 import 'package:financial_app/domain/usecases/login_user.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
-import 'package:financial_app/domain/usecases/update_account_balance.dart';
+import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -49,8 +51,8 @@ void init() {
   sl.registerLazySingleton(() => RegisterUser(sl()));
   sl.registerLazySingleton(() => LogoutUser(sl(), sl()));
   sl.registerLazySingleton(() => GetCurrentUser(sl()));
-  sl.registerLazySingleton(() => GetAccount(sl()));
-  sl.registerLazySingleton(() => UpdateAccountBalance(sl()));
+  sl.registerLazySingleton(() => GetAccount(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => TransferBalance(sl(), sl(), sl()));
   sl.registerLazySingleton(() => GetTransactions(sl()));
   sl.registerLazySingleton(() => AddTransaction(sl()));
 
@@ -64,6 +66,7 @@ void init() {
   sl.registerLazySingleton<AccountRemoteDataSource>(() => AccountRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<UserLocalDataSource>(() => UserLocalDataSourceImpl());
+  sl.registerLazySingleton<AccountLocalDataSource>(() => AccountLocalDataSourceImpl());
 
   // Internal
   sl.registerLazySingleton(() => MockApi());

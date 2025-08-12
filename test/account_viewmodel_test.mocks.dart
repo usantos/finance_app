@@ -9,7 +9,7 @@ import 'package:financial_app/domain/entities/account.dart' as _i5;
 import 'package:financial_app/domain/repositories/account_repository.dart'
     as _i2;
 import 'package:financial_app/domain/usecases/get_account.dart' as _i3;
-import 'package:financial_app/domain/usecases/update_account_balance.dart'
+import 'package:financial_app/domain/usecases/transfer_balance.dart'
     as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -65,7 +65,7 @@ class MockGetAccount extends _i1.Mock implements _i3.GetAccount {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUpdateAccountBalance extends _i1.Mock
-    implements _i6.UpdateAccountBalance {
+    implements _i6.TransferBalance {
   MockUpdateAccountBalance() {
     _i1.throwOnMissingStub(this);
   }

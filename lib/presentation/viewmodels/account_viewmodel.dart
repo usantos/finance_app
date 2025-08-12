@@ -1,12 +1,12 @@
 import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
-import 'package:financial_app/domain/usecases/update_account_balance.dart';
+import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:flutter/material.dart';
 
 class AccountViewModel extends ChangeNotifier {
   final GetAccount _getAccount;
-  final UpdateAccountBalance _updateAccountBalance;
+  final TransferBalance _updateAccountBalance;
 
   Account? _account;
   bool _isLoading = false;
@@ -15,17 +15,12 @@ class AccountViewModel extends ChangeNotifier {
   bool _isHidden = true;
   bool get isHidden => _isHidden;
 
-  set isHidden(bool value) {
-    _isHidden = value;
-    notifyListeners();
-  }
-
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;
   }
 
-  AccountViewModel({required GetAccount getAccount, required UpdateAccountBalance updateAccountBalance})
+  AccountViewModel({required GetAccount getAccount, required TransferBalance updateAccountBalance})
     : _getAccount = getAccount,
       _updateAccountBalance = updateAccountBalance;
 
@@ -51,13 +46,13 @@ class AccountViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateBalance(String accountId, double newBalance) async {
+  Future<bool> transferBetweenAccounts(String accountId, double amount) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      await _updateAccountBalance(accountId, newBalance);
-      _account = _account?.copyWith(balance: newBalance);
+      await _updateAccountBalance(accountId, amount);
+      _account = _account?.copyWith(balance: amount);
       return true;
     } catch (e) {
       _errorMessage = e.toString();

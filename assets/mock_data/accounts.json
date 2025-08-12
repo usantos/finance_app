@@ -3,20 +3,14 @@
   "accounts": [
     {
       "id": "acc1",
-      "userId": "user1",
+      "userId": "atJYRZ4gehMD",
       "accountNumber": "12345-6",
       "balance": 1900.75
     },
     {
       "id": "acc2",
-      "userId": "user2",
-      "accountNumber": "12345-7",
-      "balance": 1400.75
-    },
-    {
-      "id": "acc3",
-      "userId": "user6",
-      "accountNumber": "12345-7",
+      "userId": "user2GPSd3kWDJcCc",
+      "accountNumber": "12345-8",
       "balance": 2000.75
     }
   ]

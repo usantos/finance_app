@@ -1,5 +1,5 @@
 import 'package:financial_app/data/datasources/user_local_data_source.dart';
-import 'package:financial_app/data/models/account_response.dart';
+import 'package:financial_app/data/models/user_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

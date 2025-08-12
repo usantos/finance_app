@@ -1,15 +1,15 @@
 import 'package:financial_app/data/datasources/account_remote_datasource.dart';
 import 'package:financial_app/domain/entities/account.dart';
-import 'package:financial_app/services/mock_api.dart';
+import 'package:financial_app/services/real_api.dart';
 
 class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
-  final MockApi mockApi;
+  final RealApi realApi;
 
-  AccountRemoteDataSourceImpl(this.mockApi);
+  AccountRemoteDataSourceImpl(this.realApi);
 
   @override
-  Future<Account?> getAccount(String userId) async {
-    final accountJson = await mockApi.getAccount(userId);
+  Future<Account?> getAccount(String userId, String token) async {
+    final accountJson = await realApi.getAccount(userId, token);
     if (accountJson != null) {
       return Account.fromJson(accountJson);
     }
@@ -17,7 +17,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<void> updateAccountBalance(String accountId, double newBalance) async {
-    await mockApi.updateAccountBalance(accountId, newBalance);
+  Future<void> transferBetweenAccounts(String fromAccountId,String toAccountId, double amount, String token) async {
+    await realApi.transferBetweenAccounts(fromAccountId, toAccountId, amount, token);
   }
 }

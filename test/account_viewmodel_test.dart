@@ -1,6 +1,6 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
-import 'package:financial_app/domain/usecases/update_account_balance.dart';
+import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 import 'account_viewmodel_test.mocks.dart';
 
-@GenerateMocks([GetAccount, UpdateAccountBalance])
+@GenerateMocks([GetAccount, TransferBalance])
 void main() {
   late MockGetAccount mockGetAccount;
   late MockUpdateAccountBalance mockUpdateAccountBalance;

@@ -8,12 +8,12 @@ class AccountRepositoryImpl implements AccountRepository {
   AccountRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Account?> getAccount(String userId) {
-    return remoteDataSource.getAccount(userId);
+  Future<Account?> getAccount(String userId, String token) {
+    return remoteDataSource.getAccount(userId, token);
   }
 
   @override
-  Future<void> updateAccountBalance(String accountId, double newBalance) {
-    return remoteDataSource.updateAccountBalance(accountId, newBalance);
+  Future<void> transferBetweenAccounts(String fromAccountId, String toAccountId, double amount, String token) {
+    return remoteDataSource.transferBetweenAccounts(fromAccountId, toAccountId, amount, token);
   }
 }

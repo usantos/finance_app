@@ -52,16 +52,15 @@ class _TransferScreenState extends State<TransferScreen> {
                           }
 
                           final double amount = double.parse(_amountController.text);
-                          final String fromAccountId = accountViewModel.account!.id;
                           final String toAccount = _toAccountController.text;
 
-                          final bool successWithdrawal = await accountViewModel.updateBalance(
-                            fromAccountId,
-                            accountViewModel.account!.balance - amount,
+                          final bool successWithdrawal = await accountViewModel.transferBetweenAccounts(
+                            toAccount,
+                           amount,
                           );
 
                           if (successWithdrawal) {
-                            await transactionViewModel.addTransaction(
+                            /*await transactionViewModel.addTransaction(
                               Transaction(
                                 id: DateTime.now().millisecondsSinceEpoch.toString(),
                                 accountId: fromAccountId,
@@ -72,9 +71,9 @@ class _TransferScreenState extends State<TransferScreen> {
                                 fromAccount: accountViewModel.account!.accountNumber,
                                 toAccount: toAccount,
                               ),
-                            );
+                            );*/
 
-                            if (toAccount == accountViewModel.account!.accountNumber) {
+                            /*if (toAccount == accountViewModel.account!.accountNumber) {
                               await transactionViewModel.addTransaction(
                                 Transaction(
                                   id: '${DateTime.now().millisecondsSinceEpoch}_deposit',
@@ -87,7 +86,7 @@ class _TransferScreenState extends State<TransferScreen> {
                                   toAccount: toAccount,
                                 ),
                               );
-                            }
+                            }*/
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: const Text(

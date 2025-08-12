@@ -7,11 +7,12 @@ class LogoutUser {
 
   LogoutUser(this.repository, this.userLocalDataSource);
 
-  Future<bool> call() async {
+  Future<bool?> call() async {
     final user = await userLocalDataSource.getUser();
     if (user != null) {
       final token = user.token;
-      return repository.logout(token);
+      final logoutResponse = await repository.logout(token);
+      return logoutResponse?.status;
     }
     return false;
   }

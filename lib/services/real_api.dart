@@ -52,9 +52,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getAccount(String userId) async {
+  Future<Map<String, dynamic>?> getAccount(String userId, String token) async {
     try {
-      final response = await _dio.get('/accounts/$userId');
+      final response = await _dio.get('/accounts/$userId', options: Options(headers: {'Authorization': 'Bearer $token'}));
       return response.data;
     } catch (e) {
       print('Erro ao buscar conta: $e');
@@ -62,13 +62,28 @@ class RealApi {
     }
   }
 
-  Future<void> updateAccountBalance(String accountId, double newBalance) async {
+  Future<void> transferBetweenAccounts(
+      String fromAccountNumber,
+      String toAccountId,
+      double amount,
+      String token
+      ) async {
     try {
-      await _dio.put('/accounts/$accountId/balance', data: {'balance': newBalance});
+      await _dio.post(
+        '/accounts/transfer',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        data: {
+          'fromAccountNumber': fromAccountNumber,
+          'toAccountId': toAccountId,
+          'amount': amount
+        },
+      );
     } catch (e) {
-      print('Erro ao atualizar saldo: $e');
+      print('Erro ao realizar transferência: $e');
     }
   }
+
+
 
   Future<List<Map<String, dynamic>>> getTransactions(String accountId) async {
     try {

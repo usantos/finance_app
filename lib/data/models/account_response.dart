@@ -1,21 +1,19 @@
-import 'package:financial_app/domain/entities/user.dart';
-
-class UserResponse {
+class AccountResponse {
   final String message;
-  final String token;
-  late final User user;
+  final String fromAccount;
+  final String toAccount;
 
-  UserResponse({required this.message, required this.token, required this.user});
+  AccountResponse({required this.message, required this.fromAccount, required this.toAccount});
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) {
-    return UserResponse(
+  factory AccountResponse.fromJson(Map<String, dynamic> json) {
+    return AccountResponse(
       message: json['message'] ?? '',
-      token: json['token'] ?? '',
-      user: User.fromJson(json['user'] ?? {}),
+      fromAccount: json['fromAccount'] ?? '',
+      toAccount: json['toAccount'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'message': message, 'token': token, 'user': user.toJson()};
+    return {'message': message, 'fromAccount': fromAccount, 'toAccount': toAccount};
   }
 }

@@ -46,7 +46,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _currentUser = await _loginUser(username, password);
-      _account = await _getAccount(currentUser?.id ?? "" );
+      _account = await _getAccount(currentUser?.id ?? "");
       if (_currentUser == null || _account == null) {
         _errorMessage = 'Credenciais inválidas.';
       }

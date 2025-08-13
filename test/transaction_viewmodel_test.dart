@@ -1,17 +1,21 @@
+import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/usecases/add_transaction.dart';
 import 'package:financial_app/domain/usecases/get_transactions.dart';
+import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'account_viewmodel_test.mocks.dart';
 import 'transaction_viewmodel_test.mocks.dart';
 
-@GenerateMocks([GetTransactions, AddTransaction])
+@GenerateMocks([GetTransactions, AddTransaction, TransferBalance])
 void main() {
   late MockGetTransactions mockGetTransactions;
   late MockAddTransaction mockAddTransaction;
+  late MockTransferBalance mockTransferBalance;
   late TransactionViewModel transactionViewModel;
 
   final testTransaction = Transaction(
@@ -25,20 +29,29 @@ void main() {
     toAccount: null,
   );
 
+  final testAccount = Account(
+    id: 'acc1',
+    userId: 'user1',
+    accountNumber: '12345-7',
+    balance: 100.0,
+  );
+
   setUp(() {
     mockGetTransactions = MockGetTransactions();
     mockAddTransaction = MockAddTransaction();
+    mockTransferBalance = MockTransferBalance();
 
     transactionViewModel = TransactionViewModel(
       getTransactions: mockGetTransactions,
       addTransaction: mockAddTransaction,
+      updateAccountBalance: mockTransferBalance,
     );
   });
 
   group('TransactionViewModel', () {
+    // -------------------- fetchTransactions --------------------
     test('fetchTransactions updates transactions on success', () async {
-      when(mockGetTransactions('acc1'))
-          .thenAnswer((_) async => [testTransaction]);
+      when(mockGetTransactions('acc1')).thenAnswer((_) async => [testTransaction]);
 
       await transactionViewModel.fetchTransactions('acc1');
 
@@ -48,8 +61,7 @@ void main() {
     });
 
     test('fetchTransactions sets errorMessage on failure', () async {
-      when(mockGetTransactions('acc1'))
-          .thenThrow(Exception('Falha ao buscar'));
+      when(mockGetTransactions('acc1')).thenThrow(Exception('Falha ao buscar'));
 
       await transactionViewModel.fetchTransactions('acc1');
 
@@ -58,9 +70,9 @@ void main() {
       expect(transactionViewModel.errorMessage, contains('Exception'));
     });
 
+    // -------------------- addTransaction --------------------
     test('addTransaction adds transaction on success', () async {
-      when(mockAddTransaction(testTransaction))
-          .thenAnswer((_) async => Future.value());
+      when(mockAddTransaction(testTransaction)).thenAnswer((_) async => Future.value());
 
       final result = await transactionViewModel.addTransaction(testTransaction);
 
@@ -71,14 +83,53 @@ void main() {
     });
 
     test('addTransaction sets errorMessage and returns false on failure', () async {
-      when(mockAddTransaction(testTransaction))
-          .thenThrow(Exception('Erro ao adicionar'));
+      when(mockAddTransaction(testTransaction)).thenThrow(Exception('Erro ao adicionar'));
 
       final result = await transactionViewModel.addTransaction(testTransaction);
 
       expect(result, false);
       expect(transactionViewModel.errorMessage, contains('Exception'));
       expect(transactionViewModel.isLoading, false);
+    });
+
+    // -------------------- transferBetweenAccounts --------------------
+    test('transferBetweenAccounts returns true on success', () async {
+      when(mockTransferBalance('acc1', 50.0))
+          .thenAnswer((_) async => {'success': true, 'message': 'Transferência realizada'});
+
+      // usa setAccount para inicializar a conta
+      transactionViewModel.setAccount(testAccount);
+
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0);
+
+      expect(result, true);
+      expect(transactionViewModel.account!.balance, 50.0);
+      expect(transactionViewModel.errorMessage, isNull);
+    });
+
+    test('transferBetweenAccounts returns false on falha', () async {
+      when(mockTransferBalance('acc1', 150.0))
+          .thenAnswer((_) async => {'success': false, 'message': 'Saldo insuficiente'});
+
+      transactionViewModel.setAccount(testAccount);
+
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 150.0);
+
+      expect(result, false);
+      expect(transactionViewModel.account!.balance, 100.0); // saldo não mudou
+      expect(transactionViewModel.errorMessage, 'Saldo insuficiente');
+    });
+
+    test('transferBetweenAccounts trata exceções', () async {
+      when(mockTransferBalance('acc1', 50.0)).thenThrow(Exception('Erro no servidor'));
+
+      transactionViewModel.setAccount(testAccount);
+
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0);
+
+      expect(result, false);
+      expect(transactionViewModel.account!.balance, 100.0);
+      expect(transactionViewModel.errorMessage, contains('Exception'));
     });
   });
 }

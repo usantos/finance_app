@@ -1,12 +1,10 @@
 import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
-import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:flutter/material.dart';
 
 class AccountViewModel extends ChangeNotifier {
   final GetAccount _getAccount;
-  final TransferBalance _updateAccountBalance;
 
   Account? _account;
   bool _isLoading = false;
@@ -20,9 +18,7 @@ class AccountViewModel extends ChangeNotifier {
     _account = account;
   }
 
-  AccountViewModel({required GetAccount getAccount, required TransferBalance updateAccountBalance})
-    : _getAccount = getAccount,
-      _updateAccountBalance = updateAccountBalance;
+  AccountViewModel({required GetAccount getAccount}) : _getAccount = getAccount;
 
   Account? get account => _account;
 
@@ -40,23 +36,6 @@ class AccountViewModel extends ChangeNotifier {
       _account = await _getAccount(userId);
     } catch (e) {
       _errorMessage = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<bool> transferBetweenAccounts(String accountId, double amount) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-    try {
-      await _updateAccountBalance(accountId, amount);
-      _account = _account?.copyWith(balance: amount);
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
     } finally {
       _isLoading = false;
       notifyListeners();

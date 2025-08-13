@@ -54,7 +54,10 @@ class RealApi {
 
   Future<Map<String, dynamic>?> getAccount(String userId, String token) async {
     try {
-      final response = await _dio.get('/accounts/$userId', options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await _dio.get(
+        '/accounts/$userId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
       return response.data;
     } catch (e) {
       print('Erro ao buscar conta: $e');
@@ -62,28 +65,28 @@ class RealApi {
     }
   }
 
-  Future<void> transferBetweenAccounts(
-      String fromAccountNumber,
-      String toAccountId,
-      double amount,
-      String token
-      ) async {
+  Future<Map<String, dynamic>> transferBetweenAccounts(
+    String fromAccountNumber,
+    String toAccountNumber,
+    double amount,
+    String token,
+  ) async {
     try {
-      await _dio.post(
+      final response = await _dio.post(
         '/accounts/transfer',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-        data: {
-          'fromAccountNumber': fromAccountNumber,
-          'toAccountId': toAccountId,
-          'amount': amount
-        },
+        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber, 'amount': amount},
       );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data['message'] ?? 'Transferência realizada com sucesso'};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro desconhecido na transferência'};
+      }
     } catch (e) {
-      print('Erro ao realizar transferência: $e');
+      return {"success": false, "message": 'Erro inesperado ao realizar transferência: $e'};
     }
   }
-
-
 
   Future<List<Map<String, dynamic>>> getTransactions(String accountId) async {
     try {

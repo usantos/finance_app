@@ -13,7 +13,12 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<void> transferBetweenAccounts(String fromAccountId, String toAccountId, double amount, String token) {
-    return remoteDataSource.transferBetweenAccounts(fromAccountId, toAccountId, amount, token);
+  Future<Map<String, dynamic>> transferBetweenAccounts(
+    String fromAccountNumber,
+    String toAccountNumber,
+    double amount,
+    String token,
+  ) {
+    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, token);
   }
 }

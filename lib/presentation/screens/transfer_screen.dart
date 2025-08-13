@@ -1,8 +1,9 @@
-import 'package:financial_app/domain/entities/transaction.dart';
+import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class TransferScreen extends StatefulWidget {
@@ -31,10 +32,12 @@ class _TransferScreenState extends State<TransferScreen> {
               keyboardType: TextInputType.text,
             ),
             const SizedBox(height: 16.0),
+
             TextField(
               controller: _amountController,
-              decoration: const InputDecoration(labelText: 'Valor'),
-              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Valor', hintText: 'R\$ 0,00'),
+              keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatter()],
             ),
             const SizedBox(height: 16.0),
             Consumer2<AccountViewModel, TransactionViewModel>(
@@ -51,12 +54,12 @@ class _TransferScreenState extends State<TransferScreen> {
                             return;
                           }
 
-                          final double amount = double.parse(_amountController.text);
+                          final double amount = BRLCurrencyInputFormatter.parse(_amountController.text);
                           final String toAccount = _toAccountController.text;
 
-                          final bool successWithdrawal = await accountViewModel.transferBetweenAccounts(
+                          final bool successWithdrawal = await transactionViewModel.transferBetweenAccounts(
                             toAccount,
-                           amount,
+                            amount,
                           );
 
                           if (successWithdrawal) {
@@ -102,7 +105,7 @@ class _TransferScreenState extends State<TransferScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  accountViewModel.errorMessage ?? 'Erro na transferência',
+                                  transactionViewModel.errorMessage ?? 'Erro na transferência',
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 backgroundColor: Colors.red,

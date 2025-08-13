@@ -10,7 +10,7 @@ class GetAccount {
 
   GetAccount(this.repository, this.userLocalDataSource, this.accountLocalDataSource);
 
-  Future<Account?> call(String userId) async{
+  Future<Account?> call(String userId) async {
     final user = await userLocalDataSource.getUser();
     final token = user?.token;
     final account = await repository.getAccount(userId, token ?? "");

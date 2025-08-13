@@ -1,6 +1,5 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
-import 'package:financial_app/domain/usecases/transfer_balance.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -8,10 +7,9 @@ import 'package:mockito/mockito.dart';
 
 import 'account_viewmodel_test.mocks.dart';
 
-@GenerateMocks([GetAccount, TransferBalance])
+@GenerateMocks([GetAccount])
 void main() {
   late MockGetAccount mockGetAccount;
-  late MockUpdateAccountBalance mockUpdateAccountBalance;
   late AccountViewModel viewModel;
 
   final testAccount = Account(
@@ -23,10 +21,8 @@ void main() {
 
   setUp(() {
     mockGetAccount = MockGetAccount();
-    mockUpdateAccountBalance = MockUpdateAccountBalance();
     viewModel = AccountViewModel(
       getAccount: mockGetAccount,
-      updateAccountBalance: mockUpdateAccountBalance,
     );
   });
 
@@ -51,31 +47,14 @@ void main() {
       expect(viewModel.errorMessage, contains('Exception'));
     });
 
-    test('updateBalance should update account balance on success', () async {
-      when(mockUpdateAccountBalance('acc1', 150.0))
-          .thenAnswer((_) async => Future.value());
+    test('toggleVisibility should change isHidden state', () {
+      final initialState = viewModel.isHidden;
 
-      viewModel.setAccount(testAccount);
+      viewModel.toggleVisibility();
+      expect(viewModel.isHidden, !initialState);
 
-      final result = await viewModel.updateBalance('acc1', 150.0);
-
-      expect(result, true);
-      expect(viewModel.account!.balance, 150.0);
-      expect(viewModel.errorMessage, isNull);
-      expect(viewModel.isLoading, false);
-    });
-
-    test('updateBalance should return false on failure', () async {
-      when(mockUpdateAccountBalance('acc1', 150.0))
-          .thenThrow(Exception('Failed'));
-
-      viewModel.setAccount(testAccount);
-
-      final result = await viewModel.updateBalance('acc1', 150.0);
-
-      expect(result, false);
-      expect(viewModel.errorMessage, contains('Exception'));
-      expect(viewModel.isLoading, false);
+      viewModel.toggleVisibility();
+      expect(viewModel.isHidden, initialState);
     });
   });
 }

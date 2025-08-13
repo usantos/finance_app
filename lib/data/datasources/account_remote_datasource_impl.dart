@@ -17,7 +17,12 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<void> transferBetweenAccounts(String fromAccountId,String toAccountId, double amount, String token) async {
-    await realApi.transferBetweenAccounts(fromAccountId, toAccountId, amount, token);
+  Future<Map<String, dynamic>> transferBetweenAccounts(
+    String fromAccountNumber,
+    String toAccountNumber,
+    double amount,
+    String token,
+  ) async {
+    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, token);
   }
 }

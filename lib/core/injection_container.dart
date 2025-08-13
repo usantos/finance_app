@@ -43,8 +43,10 @@ void init() {
       accountViewModel: sl(),
     ),
   );
-  sl.registerFactory(() => AccountViewModel(getAccount: sl(), updateAccountBalance: sl()));
-  sl.registerFactory(() => TransactionViewModel(getTransactions: sl(), addTransaction: sl()));
+  sl.registerFactory(() => AccountViewModel(getAccount: sl()));
+  sl.registerFactory(
+    () => TransactionViewModel(getTransactions: sl(), addTransaction: sl(), updateAccountBalance: sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => LoginUser(sl(), sl()));

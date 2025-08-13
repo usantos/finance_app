@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -14,8 +15,8 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
-  final TextEditingController _toAccountController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _toAccountTextEditingController = TextEditingController();
+  final TextEditingController _amountTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +28,17 @@ class _TransferScreenState extends State<TransferScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _toAccountController,
-              decoration: const InputDecoration(labelText: 'Conta de Destino'),
-              keyboardType: TextInputType.text,
+              controller: _toAccountTextEditingController,
+              decoration: InputDecoration(labelText: 'Conta de Destino', hintText: '00000-0'),
+              keyboardType: TextInputType.number,
+              inputFormatters: [AccountInputFormatterExt()],
             ),
             const SizedBox(height: 16.0),
-
             TextField(
-              controller: _amountController,
+              controller: _amountTextEditingController,
               decoration: InputDecoration(labelText: 'Valor', hintText: 'R\$ 0,00'),
               keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatter()],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
             ),
             const SizedBox(height: 16.0),
             Consumer2<AccountViewModel, TransactionViewModel>(
@@ -54,8 +55,8 @@ class _TransferScreenState extends State<TransferScreen> {
                             return;
                           }
 
-                          final double amount = BRLCurrencyInputFormatter.parse(_amountController.text);
-                          final String toAccount = _toAccountController.text;
+                          final double amount = BRLCurrencyInputFormatterExt.parse(_amountTextEditingController.text);
+                          final String toAccount = _toAccountTextEditingController.text;
 
                           final bool successWithdrawal = await transactionViewModel.transferBetweenAccounts(
                             toAccount,

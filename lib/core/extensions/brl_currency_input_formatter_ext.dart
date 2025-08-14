@@ -2,21 +2,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class BRLCurrencyInputFormatterExt extends TextInputFormatter {
-  final NumberFormat _formatter = NumberFormat.currency(
-    locale: 'pt_BR',
-    symbol: 'R\$ ',
-    decimalDigits: 2,
-  );
+  final NumberFormat _formatter = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$ ', decimalDigits: 2);
 
   static const double maxValue = 1000000000000000.00;
   bool _firstEdit = true;
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue,
-      TextEditingValue newValue,
-      ) {
-
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     String oldDigits = oldValue.text.replaceAll(RegExp(r'[^0-9]'), '');
     String newDigits = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 

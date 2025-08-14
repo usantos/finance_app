@@ -1,9 +1,10 @@
-import "package:financial_app/domain/entities/account.dart";
-import "package:financial_app/domain/entities/transaction.dart";
-import "package:financial_app/domain/usecases/add_transaction.dart";
-import "package:financial_app/domain/usecases/get_transactions.dart";
-import "package:financial_app/domain/usecases/transfer_balance.dart";
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
+import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
+import 'package:financial_app/domain/entities/account.dart';
+import 'package:financial_app/domain/entities/transaction.dart';
+import 'package:financial_app/domain/usecases/add_transaction.dart';
+import 'package:financial_app/domain/usecases/get_transactions.dart';
+import 'package:financial_app/domain/usecases/transfer_balance.dart';
 
 class TransactionViewModel extends ChangeNotifier {
   final GetTransactions _getTransactions;
@@ -14,6 +15,7 @@ class TransactionViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   Account? _account;
+  bool showErrors = false;
 
   TransactionViewModel({
     required GetTransactions getTransactions,
@@ -31,6 +33,36 @@ class TransactionViewModel extends ChangeNotifier {
   @visibleForTesting
   void setAccount(Account account) {
     _account = account;
+  }
+
+  String? validateToAccount(String? value) {
+    if (!showErrors) return null;
+
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.length < 6) {
+      return "A conta deve ter pelo menos 6 dígitos";
+    }
+
+    return null;
+  }
+
+  String? validateAmount(String? value) {
+    if (!showErrors) return null;
+
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final double parsed = BRLCurrencyInputFormatterExt.parse(value);
+    if (parsed <= 0) {
+      return "O valor deve ser maior que R\$ 0,00";
+    }
+
+    return null;
   }
 
   Future<void> fetchTransactions(String accountId) async {

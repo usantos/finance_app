@@ -8,11 +8,13 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   UserLocalDataSourceImpl();
 
+  @override
   Future<void> saveUser(UserResponse? user) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(_userKey, jsonEncode(user?.toJson()));
   }
 
+  @override
   Future<UserResponse?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final userJson = prefs.getString(_userKey);
@@ -22,6 +24,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     return null;
   }
 
+  @override
   Future<void> clearUser() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(_userKey);

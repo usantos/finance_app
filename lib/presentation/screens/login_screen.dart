@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _passwordController.text,
                             );
 
-                            if (!mounted) return;
+                            if (!context.mounted) return;
 
                             if (success) {
                               Navigator.pushReplacementNamed(context, '/home');

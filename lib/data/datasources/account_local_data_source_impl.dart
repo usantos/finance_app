@@ -8,11 +8,13 @@ class AccountLocalDataSourceImpl implements AccountLocalDataSource {
 
   AccountLocalDataSourceImpl();
 
+  @override
   Future<void> saveAccount(Account? account) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(_accountKey, jsonEncode(account?.toJson()));
   }
 
+  @override
   Future<Account?> getAccount() async {
     final prefs = await SharedPreferences.getInstance();
     final accountJson = prefs.getString(_accountKey);
@@ -22,6 +24,7 @@ class AccountLocalDataSourceImpl implements AccountLocalDataSource {
     return null;
   }
 
+  @override
   Future<void> clearAccount() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(_accountKey);

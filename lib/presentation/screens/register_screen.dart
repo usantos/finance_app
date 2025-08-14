@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   _emailController.text,
                                   _passwordController.text,
                                 );
-
+                                if (!context.mounted) return;
                                 if (success) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Cadastro realizado com sucesso! Faça login.')),

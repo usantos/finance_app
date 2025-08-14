@@ -1,3 +1,4 @@
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,18 +32,43 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      if (authViewModel.currentUser != null) {
+        Provider.of<AccountViewModel>(context, listen: false).fetchAccount(authViewModel.currentUser!.id);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: theme.colorScheme.primary,
         actions: [
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           const CircleAvatar(radius: 18, backgroundImage: AssetImage('assets/avatar_placeholder.png')),
-          Spacer(),
+          const Spacer(),
+          Consumer<AccountViewModel>(
+            builder: (context, accountViewModel, child) {
+              if (_selectedIndex == 0 || _selectedIndex == 2) {
+                return IconButton(
+                  key: const Key('toggle_visibility_button'),
+                  onPressed: () {
+                    accountViewModel.toggleVisibility();
+                  },
+                  icon: Icon(accountViewModel.isHidden ? Icons.visibility : Icons.visibility_off, color: Colors.white),
+                );
+              } else {
+                return const SizedBox.shrink(); // Não mostra nada
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {

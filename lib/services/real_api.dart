@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class RealApi {
   final Dio _dio;
@@ -12,11 +13,10 @@ class RealApi {
       if (response.data != null && response.data is Map<String, dynamic>) {
         return response.data;
       }
-
-      print('Resposta inesperada do servidor: ${response.data}');
+      debugPrint('Resposta inesperada do servidor: ${response.data}');
       return null;
     } catch (e) {
-      print('Erro no login: $e');
+      debugPrint('Erro no login: $e');
       return null;
     }
   }
@@ -27,7 +27,7 @@ class RealApi {
 
       return response.data;
     } catch (e) {
-      print('Erro no registro: $e');
+      debugPrint('Erro no registro: $e');
       return null;
     }
   }
@@ -37,7 +37,7 @@ class RealApi {
       final response = await _dio.post('/logout', options: Options(headers: {'Authorization': 'Bearer $token'}));
       return response.data;
     } catch (e) {
-      print('Erro no logout: $e');
+      debugPrint('Erro no logout: $e');
       return null;
     }
   }
@@ -47,7 +47,7 @@ class RealApi {
       final response = await _dio.get('/me');
       return response.data;
     } catch (e) {
-      print('Erro ao buscar usuário atual: $e');
+      debugPrint('Erro ao buscar usuário atual: $e');
       return null;
     }
   }
@@ -60,7 +60,7 @@ class RealApi {
       );
       return response.data;
     } catch (e) {
-      print('Erro ao buscar conta: $e');
+      debugPrint('Erro ao buscar conta: $e');
       return null;
     }
   }
@@ -93,7 +93,7 @@ class RealApi {
       final response = await _dio.get('/accounts/$accountId/transactions');
       return List<Map<String, dynamic>>.from(response.data);
     } catch (e) {
-      print('Erro ao buscar transações: $e');
+      debugPrint('Erro ao buscar transações: $e');
       return [];
     }
   }
@@ -102,7 +102,7 @@ class RealApi {
     try {
       await _dio.post('/transactions', data: transaction);
     } catch (e) {
-      print('Erro ao adicionar transação: $e');
+      debugPrint('Erro ao adicionar transação: $e');
     }
   }
 
@@ -115,7 +115,7 @@ class RealApi {
 
       return response.data;
     } catch (e) {
-      print('Erro na transferência: $e');
+      debugPrint('Erro na transferência: $e');
       return {"success": false, "message": "Erro ao realizar transferência"};
     }
   }

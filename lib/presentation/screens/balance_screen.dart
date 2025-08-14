@@ -67,20 +67,13 @@ class _BalanceScreenState extends State<BalanceScreen> {
                         children: [
                           const Text(
                             'Saldo em conta',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                           Text(
                             accountViewModel.displayBalance,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ],
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          accountViewModel.toggleVisibility();
-                        },
-                        icon: Icon(accountViewModel.isHidden ? Icons.visibility : Icons.visibility_off),
                       ),
                     ],
                   ),

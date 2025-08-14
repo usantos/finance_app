@@ -28,7 +28,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Histórico de Transações')),
+      appBar: AppBar(
+        title: const Text(
+          'Histórico de Transações',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+      ),
       body: SafeArea(
         child: Consumer<TransactionViewModel>(
           builder: (context, transactionViewModel, child) {

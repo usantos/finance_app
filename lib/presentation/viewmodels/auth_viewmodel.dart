@@ -14,7 +14,6 @@ class AuthViewModel extends ChangeNotifier {
   final LogoutUser _logoutUser;
   final GetCurrentUser _getCurrentUser;
   final GetAccount _getAccount;
-  final AccountViewModel _accountViewModel;
 
   User? _currentUser;
   bool _isLoading = false;
@@ -32,8 +31,7 @@ class AuthViewModel extends ChangeNotifier {
        _registerUser = registerUser,
        _logoutUser = logoutUser,
        _getCurrentUser = getCurrentUser,
-       _getAccount = getAccount,
-       _accountViewModel = accountViewModel;
+       _getAccount = getAccount;
 
   User? get currentUser => _currentUser;
   Account? get account => _account;

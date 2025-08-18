@@ -9,10 +9,10 @@ class TransferBalance {
 
   TransferBalance(this.repository, this.accountLocalDataSource, this.userLocalDataSource);
 
-  Future<Map<String, dynamic>> call(String toAccountNumber, double amount) async {
+  Future<Map<String, dynamic>> call(String toAccountNumber, double amount, String password) async {
     final fromAccount = await accountLocalDataSource.getAccount();
     final user = await userLocalDataSource.getUser();
     final token = user!.token;
-    return repository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, token);
+    return repository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password, token);
   }
 }

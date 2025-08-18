@@ -6,6 +6,7 @@ abstract class AccountRepository {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
+    String password,
     String token,
   );
 }

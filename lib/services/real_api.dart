@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RealApi {
   final Dio _dio;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000'));
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
@@ -69,13 +69,14 @@ class RealApi {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
+    String password,
     String token,
   ) async {
     try {
       final response = await _dio.post(
         '/accounts/transfer',
         options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
-        data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber, 'amount': amount},
+        data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber,'transfer_password': password, 'amount': amount},
       );
 
       if (response.statusCode == 200) {

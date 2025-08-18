@@ -96,13 +96,13 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> transferBetweenAccounts(String accountId, double amount) async {
+  Future<bool> transferBetweenAccounts(String accountId, double amount, String password) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final result = await _transferBalance(accountId, amount);
+      final result = await _transferBalance(accountId, amount, password);
 
       _isLoading = false;
 

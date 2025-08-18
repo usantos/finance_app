@@ -21,8 +21,9 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
+    String password,
     String token,
   ) async {
-    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, token);
+    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password, token);
   }
 }

@@ -58,6 +58,25 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  String? validateUser(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    if (value.length < 4) {
+      return "A senha deve ter pelo menos 4 caracteres";
+    }
+
+    return null;
+  }
+
   @visibleForTesting
   void setCurrentUser(User? user) {
     _currentUser = user;

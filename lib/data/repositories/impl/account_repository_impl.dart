@@ -17,8 +17,9 @@ class AccountRepositoryImpl implements AccountRepository {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
+    String password,
     String token,
   ) {
-    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, token);
+    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password, token);
   }
 }

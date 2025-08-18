@@ -6,6 +6,7 @@ abstract class AccountRemoteDataSource {
     String fromAccountId,
     String toAccountId,
     double amount,
+    String password,
     String token,
   );
 }

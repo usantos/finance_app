@@ -94,13 +94,13 @@ void main() {
 
     // -------------------- transferBetweenAccounts --------------------
     test('transferBetweenAccounts returns true on success', () async {
-      when(mockTransferBalance('acc1', 50.0))
+      when(mockTransferBalance('acc1', 50.0, 'transfer_password'))
           .thenAnswer((_) async => {'success': true, 'message': 'Transferência realizada'});
 
       // usa setAccount para inicializar a conta
       transactionViewModel.setAccount(testAccount);
 
-      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0);
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0, 'transfer_password');
 
       expect(result, true);
       expect(transactionViewModel.account!.balance, 50.0);
@@ -108,12 +108,12 @@ void main() {
     });
 
     test('transferBetweenAccounts returns false on falha', () async {
-      when(mockTransferBalance('acc1', 150.0))
+      when(mockTransferBalance('acc1', 150.0, 'transfer_password'))
           .thenAnswer((_) async => {'success': false, 'message': 'Saldo insuficiente'});
 
       transactionViewModel.setAccount(testAccount);
 
-      final result = await transactionViewModel.transferBetweenAccounts('acc1', 150.0);
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 150.0, 'transfer_password');
 
       expect(result, false);
       expect(transactionViewModel.account!.balance, 100.0); // saldo não mudou
@@ -121,11 +121,11 @@ void main() {
     });
 
     test('transferBetweenAccounts trata exceções', () async {
-      when(mockTransferBalance('acc1', 50.0)).thenThrow(Exception('Erro no servidor'));
+      when(mockTransferBalance('acc1', 50.0, 'transfer_password')).thenThrow(Exception('Erro no servidor'));
 
       transactionViewModel.setAccount(testAccount);
 
-      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0);
+      final result = await transactionViewModel.transferBetweenAccounts('acc1', 50.0, 'transfer_password');
 
       expect(result, false);
       expect(transactionViewModel.account!.balance, 100.0);

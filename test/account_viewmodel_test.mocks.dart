@@ -57,7 +57,7 @@ class MockTransferBalance extends _i1.Mock implements _i6.TransferBalance {
       ) as _i2.AccountRepository);
 
   @override
-  _i4.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount) =>
+  _i4.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount, String password) =>
       (super.noSuchMethod(
         Invocation.method(#call, [toAccountNumber, amount]),
         returnValue: _i4.Future<Map<String, dynamic>>.value({'success': true, 'message': ''}),

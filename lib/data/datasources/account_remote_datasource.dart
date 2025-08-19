@@ -9,4 +9,6 @@ abstract class AccountRemoteDataSource {
     String password,
     String token,
   );
+
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token);
 }

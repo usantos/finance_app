@@ -1,4 +1,4 @@
-import 'dart:async'; // necessário para FutureOr
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 
@@ -45,7 +45,7 @@ class _TextFieldPinState extends State<TextFieldPin> {
       textStyle: const TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 24,
-        color: Colors.teal,
+        color: Colors.black,
       ),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.teal),

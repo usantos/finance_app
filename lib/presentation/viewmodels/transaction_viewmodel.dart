@@ -14,6 +14,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Transaction> _transactions = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String? _errorCode;
   Account? _account;
   bool showErrors = false;
 
@@ -28,6 +29,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Transaction> get transactions => _transactions;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  String? get errorCode => _errorCode;
   Account? get account => _account;
 
   @visibleForTesting
@@ -44,7 +46,7 @@ class TransactionViewModel extends ChangeNotifier {
 
     final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
     if (digitsOnly.length < 6) {
-      return "A conta deve ter pelo menos 6 dígitos";
+      return "A conta deve ter 6 dígitos";
     }
 
     return null;
@@ -99,6 +101,7 @@ class TransactionViewModel extends ChangeNotifier {
   Future<bool> transferBetweenAccounts(String accountId, double amount, String password) async {
     _isLoading = true;
     _errorMessage = null;
+    _errorCode = null;
     notifyListeners();
 
     try {
@@ -108,6 +111,7 @@ class TransactionViewModel extends ChangeNotifier {
 
       if (!result['success']) {
         _errorMessage = result['message'];
+        _errorCode = result['code'];
         notifyListeners();
         return false;
       }
@@ -122,4 +126,31 @@ class TransactionViewModel extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> verifyTransferPassword() async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferBalance.verifyTransferPassword();
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+
+  }
+
 }

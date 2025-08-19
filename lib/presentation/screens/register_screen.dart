@@ -76,6 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               icon: const Icon(Icons.app_registration),
                               label: const Text('Cadastrar'),
                               onPressed: () async {
+
                                 final success = await authViewModel.register(
                                   _usernameController.text,
                                   _emailController.text,

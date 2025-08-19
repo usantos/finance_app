@@ -26,4 +26,12 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   ) async {
     return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password, token);
   }
+
+  @override
+  Future<Map<String, dynamic>> verifyTransferPassword(
+      String accountNumber,
+      String token,
+      ) async{
+    return await realApi.verifyTransferPassword(accountNumber, token);
+  }
 }

@@ -15,4 +15,11 @@ class TransferBalance {
     final token = user!.token;
     return repository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password, token);
   }
+
+  Future<Map<String, dynamic>> verifyTransferPassword() async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    final user = await userLocalDataSource.getUser();
+    final token = user!.token;
+    return repository.verifyTransferPassword(fromAccount!.accountNumber, token);
+  }
 }

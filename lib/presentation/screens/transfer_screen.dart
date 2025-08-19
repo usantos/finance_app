@@ -1,3 +1,4 @@
+import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/components/textfield_pin.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
@@ -22,6 +23,7 @@ class _TransferScreenState extends State<TransferScreen> {
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toAccountFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
+  bool hasPassword = false;
 
   @override
   void dispose() {
@@ -30,6 +32,61 @@ class _TransferScreenState extends State<TransferScreen> {
     _toAccountFocusNode.dispose();
     _amountFocusNode.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkTransferPassword();
+  }
+
+  Future<void> _checkTransferPassword() async {
+    final transactionVM = context.read<TransactionViewModel>();
+    hasPassword = await transactionVM.verifyTransferPassword();
+
+    if (!hasPassword && context.mounted) {
+      CustomBottomSheet.show(
+        context,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                'Para efetuar a transação é necessario cadastrar a senha de 4 digitos.',
+                style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilledButton(
+                  style: ButtonStyle(
+                    side: WidgetStateProperty.all(BorderSide(color: Colors.black, width: 1)),
+                    backgroundColor: WidgetStateProperty.all(Colors.white),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
+                ),
+                SizedBox(width: 20),
+                FilledButton(onPressed: () {
+                  PinBottomSheet.show(context, title: 'Escolha uma senha de 4 dígitos', onCompleted: (String pin) {
+                    //transactionVM.setTransferPassword(pin);
+                    Navigator.of(context).pop();
+                  });
+
+                }, child: const Text("Cadastrar")),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -101,27 +158,21 @@ class _TransferScreenState extends State<TransferScreen> {
                     return accountViewModel.isLoading || transactionViewModel.isLoading
                         ? const CircularProgressIndicator()
                         : SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: FilledButton(
-                        onPressed: () async {
-                          FocusScope.of(context).unfocus();
-                          CustomBottomSheet.show(
-                            context,
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Insira sua senha de 4 digitos',
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                ),
-                                TextFieldPin(
-                                  length: 4,
-                                  onComplete: (value) async {
-                                    FocusScope.of(context).unfocus();
+                            width: double.infinity,
+                            height: 50,
+                            child: FilledButton(
+                              onPressed: hasPassword
+                                  ? () async {
+                                transactionVM.showErrors = true;
+                                if (!_formKey.currentState!.validate()) return;
+                                FocusScope.of(context).unfocus();
+                                PinBottomSheet.show(
+                                  context,
+                                  title: 'Insira sua senha de 4 dígitos',
+                                  onCompleted: (pin) async {
                                     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+                                    final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
+
                                     if (authViewModel.currentUser == null || accountViewModel.account == null) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text('Usuário ou conta não logados.')),
@@ -134,69 +185,37 @@ class _TransferScreenState extends State<TransferScreen> {
                                     );
                                     final String toAccount = _toAccountTextEditingController.text;
 
-                                    if (!_formKey.currentState!.validate()) return;
+                                    final bool success = await transactionVM.transferBetweenAccounts(toAccount, amount, pin);
 
-                                    final bool successWithdrawal =
-                                    await transactionViewModel.transferBetweenAccounts(
-                                      toAccount,
-                                      amount,
-                                      '1236',
-                                    );
-
-                                    if (successWithdrawal) {
+                                    if (success) {
                                       _amountTextEditingController.clear();
                                       _toAccountTextEditingController.clear();
-                                      FocusScope.of(context).unfocus();
-
-                                      if (!context.mounted) return;
                                       ScaffoldMessenger.of(context).showSnackBar(
-                                         SnackBar(
-                                          content: Text(
-                                            'Transferência realizada com sucesso!',
-                                            style: TextStyle(color: Colors.white),
-                                          ),
+                                        SnackBar(
+                                          content: const Text('Transferência realizada com sucesso!'),
                                           backgroundColor: Colors.green,
                                           behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12)),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                         ),
                                       );
                                     } else {
-                                      if (!context.mounted) return;
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                          content: Text(
-                                            transactionViewModel.errorMessage ?? 'Erro na transferência',
-                                            style: const TextStyle(color: Colors.white),
-                                          ),
+                                          content: Text(transactionVM.errorMessage ?? 'Erro na transferência'),
                                           backgroundColor: Colors.red,
                                           behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12)),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                         ),
                                       );
                                     }
-                                    Navigator.of(context).pop();
                                   },
-                                ),
-                                const SizedBox(height: 16),
-                                FilledButton(
-                                  onPressed: () {
-                                    FocusScope.of(context).unfocus();
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Cancelar"),
-                                ),
-                              ],
+                                );
+                              }
+                                  : null,
+
+                              child: const Text('Transferir'),
                             ),
                           );
-
-                          transactionVM.showErrors = true;
-                          if (!_formKey.currentState!.validate()) return;
-                        },
-                        child: const Text('Transferir'),
-                      ),
-                    );
                   },
                 ),
               ],

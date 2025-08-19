@@ -65,6 +65,27 @@ class RealApi {
     }
   }
 
+  Future<Map<String, dynamic>> verifyTransferPassword(
+      String accountNumber,
+      String token,
+      ) async {
+    try {
+      final response = await _dio.post(
+        '/accounts/verify_transfer_password',
+        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        data: {'accountNumber': accountNumber,},
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data['message'] ?? 'Senha de transferência válida'};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro desconhecido na validação da senha'};
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao realizar validação: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> transferBetweenAccounts(
     String fromAccountNumber,
     String toAccountNumber,
@@ -82,7 +103,7 @@ class RealApi {
       if (response.statusCode == 200) {
         return {"success": true, "message": response.data['message'] ?? 'Transferência realizada com sucesso'};
       } else {
-        return {"success": false, "message": response.data['error'] ?? 'Erro desconhecido na transferência'};
+        return {"success": false, "code": response.data['code'], "message": response.data['error'] ?? 'Erro desconhecido na transferência'};
       }
     } catch (e) {
       return {"success": false, "message": 'Erro inesperado ao realizar transferência: $e'};

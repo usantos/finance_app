@@ -22,4 +22,12 @@ class AccountRepositoryImpl implements AccountRepository {
   ) {
     return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password, token);
   }
+
+  @override
+  Future<Map<String, dynamic>> verifyTransferPassword(
+      String accountNumber,
+      String token,
+      ){
+    return remoteDataSource.verifyTransferPassword(accountNumber, token);
+  }
 }

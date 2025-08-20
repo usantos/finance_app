@@ -24,10 +24,12 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> verifyTransferPassword(
-      String accountNumber,
-      String token,
-      ){
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) {
     return remoteDataSource.verifyTransferPassword(accountNumber, token);
+  }
+
+  @override
+  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) {
+    return remoteDataSource.setTransferPassword(accountNumber, transferPassword, token);
   }
 }

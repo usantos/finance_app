@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
@@ -15,6 +17,7 @@ class TransactionViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   String? _errorCode;
+  bool _hasPassword = false;
   Account? _account;
   bool showErrors = false;
 
@@ -30,6 +33,7 @@ class TransactionViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
+  bool get hasPassword => _hasPassword;
   Account? get account => _account;
 
   @visibleForTesting
@@ -129,28 +133,59 @@ class TransactionViewModel extends ChangeNotifier {
 
   Future<bool> verifyTransferPassword() async {
     _errorCode = null;
+    _hasPassword = false;
+    _isLoading = true;
     notifyListeners();
 
     try {
       final result = await _transferBalance.verifyTransferPassword();
+      _isLoading = false;
+
+      if (result['success'] == true) {
+        _hasPassword = true;
+        notifyListeners();
+        return true;
+      }
+
+      _hasPassword = false;
+      _errorMessage = result['message'];
+      _errorCode = result['code'];
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _isLoading = false;
+      _hasPassword = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> setTransferPassword(String transferPassword) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferBalance.setTransferPassword(transferPassword);
 
       _isLoading = false;
 
       if (!result['success']) {
         _errorMessage = result['message'];
         _errorCode = result['code'];
+        _hasPassword = false;
         notifyListeners();
         return false;
       }
+      _hasPassword = true;
       notifyListeners();
       return true;
     } catch (e) {
       _isLoading = false;
+      _hasPassword = false;
       _errorMessage = e.toString();
       notifyListeners();
       return false;
     }
-
   }
-
 }

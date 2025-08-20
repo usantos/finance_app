@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomBottomSheet {
   static Future<T?> show<T>(
-      BuildContext context, {
-        required Widget child,
-        double? height,
-        double? width,
-        bool isDismissible = false,
-        bool enableDrag = false,
-      }) {
+    BuildContext context, {
+    required Widget child,
+    double? height,
+    double? width,
+    bool isDismissible = false,
+    bool enableDrag = false,
+  }) {
     FocusManager.instance.primaryFocus?.unfocus();
 
     return showModalBottomSheet<T>(
@@ -34,9 +34,7 @@ class CustomBottomSheet {
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            child: SingleChildScrollView(
-              child: child,
-            ),
+            child: SingleChildScrollView(child: child),
           ),
         ),
       ),

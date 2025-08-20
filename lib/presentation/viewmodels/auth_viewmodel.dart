@@ -77,6 +77,20 @@ class AuthViewModel extends ChangeNotifier {
     return null;
   }
 
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (!emailRegex.hasMatch(value)) {
+      return "E-mail inválido";
+    }
+
+    return null;
+  }
+
   @visibleForTesting
   void setCurrentUser(User? user) {
     _currentUser = user;

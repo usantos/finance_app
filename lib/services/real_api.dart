@@ -65,15 +65,12 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> verifyTransferPassword(
-      String accountNumber,
-      String token,
-      ) async {
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) async {
     try {
       final response = await _dio.post(
         '/accounts/verify_transfer_password',
         options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
-        data: {'accountNumber': accountNumber,},
+        data: {'accountNumber': accountNumber},
       );
 
       if (response.statusCode == 200) {
@@ -83,6 +80,27 @@ class RealApi {
       }
     } catch (e) {
       return {"success": false, "message": 'Erro inesperado ao realizar validação: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) async {
+    try {
+      final response = await _dio.post(
+        '/accounts/set_transfer_password',
+        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        data: {'accountNumber': accountNumber, 'transfer_password': transferPassword},
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data['message'] ?? 'Senha de transferência definida/atualizada'};
+      } else {
+        return {
+          "success": false,
+          "message": response.data['error'] ?? 'Erro desconhecido na definição/atualização da senha',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao criar senha: $e'};
     }
   }
 
@@ -97,13 +115,22 @@ class RealApi {
       final response = await _dio.post(
         '/accounts/transfer',
         options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
-        data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber,'transfer_password': password, 'amount': amount},
+        data: {
+          'fromAccountNumber': fromAccountNumber,
+          'toAccountNumber': toAccountNumber,
+          'transfer_password': password,
+          'amount': amount,
+        },
       );
 
       if (response.statusCode == 200) {
         return {"success": true, "message": response.data['message'] ?? 'Transferência realizada com sucesso'};
       } else {
-        return {"success": false, "code": response.data['code'], "message": response.data['error'] ?? 'Erro desconhecido na transferência'};
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido na transferência',
+        };
       }
     } catch (e) {
       return {"success": false, "message": 'Erro inesperado ao realizar transferência: $e'};

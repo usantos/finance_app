@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
 class TextFieldPin extends StatefulWidget {
@@ -42,14 +43,8 @@ class _TextFieldPinState extends State<TextFieldPin> {
     final pinTheme = PinTheme(
       width: widget.width,
       height: widget.height,
-      textStyle: const TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 24,
-        color: Colors.black,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.teal),
-      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 24, color: Colors.black),
+      decoration: BoxDecoration(border: Border.all(color: Colors.teal)),
     );
 
     return Pinput(
@@ -62,6 +57,7 @@ class _TextFieldPinState extends State<TextFieldPin> {
       enabled: widget.isEnabled,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
       obscureText: widget.obscureText,
       animationDuration: Durations.short4,
       onCompleted: (value) async {
@@ -72,19 +68,10 @@ class _TextFieldPinState extends State<TextFieldPin> {
       },
       cursor: Column(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 9),
-            width: 32,
-            height: 1,
-            color: Colors.teal,
-          ),
-        ],
+        children: [Container(margin: const EdgeInsets.only(bottom: 9), width: 32, height: 1, color: Colors.teal)],
       ),
       focusedPinTheme: pinTheme.copyWith(
-        decoration: pinTheme.decoration!.copyWith(
-          border: Border.all(color: Colors.teal),
-        ),
+        decoration: pinTheme.decoration!.copyWith(border: Border.all(color: Colors.teal)),
       ),
     );
   }

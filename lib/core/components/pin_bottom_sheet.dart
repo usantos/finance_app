@@ -8,35 +8,100 @@ class PinBottomSheet {
     BuildContext context, {
     required String title,
     required void Function(String pin) onCompleted,
-    VoidCallback? onCancel,
+
+    // customizações
+    double? width,
+    double spacing = 20,
+    double titleFontSize = 20,
+    Color titleColor = Colors.black,
+    FontWeight titleFontWeight = FontWeight.bold,
+    int pinLength = 4,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+    List<Widget>? extraActions,
+    bool autoSubmitOnComplete = true,
   }) async {
+    final controller = TextEditingController();
+    final errorNotifier = ValueNotifier<String?>(null);
+
+    void confirmPin() {
+      final pin = controller.text.trim();
+
+      if (pin.length != pinLength) {
+        errorNotifier.value = "Digite os $pinLength dígitos";
+        return;
+      }
+
+      if (pin.split('').toSet().length == 1) {
+        errorNotifier.value = "Não pode usar números repetidos";
+        return;
+      }
+
+      FocusScope.of(context).unfocus();
+      Navigator.of(context).pop();
+      onCompleted(pin);
+    }
+
     await CustomBottomSheet.show(
       context,
-      height: MediaQuery.of(context).size.height * 0.3,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        spacing: 20,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          TextFieldPin(
-            length: 4,
-            onComplete: (value) async {
-              FocusScope.of(context).unfocus();
-              onCompleted(value);
-              Navigator.of(context).pop();
-            },
-          ),
-          const SizedBox(height: 16),
-          FilledButton(
-            onPressed: () {
-              FocusScope.of(context).unfocus();
-              Navigator.of(context).pop();
-              if (onCancel != null) onCancel();
-            },
-            child: const Text("Cancelar"),
-          ),
-        ],
+      width: width ?? MediaQuery.of(context).size.width,
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return AnimatedSize(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            child: Padding(
+              padding: padding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: titleFontSize, fontWeight: titleFontWeight, color: titleColor),
+                  ),
+                  SizedBox(height: spacing),
+                  TextFieldPin(
+                    controller: controller,
+                    length: pinLength,
+                    keyboardType: TextInputType.number,
+                    onComplete: (_) {
+                      if (autoSubmitOnComplete) {
+                        confirmPin();
+                      }
+                    },
+                  ),
+                  ValueListenableBuilder<String?>(
+                    valueListenable: errorNotifier,
+                    builder: (context, errorText, _) {
+                      if (errorText == null) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(errorText, style: const TextStyle(color: Colors.red, fontSize: 14)),
+                      );
+                    },
+                  ),
+                  SizedBox(height: spacing),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: const BorderSide(color: Colors.black, width: 1),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
+                      ),
+                      FilledButton(onPressed: confirmPin, child: const Text("Confirmar")),
+                      if (extraActions != null) ...extraActions,
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

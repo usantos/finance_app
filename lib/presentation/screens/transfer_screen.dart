@@ -1,5 +1,4 @@
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
-import 'package:financial_app/core/components/textfield_pin.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -23,7 +22,6 @@ class _TransferScreenState extends State<TransferScreen> {
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toAccountFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
-  bool hasPassword = false;
 
   @override
   void dispose() {
@@ -42,9 +40,9 @@ class _TransferScreenState extends State<TransferScreen> {
 
   Future<void> _checkTransferPassword() async {
     final transactionVM = context.read<TransactionViewModel>();
-    hasPassword = await transactionVM.verifyTransferPassword();
+    await transactionVM.verifyTransferPassword();
 
-    if (!hasPassword && context.mounted) {
+    if (!transactionVM.hasPassword && context.mounted) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.2,
@@ -71,16 +69,23 @@ class _TransferScreenState extends State<TransferScreen> {
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
+                  child: const Text("Depois", style: TextStyle(color: Colors.black)),
                 ),
                 SizedBox(width: 20),
-                FilledButton(onPressed: () {
-                  PinBottomSheet.show(context, title: 'Escolha uma senha de 4 dígitos', onCompleted: (String pin) {
-                    //transactionVM.setTransferPassword(pin);
-                    Navigator.of(context).pop();
-                  });
-
-                }, child: const Text("Cadastrar")),
+                FilledButton(
+                  onPressed: () {
+                    PinBottomSheet.show(
+                      context,
+                      title: 'Escolha uma senha de 4 dígitos',
+                      autoSubmitOnComplete: false,
+                      onCompleted: (transferPassword) {
+                        transactionVM.setTransferPassword(transferPassword);
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  },
+                  child: const Text("Cadastrar"),
+                ),
               ],
             ),
           ],
@@ -161,56 +166,63 @@ class _TransferScreenState extends State<TransferScreen> {
                             width: double.infinity,
                             height: 50,
                             child: FilledButton(
-                              onPressed: hasPassword
+                              onPressed: transactionVM.hasPassword
                                   ? () async {
-                                transactionVM.showErrors = true;
-                                if (!_formKey.currentState!.validate()) return;
-                                FocusScope.of(context).unfocus();
-                                PinBottomSheet.show(
-                                  context,
-                                  title: 'Insira sua senha de 4 dígitos',
-                                  onCompleted: (pin) async {
-                                    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-                                    final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
+                                      transactionVM.showErrors = true;
+                                      if (!_formKey.currentState!.validate()) return;
+                                      FocusScope.of(context).unfocus();
+                                      PinBottomSheet.show(
+                                        context,
+                                        title: 'Insira sua senha de 4 dígitos',
+                                        onCompleted: (pin) async {
+                                          final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+                                          final accountViewModel = Provider.of<AccountViewModel>(
+                                            context,
+                                            listen: false,
+                                          );
 
-                                    if (authViewModel.currentUser == null || accountViewModel.account == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Usuário ou conta não logados.')),
+                                          if (authViewModel.currentUser == null || accountViewModel.account == null) {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Usuário ou conta não logados.')),
+                                            );
+                                            return;
+                                          }
+
+                                          final double amount = BRLCurrencyInputFormatterExt.parse(
+                                            _amountTextEditingController.text,
+                                          );
+                                          final String toAccount = _toAccountTextEditingController.text;
+
+                                          final bool success = await transactionVM.transferBetweenAccounts(
+                                            toAccount,
+                                            amount,
+                                            pin,
+                                          );
+
+                                          if (success) {
+                                            _amountTextEditingController.clear();
+                                            _toAccountTextEditingController.clear();
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: const Text('Transferência realizada com sucesso!'),
+                                                backgroundColor: Colors.green,
+                                                behavior: SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                              ),
+                                            );
+                                          } else {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(transactionVM.errorMessage ?? 'Erro na transferência'),
+                                                backgroundColor: Colors.red,
+                                                behavior: SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                              ),
+                                            );
+                                          }
+                                        },
                                       );
-                                      return;
                                     }
-
-                                    final double amount = BRLCurrencyInputFormatterExt.parse(
-                                      _amountTextEditingController.text,
-                                    );
-                                    final String toAccount = _toAccountTextEditingController.text;
-
-                                    final bool success = await transactionVM.transferBetweenAccounts(toAccount, amount, pin);
-
-                                    if (success) {
-                                      _amountTextEditingController.clear();
-                                      _toAccountTextEditingController.clear();
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: const Text('Transferência realizada com sucesso!'),
-                                          backgroundColor: Colors.green,
-                                          behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                        ),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(transactionVM.errorMessage ?? 'Erro na transferência'),
-                                          backgroundColor: Colors.red,
-                                          behavior: SnackBarBehavior.floating,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                );
-                              }
                                   : null,
 
                               child: const Text('Transferir'),

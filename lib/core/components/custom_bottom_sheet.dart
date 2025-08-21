@@ -6,6 +6,7 @@ class CustomBottomSheet {
     required Widget child,
     double? height,
     double? width,
+    bool isFull = false,
     bool isDismissible = false,
     bool enableDrag = false,
   }) {
@@ -18,7 +19,7 @@ class CustomBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withValues(alpha: 0.5),
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: GestureDetector(
@@ -27,14 +28,29 @@ class CustomBottomSheet {
             FocusScope.of(context).unfocus();
           },
           child: Container(
-            height: height,
+            height: isFull ? MediaQuery.of(context).size.height * 0.920 : height,
             width: width,
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            child: SingleChildScrollView(child: child),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      width: 40,
+                      height: 5,
+                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(2)),
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  child,
+                ],
+              ),
+            ),
           ),
         ),
       ),

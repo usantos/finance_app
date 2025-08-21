@@ -1,3 +1,4 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,59 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: theme.colorScheme.primary,
         actions: [
           const SizedBox(width: 16),
-          const CircleAvatar(radius: 18, backgroundImage: AssetImage('assets/avatar_placeholder.png')),
+          InkWell(
+            onTap: () {
+              CustomBottomSheet.show(
+                context,
+                isDismissible: true,
+                enableDrag: true,
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: SizedBox(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.close, color: Colors.black, size: 30),
+                          ),
+                          Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              CustomBottomSheet.show(context,isFull: true, child: Container(),);
+                            },
+                            icon: Icon(Icons.edit, color: Colors.black, size: 30),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          Image(image: const AssetImage('assets/avatar_placeholder.png'), width: 50, height: 50),
+                          SizedBox(width: 22),
+                          Column(
+                            children: [
+                              Text(
+                                "Teste",
+                                style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Conta: 12345-6",
+                                style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: const CircleAvatar(radius: 18, backgroundImage: AssetImage('assets/avatar_placeholder.png')),
+          ),
           const Spacer(),
           Consumer<AccountViewModel>(
             builder: (context, accountViewModel, child) {
@@ -65,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(accountViewModel.isHidden ? Icons.visibility : Icons.visibility_off, color: Colors.white),
                 );
               } else {
-                return const SizedBox.shrink(); // Não mostra nada
+                return const SizedBox.shrink();
               }
             },
           ),

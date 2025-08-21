@@ -5,7 +5,7 @@
       "id": "trans1",
       "accountId": "acc1",
       "type": "deposit",
-      "amount": 500.00,
+      "amount": 5.00,
       "date": "2025-07-01T10:00:00Z",
       "description": "Salário"
     },

@@ -51,7 +51,7 @@ class _BottomSheetMainState extends State<BottomSheetMain> {
             ),
           ],
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 14),
         Row(
           children: [
             const Image(image: AssetImage('assets/avatar_placeholder.png'), width: 50, height: 50),

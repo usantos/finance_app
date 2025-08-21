@@ -1,4 +1,7 @@
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
+import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BottomSheetEditHome extends StatefulWidget {
   const BottomSheetEditHome({super.key});
@@ -8,6 +11,18 @@ class BottomSheetEditHome extends StatefulWidget {
 }
 
 class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
+  String? userName;
+  String? accountNumber;
+
+  @override
+  initState() {
+    super.initState();
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
+    accountNumber = accountViewModel.account?.accountNumber;
+    userName = authViewModel.currentUser?.username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,10 +31,9 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
           alignment: Alignment.topLeft,
           child: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.close, color: Colors.black, size: 30),
+            icon: const Icon(Icons.close, color: Colors.black, size: 20),
           ),
         ),
-        const SizedBox(height: 18),
         const Text("Dados bancários", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 18),
         Row(
@@ -28,7 +42,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Numero da conta", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const Text("12345-8**", style: TextStyle(fontSize: 16)),
+                Text("$accountNumber", style: TextStyle(fontSize: 16)),
               ],
             ),
           ],
@@ -46,7 +60,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             const Spacer(),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.edit, color: Colors.black, size: 30),
+              icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],
         ),
@@ -63,7 +77,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             const Spacer(),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.edit, color: Colors.black, size: 30),
+              icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],
         ),
@@ -74,13 +88,13 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Nome no aplicativo", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const Text("Jão", style: TextStyle(fontSize: 16)),
+                Text("$userName", style: const TextStyle(fontSize: 16)),
               ],
             ),
             const Spacer(),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.edit, color: Colors.black, size: 30),
+              icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],
         ),
@@ -98,7 +112,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             const Spacer(),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.edit, color: Colors.black, size: 30),
+              icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],
         ),
@@ -109,7 +123,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Finance Pagamentos LTDA-\nInstituição de Pagamentos ",
+                  "Close Finance Pagamentos LTDA-\nInstituição de Pagamentos ",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],

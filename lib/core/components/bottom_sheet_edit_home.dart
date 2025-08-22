@@ -82,12 +82,14 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
           ],
         ),
         Divider(color: Colors.grey[300], height: 40),
+        const Text("Dados do aplicativo", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 18),
         Row(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Nome no aplicativo", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text("Nome", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 Text("$userName", style: const TextStyle(fontSize: 16)),
               ],
             ),

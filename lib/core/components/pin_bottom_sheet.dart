@@ -80,7 +80,6 @@ class PinBottomSheet {
                   );
                 },
               ),
-                    SizedBox(width: 30,),
                 ValueListenableBuilder<bool>(
                   valueListenable: obscureNotifier,
                   builder: (context, isObscured, _) {

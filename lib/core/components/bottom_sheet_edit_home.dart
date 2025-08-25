@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -50,7 +51,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             ),
           ],
         ),
-        Divider(color: Colors.grey[300], height: 40),
+        Divider(color: Colors.grey[300], height: 38),
         Row(
           children: [
             Column(
@@ -67,7 +68,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             ),
           ],
         ),
-        Divider(color: Colors.grey[300], height: 40),
+        Divider(color: Colors.grey[300], height: 38),
         Row(
           children: [
             Column(
@@ -82,6 +83,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
               onPressed: () async {
                 String? oldTransferPassword;
                 await PinBottomSheet.show(
+                  width: MediaQuery.of(context).size.width,
                   context,
                   title: 'Digite sua senha atual',
                   onCompleted: (value) {
@@ -92,10 +94,24 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
                 if (oldTransferPassword == null) return;
 
                 await PinBottomSheet.show(
+                  autoSubmitOnComplete: false,
                   context,
                   title: 'Digite a nova senha',
                   onCompleted: (newTransferPassword) async {
-                    transactionViewModel.changeTransferPassword(oldTransferPassword!, newTransferPassword);
+                    final success = await transactionViewModel.changeTransferPassword(
+                      oldTransferPassword!,
+                      newTransferPassword,
+                    );
+                    Flushbar(
+                      message: success
+                          ? 'Senha alterada com sucesso'
+                          : (transactionViewModel.errorMessage ?? 'Erro ao alterar senha'),
+                      duration: const Duration(seconds: 3),
+                      backgroundColor: success ? Colors.green : Colors.red,
+                      margin: const EdgeInsets.all(8),
+                      borderRadius: BorderRadius.circular(8),
+                      flushbarPosition: FlushbarPosition.BOTTOM,
+                    ).show(context);
                   },
                 );
               },
@@ -104,7 +120,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
           ],
         ),
 
-        Divider(color: Colors.grey[300], height: 40),
+        Divider(color: Colors.grey[300], height: 38),
         const Text("Dados do aplicativo", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 18),
         Row(
@@ -123,7 +139,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             ),
           ],
         ),
-        Divider(color: Colors.grey[300], height: 40),
+        Divider(color: Colors.grey[300], height: 38),
         Row(
           children: [
             Column(
@@ -141,7 +157,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             ),
           ],
         ),
-        Divider(color: Colors.grey[300], height: 40),
+        Divider(color: Colors.grey[300], height: 38),
         Row(
           children: [
             Column(

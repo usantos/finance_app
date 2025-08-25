@@ -13,4 +13,11 @@ abstract class AccountRepository {
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token);
 
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token);
+
+  Future<Map<String, dynamic>> changeTransferPassword(
+    String accountNumber,
+    String oldTransferPassword,
+    String newTransferPassword,
+    String token,
+  );
 }

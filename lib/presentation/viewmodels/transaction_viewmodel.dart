@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
@@ -183,6 +181,31 @@ class TransactionViewModel extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _hasPassword = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> changeTransferPassword(String oldTransferPassword, String newTransferPassword) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferBalance.changeTransferPassword(oldTransferPassword, newTransferPassword);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
       _errorMessage = e.toString();
       notifyListeners();
       return false;

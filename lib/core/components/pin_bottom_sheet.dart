@@ -9,7 +9,6 @@ class PinBottomSheet {
     required String title,
     required void Function(String pin) onCompleted,
 
-    // customizações
     double? width,
     double spacing = 20,
     double titleFontSize = 20,

@@ -29,4 +29,16 @@ class TransferBalance {
     final token = user!.token;
     return repository.setTransferPassword(fromAccount!.accountNumber, transferPassword, token);
   }
+
+  Future<Map<String, dynamic>> changeTransferPassword(String oldTransferPassword, String newTransferPassword) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    final user = await userLocalDataSource.getUser();
+    final token = user!.token;
+    return repository.changeTransferPassword(
+      fromAccount!.accountNumber,
+      oldTransferPassword,
+      newTransferPassword,
+      token,
+    );
+  }
 }

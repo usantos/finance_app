@@ -36,4 +36,14 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) async {
     return await realApi.setTransferPassword(accountNumber, transferPassword, token);
   }
+
+  @override
+  Future<Map<String, dynamic>> changeTransferPassword(
+    String accountNumber,
+    String oldTransferPassword,
+    String newTransferPassword,
+    String token,
+  ) async {
+    return await realApi.changeTransferPassword(accountNumber, oldTransferPassword, newTransferPassword, token);
+  }
 }

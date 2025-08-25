@@ -32,4 +32,14 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) {
     return remoteDataSource.setTransferPassword(accountNumber, transferPassword, token);
   }
+
+  @override
+  Future<Map<String, dynamic>> changeTransferPassword(
+    String accountNumber,
+    String oldtransferPassword,
+    newTransferPassword,
+    String token,
+  ) {
+    return remoteDataSource.changeTransferPassword(accountNumber, oldtransferPassword, newTransferPassword, token);
+  }
 }

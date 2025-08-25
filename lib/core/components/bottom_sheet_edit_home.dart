@@ -1,5 +1,7 @@
+import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,7 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
 
   @override
   Widget build(BuildContext context) {
+    final transactionViewModel = Provider.of<TransactionViewModel>(context);
     return Column(
       children: [
         Align(
@@ -69,18 +72,38 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Senha de transferência", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const Text("****", style: TextStyle(fontSize: 16)),
+              children: const [
+                Text("Senha de transferência", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text("****", style: TextStyle(fontSize: 16)),
               ],
             ),
             const Spacer(),
             IconButton(
-              onPressed: () {},
+              onPressed: () async {
+                String? oldTransferPassword;
+                await PinBottomSheet.show(
+                  context,
+                  title: 'Digite sua senha atual',
+                  onCompleted: (value) {
+                    oldTransferPassword = value;
+                  },
+                );
+
+                if (oldTransferPassword == null) return;
+
+                await PinBottomSheet.show(
+                  context,
+                  title: 'Digite a nova senha',
+                  onCompleted: (newTransferPassword) async {
+                    transactionViewModel.changeTransferPassword(oldTransferPassword!, newTransferPassword);
+                  },
+                );
+              },
               icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],
         ),
+
         Divider(color: Colors.grey[300], height: 40),
         const Text("Dados do aplicativo", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         const SizedBox(height: 18),

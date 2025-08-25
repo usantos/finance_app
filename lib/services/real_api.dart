@@ -104,6 +104,33 @@ class RealApi {
     }
   }
 
+  Future<Map<String, dynamic>> changeTransferPassword(
+    String accountNumber,
+    String oldTransferPassword,
+    String newTransferPassword,
+    String token,
+  ) async {
+    try {
+      final response = await _dio.post(
+        '/accounts/change_transfer_password',
+        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        data: {
+          'accountNumber': accountNumber,
+          'old_transfer_password': oldTransferPassword,
+          'new_transfer_password': newTransferPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data['message'] ?? 'Senha de transferência alterada com sucesso'};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro desconhecido ao alterar senha'};
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao alterar senha: $e'};
+    }
+  }
+
   Future<Map<String, dynamic>> transferBetweenAccounts(
     String fromAccountNumber,
     String toAccountNumber,

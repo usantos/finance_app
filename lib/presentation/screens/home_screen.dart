@@ -1,4 +1,4 @@
-import 'package:financial_app/core/components/bottom_sheet_home.dart';
+import 'package:financial_app/presentation/screens/components/bottom_sheet_home.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           InkWell(
             onTap: () {
               CustomBottomSheet.show(
+                iconClose: false,
                 context,
                 isDismissible: true,
                 enableDrag: true,

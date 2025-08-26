@@ -1,4 +1,4 @@
-import 'package:financial_app/core/components/bottom_sheet_edit_home.dart';
+import 'package:financial_app/presentation/screens/components/bottom_sheet_home_edit.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -39,12 +39,13 @@ class _BottomSheetMainState extends State<BottomSheetMain> {
             IconButton(
               onPressed: () {
                 CustomBottomSheet.show(
+                  iconClose: false,
                   context,
                   isFull: true,
                   width: MediaQuery.of(context).size.width,
                   isDismissible: true,
                   enableDrag: true,
-                  child: const BottomSheetEditHome(),
+                  child: const BottomSheetHomeEdit(),
                 );
               },
               icon: const Icon(Icons.edit, color: Colors.black, size: 25),

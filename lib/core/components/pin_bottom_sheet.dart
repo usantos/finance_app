@@ -17,6 +17,9 @@ class PinBottomSheet {
         List<Widget>? extraActions,
         bool autoSubmitOnComplete = true,
         bool obscureText = true,
+        bool isDismissible = false,
+        bool enableDrag = false,
+        bool iconClose = true,
       }) async {
     final controller = TextEditingController();
     final errorNotifier = ValueNotifier<String?>(null);
@@ -41,6 +44,9 @@ class PinBottomSheet {
     }
 
     await CustomBottomSheet.show(
+      isDismissible: isDismissible,
+      enableDrag: enableDrag,
+      iconClose: iconClose,
       context,
       width: width ?? MediaQuery.of(context).size.width,
       child: AnimatedSize(
@@ -52,7 +58,7 @@ class PinBottomSheet {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-                  Text(
+              Text(
                     title,
                     style: TextStyle(
                       fontSize: titleFontSize,
@@ -65,7 +71,7 @@ class PinBottomSheet {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Spacer(),
+                    SizedBox(width: 68,),
               ValueListenableBuilder<bool>(
                 valueListenable: obscureNotifier,
                 builder: (context, isObscured, _) {
@@ -80,6 +86,7 @@ class PinBottomSheet {
                   );
                 },
               ),
+                SizedBox(width: 20,),
                 ValueListenableBuilder<bool>(
                   valueListenable: obscureNotifier,
                   builder: (context, isObscured, _) {
@@ -108,6 +115,7 @@ class PinBottomSheet {
                 },
               ),
               SizedBox(height: spacing),
+              autoSubmitOnComplete ?  SizedBox.shrink() :
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

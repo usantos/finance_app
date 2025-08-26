@@ -1,19 +1,19 @@
 import 'package:another_flushbar/flushbar.dart';
-import 'package:financial_app/core/components/pin_bottom_sheet.dart';
+import 'package:financial_app/core/components/double_pin_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BottomSheetEditHome extends StatefulWidget {
-  const BottomSheetEditHome({super.key});
+class BottomSheetHomeEdit extends StatefulWidget {
+  const BottomSheetHomeEdit({super.key});
 
   @override
-  State<BottomSheetEditHome> createState() => _BottomSheetEditHomeState();
+  State<BottomSheetHomeEdit> createState() => _BottomSheetHomeEditState();
 }
 
-class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
+class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
   String? userName;
   String? accountNumber;
 
@@ -81,25 +81,15 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             const Spacer(),
             IconButton(
               onPressed: () async {
-                String? oldTransferPassword;
-                await PinBottomSheet.show(
-                  width: MediaQuery.of(context).size.width,
-                  context,
-                  title: 'Digite sua senha atual',
-                  onCompleted: (value) {
-                    oldTransferPassword = value;
-                  },
-                );
-
-                if (oldTransferPassword == null) return;
-
-                await PinBottomSheet.show(
+                await DoublePinBottomSheet.showDouble(
+                  iconClose: false,
                   autoSubmitOnComplete: false,
                   context,
-                  title: 'Digite a nova senha',
-                  onCompleted: (newTransferPassword) async {
+                  titleOld: "Digite sua senha de transferência atual",
+                  titleNew: "Digite sua nova senha de transferência",
+                  onCompleted: (oldTransferPassword, newTransferPassword) async {
                     final success = await transactionViewModel.changeTransferPassword(
-                      oldTransferPassword!,
+                      oldTransferPassword,
                       newTransferPassword,
                     );
                     Flushbar(
@@ -152,7 +142,8 @@ class _BottomSheetEditHomeState extends State<BottomSheetEditHome> {
             ),
             const Spacer(),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+              },
               icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],

@@ -1,4 +1,4 @@
-import 'package:financial_app/presentation/screens/components/bottom_sheet_home.dart';
+import 'package:financial_app/presentation/screens/components/bottom_sheet_perfil.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 context,
                 isDismissible: true,
                 enableDrag: true,
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: const BottomSheetMain(),
+                height: MediaQuery.of(context).size.height * 0.250,
+                child: const BottomSheetPerfil(),
               );
             },
             child: const CircleAvatar(radius: 18, backgroundImage: AssetImage('assets/avatar_placeholder.png')),

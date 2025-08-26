@@ -85,8 +85,8 @@ class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
                   iconClose: false,
                   autoSubmitOnComplete: false,
                   context,
-                  titleOld: "Digite sua senha de transferência atual",
-                  titleNew: "Digite sua nova senha de transferência",
+                  titleOld: "Senha de transferência atual",
+                  titleNew: "Nova senha de transferência",
                   onCompleted: (oldTransferPassword, newTransferPassword) async {
                     final success = await transactionViewModel.changeTransferPassword(
                       oldTransferPassword,
@@ -142,8 +142,7 @@ class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
             ),
             const Spacer(),
             IconButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               icon: const Icon(Icons.edit, color: Colors.black, size: 25),
             ),
           ],

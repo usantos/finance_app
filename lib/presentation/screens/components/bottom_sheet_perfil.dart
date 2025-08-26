@@ -5,14 +5,14 @@ import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BottomSheetMain extends StatefulWidget {
-  const BottomSheetMain({super.key});
+class BottomSheetPerfil extends StatefulWidget {
+  const BottomSheetPerfil({super.key});
 
   @override
-  State<BottomSheetMain> createState() => _BottomSheetMainState();
+  State<BottomSheetPerfil> createState() => _BottomSheetPerfilState();
 }
 
-class _BottomSheetMainState extends State<BottomSheetMain> {
+class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
   String? userName;
   String? accountNumber;
 

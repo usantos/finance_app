@@ -4,23 +4,23 @@ import 'custom_bottom_sheet.dart';
 
 class DoublePinBottomSheet {
   static Future<void> showDouble(
-      BuildContext context, {
-        required String titleOld,
-        required String titleNew,
-        required void Function(String oldTransferPassword, String newTransferPassword) onCompleted,
-        double? width,
-        double spacing = 20,
-        double titleFontSize = 20,
-        Color titleColor = Colors.black,
-        FontWeight titleFontWeight = FontWeight.bold,
-        int pinLength = 4,
-        EdgeInsetsGeometry padding = const EdgeInsets.all(16),
-        bool obscureText = true,
-        bool autoSubmitOnComplete = true,
-        bool isDismissible = false,
-        bool enableDrag = false,
-        bool iconClose = true,
-      }) async {
+    BuildContext context, {
+    required String titleOld,
+    required String titleNew,
+    required void Function(String oldTransferPassword, String newTransferPassword) onCompleted,
+    double? width,
+    double spacing = 20,
+    double titleFontSize = 20,
+    Color titleColor = Colors.black,
+    FontWeight titleFontWeight = FontWeight.bold,
+    int pinLength = 4,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+    bool obscureText = true,
+    bool autoSubmitOnComplete = true,
+    bool isDismissible = false,
+    bool enableDrag = false,
+    bool iconClose = true,
+  }) async {
     final oldController = TextEditingController();
     final newController = TextEditingController();
     final errorNotifier = ValueNotifier<String?>(null);
@@ -35,8 +35,7 @@ class DoublePinBottomSheet {
         return;
       }
 
-      if (oldPin.split('').toSet().length == 1 ||
-          newPin.split('').toSet().length == 1) {
+      if (oldPin.split('').toSet().length == 1 || newPin.split('').toSet().length == 1) {
         errorNotifier.value = "Não pode usar números repetidos";
         return;
       }
@@ -61,60 +60,44 @@ class DoublePinBottomSheet {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                titleOld,
-                style: TextStyle(
-                  fontSize: titleFontSize,
-                  fontWeight: titleFontWeight,
-                  color: titleColor,
+              Align(
+                alignment: Alignment.topRight,
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: obscureNotifier,
+                  builder: (context, isObscured, _) {
+                    return IconButton(
+                      icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                      onPressed: () {
+                        obscureNotifier.value = !obscureNotifier.value;
+                      },
+                    );
+                  },
                 ),
               ),
+              Text(
+                titleOld,
+                style: TextStyle(fontSize: titleFontSize, fontWeight: titleFontWeight, color: titleColor),
+              ),
               SizedBox(height: spacing),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 68),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: obscureNotifier,
-                    builder: (context, isObscured, _) {
-                      return TextFieldPin(
-                        obscureText: isObscured,
-                        controller: oldController,
-                        length: pinLength,
-                        keyboardType: TextInputType.number,
-                          onComplete: (_) {
-                            if (autoSubmitOnComplete) confirmPins();
-                          },
-                      );
+              ValueListenableBuilder<bool>(
+                valueListenable: obscureNotifier,
+                builder: (context, isObscured, _) {
+                  return TextFieldPin(
+                    obscureText: isObscured,
+                    controller: oldController,
+                    length: pinLength,
+                    keyboardType: TextInputType.number,
+                    onComplete: (_) {
+                      if (autoSubmitOnComplete) confirmPins();
                     },
-                  ),
-                  SizedBox(width: 20),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: obscureNotifier,
-                    builder: (context, isObscured, _) {
-                      return IconButton(
-                        icon: Icon(
-                          isObscured
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          obscureNotifier.value = !obscureNotifier.value;
-                        },
-                      );
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
               SizedBox(height: spacing * 1.5),
 
               Text(
                 titleNew,
-                style: TextStyle(
-                  fontSize: titleFontSize,
-                  fontWeight: titleFontWeight,
-                  color: titleColor,
-                ),
+                style: TextStyle(fontSize: titleFontSize, fontWeight: titleFontWeight, color: titleColor),
               ),
               SizedBox(height: spacing),
               Row(
@@ -128,9 +111,9 @@ class DoublePinBottomSheet {
                         controller: newController,
                         length: pinLength,
                         keyboardType: TextInputType.number,
-                          onComplete: (_) {
-                            if (autoSubmitOnComplete) confirmPins();
-                          },
+                        onComplete: (_) {
+                          if (autoSubmitOnComplete) confirmPins();
+                        },
                       );
                     },
                   ),
@@ -143,13 +126,7 @@ class DoublePinBottomSheet {
                   if (errorText == null) return const SizedBox.shrink();
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      errorText,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    ),
+                    child: Text(errorText, style: const TextStyle(color: Colors.red, fontSize: 14)),
                   );
                 },
               ),
@@ -165,15 +142,9 @@ class DoublePinBottomSheet {
                       side: const BorderSide(color: Colors.black, width: 1),
                     ),
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text(
-                      "Cancelar",
-                      style: TextStyle(color: Colors.black),
-                    ),
+                    child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
                   ),
-                  FilledButton(
-                    onPressed: confirmPins,
-                    child: const Text("Confirmar"),
-                  ),
+                  FilledButton(onPressed: confirmPins, child: const Text("Confirmar")),
                 ],
               ),
             ],

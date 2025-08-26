@@ -47,14 +47,15 @@ class CustomBottomSheet {
                       decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(2)),
                     ),
                   ),
-                  iconClose ?
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: Colors.black, size: 20),
-                    ),
-                  ) : const SizedBox.shrink(),
+                  iconClose
+                      ? Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                   child,
                 ],
               ),

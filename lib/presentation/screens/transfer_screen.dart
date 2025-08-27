@@ -22,6 +22,9 @@ class _TransferScreenState extends State<TransferScreen> {
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toAccountFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
+  late TransactionViewModel _transactionVM;
+  late AuthViewModel _authViewModel;
+  late AccountViewModel _accountViewModel;
 
   @override
   void dispose() {
@@ -35,14 +38,17 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   void initState() {
     super.initState();
+    _authViewModel = context.read<AuthViewModel>();
+    _accountViewModel = context.read<AccountViewModel>();
+    _transactionVM = context.read<TransactionViewModel>();
     _checkTransferPassword();
   }
 
   Future<void> _checkTransferPassword() async {
-    final transactionVM = context.read<TransactionViewModel>();
-    await transactionVM.verifyTransferPassword();
+    _transactionVM = context.read<TransactionViewModel>();
+    await _transactionVM.verifyTransferPassword();
 
-    if (!transactionVM.hasPassword && context.mounted) {
+    if (!_transactionVM.hasPassword && context.mounted) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.2,
@@ -79,7 +85,7 @@ class _TransferScreenState extends State<TransferScreen> {
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
                       onCompleted: (transferPassword) {
-                        transactionVM.setTransferPassword(transferPassword);
+                        _transactionVM.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
                       },
                     );
@@ -175,13 +181,7 @@ class _TransferScreenState extends State<TransferScreen> {
                                         context,
                                         title: 'Insira sua senha de 4 dígitos',
                                         onCompleted: (pin) async {
-                                          final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-                                          final accountViewModel = Provider.of<AccountViewModel>(
-                                            context,
-                                            listen: false,
-                                          );
-
-                                          if (authViewModel.currentUser == null || accountViewModel.account == null) {
+                                          if (_authViewModel.currentUser == null || _accountViewModel.account == null) {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               const SnackBar(content: Text('Usuário ou conta não logados.')),
                                             );

@@ -14,6 +14,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late AuthViewModel _authViewModel;
+
+  @override
+  void initState() {
+    _authViewModel = context.read<AuthViewModel>();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -24,10 +31,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _authViewModel = Provider.of<AuthViewModel>(context);
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
     return Scaffold(
       backgroundColor: colorScheme.surface,
 

@@ -13,14 +13,19 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  late AuthViewModel _authViewModel;
+  late AccountViewModel _accountViewModel;
+  late TransactionViewModel _transactionViewModel;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-      final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
-      if (authViewModel.currentUser != null && accountViewModel.account != null) {
-        Provider.of<TransactionViewModel>(context, listen: false).fetchTransactions(accountViewModel.account!.id);
+      _authViewModel = context.read<AuthViewModel>();
+      _accountViewModel = context.read<AccountViewModel>();
+      _transactionViewModel = context.read<TransactionViewModel>();
+      if (_authViewModel.currentUser != null && _accountViewModel.account != null) {
+        _transactionViewModel.fetchTransactions(_accountViewModel.account!.id);
       }
     });
   }

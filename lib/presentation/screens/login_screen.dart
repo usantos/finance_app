@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    _authViewModel = context.read<AuthViewModel>();
     _authViewModel.addListener(_authListener);
   }
 

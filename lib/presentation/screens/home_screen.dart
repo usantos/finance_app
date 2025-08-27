@@ -19,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  late AuthViewModel _authViewModel;
+  late AccountViewModel _accountViewModel;
 
   static final List<Widget> _widgetOptions = <Widget>[
     BalanceScreen(),
@@ -37,9 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-      if (authViewModel.currentUser != null) {
-        Provider.of<AccountViewModel>(context, listen: false).fetchAccount(authViewModel.currentUser!.id);
+      _authViewModel = context.read<AuthViewModel>();
+      _accountViewModel = context.read<AccountViewModel>();
+      if (_authViewModel.currentUser != null) {
+        _accountViewModel.fetchAccount(_authViewModel.currentUser!.id);
       }
     });
   }
@@ -86,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
-              Provider.of<AuthViewModel>(context, listen: false).logout();
+              _authViewModel.logout();
               Navigator.pushReplacementNamed(context, '/');
             },
           ),

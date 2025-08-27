@@ -15,14 +15,16 @@ class BottomSheetPerfil extends StatefulWidget {
 class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
   String? userName;
   String? accountNumber;
+  late AuthViewModel _authViewModel;
+  late AccountViewModel _accountViewModel;
 
   @override
   initState() {
     super.initState();
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
-    accountNumber = accountViewModel.account?.accountNumber;
-    userName = authViewModel.currentUser?.username;
+    _authViewModel = context.read<AuthViewModel>();
+    _accountViewModel = context.read<AccountViewModel>();
+    accountNumber = _accountViewModel.account?.accountNumber;
+    userName = _authViewModel.currentUser?.username;
   }
 
   @override

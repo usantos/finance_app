@@ -16,19 +16,22 @@ class BottomSheetHomeEdit extends StatefulWidget {
 class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
   String? userName;
   String? accountNumber;
+  late AuthViewModel _authViewModel;
+  late AccountViewModel _accountViewModel;
+  late TransactionViewModel _transactionViewModel;
 
   @override
   initState() {
     super.initState();
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
-    accountNumber = accountViewModel.account?.accountNumber;
-    userName = authViewModel.currentUser?.username;
+    _transactionViewModel = context.read<TransactionViewModel>();
+    _authViewModel = context.read<AuthViewModel>();
+    _accountViewModel = context.read<AccountViewModel>();
+    accountNumber = _accountViewModel.account?.accountNumber;
+    userName = _authViewModel.currentUser?.username;
   }
 
   @override
   Widget build(BuildContext context) {
-    final transactionViewModel = Provider.of<TransactionViewModel>(context);
     return Column(
       children: [
         Align(
@@ -88,14 +91,14 @@ class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
                   titleOld: "Senha de transferência atual",
                   titleNew: "Nova senha de transferência",
                   onCompleted: (oldTransferPassword, newTransferPassword) async {
-                    final success = await transactionViewModel.changeTransferPassword(
+                    final success = await _transactionViewModel.changeTransferPassword(
                       oldTransferPassword,
                       newTransferPassword,
                     );
                     Flushbar(
                       message: success
                           ? 'Senha alterada com sucesso'
-                          : (transactionViewModel.errorMessage ?? 'Erro ao alterar senha'),
+                          : (_transactionViewModel.errorMessage ?? 'Erro ao alterar senha'),
                       duration: const Duration(seconds: 3),
                       backgroundColor: success ? Colors.green : Colors.red,
                       margin: const EdgeInsets.all(8),

@@ -13,6 +13,7 @@ class BalanceScreen extends StatefulWidget {
 
 class _BalanceScreenState extends State<BalanceScreen> {
   late AccountViewModel _accountViewModel;
+  late AuthViewModel _authViewModel;
   bool _isLoading = false;
 
   void _accountListener() {
@@ -25,13 +26,14 @@ class _BalanceScreenState extends State<BalanceScreen> {
   @override
   void initState() {
     super.initState();
-    _accountViewModel = Provider.of<AccountViewModel>(context, listen: false);
+    _accountViewModel = context.read<AccountViewModel>();
     _accountViewModel.addListener(_accountListener);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-      if (authViewModel.currentUser != null) {
-        Provider.of<AccountViewModel>(context, listen: false).fetchAccount(authViewModel.currentUser!.id);
+      _authViewModel = context.read<AuthViewModel>();
+
+      if (_authViewModel.currentUser != null) {
+        _accountViewModel.fetchAccount(_authViewModel.currentUser!.id);
       }
     });
   }

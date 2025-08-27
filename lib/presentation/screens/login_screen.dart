@@ -1,3 +1,4 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -13,13 +14,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  late AuthViewModel _authViewModel;
   bool _isLoading = false;
+
+  final _authViewModel = sl.get<AuthViewModel>();
 
   @override
   void initState() {
     super.initState();
-    _authViewModel = context.read<AuthViewModel>();
     _authViewModel.addListener(_authListener);
   }
 

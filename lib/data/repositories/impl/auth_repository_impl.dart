@@ -20,8 +20,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User?> getCurrentUser() {
-    return remoteDataSource.getCurrentUser();
+  Future<User?> getCurrentUser(String token) {
+    return remoteDataSource.getCurrentUser(token);
   }
 
   @override

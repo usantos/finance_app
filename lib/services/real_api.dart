@@ -42,9 +42,12 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getCurrentUser() async {
+  Future<Map<String, dynamic>?> getCurrentUser(String token) async {
     try {
-      final response = await _dio.get('/me');
+      final response = await _dio.get(
+          '/me',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
       return response.data;
     } catch (e) {
       debugPrint('Erro ao buscar usuário atual: $e');

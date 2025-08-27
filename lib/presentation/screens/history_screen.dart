@@ -1,4 +1,5 @@
 import 'package:financial_app/core/extensions/money_ext.dart';
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -13,17 +14,14 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
-  late TransactionViewModel _transactionViewModel;
+  final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
+  final _transactionViewModel = sl.get<TransactionViewModel>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authViewModel = context.read<AuthViewModel>();
-      _accountViewModel = context.read<AccountViewModel>();
-      _transactionViewModel = context.read<TransactionViewModel>();
       if (_authViewModel.currentUser != null && _accountViewModel.account != null) {
         _transactionViewModel.fetchTransactions(_accountViewModel.account!.id);
       }

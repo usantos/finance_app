@@ -1,6 +1,7 @@
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -22,9 +23,9 @@ class _TransferScreenState extends State<TransferScreen> {
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toAccountFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
-  late TransactionViewModel _transactionVM;
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
+  final _transactionViewModel = sl.get<TransactionViewModel>();
+  final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
 
   @override
   void dispose() {
@@ -38,17 +39,13 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   void initState() {
     super.initState();
-    _authViewModel = context.read<AuthViewModel>();
-    _accountViewModel = context.read<AccountViewModel>();
-    _transactionVM = context.read<TransactionViewModel>();
     _checkTransferPassword();
   }
 
   Future<void> _checkTransferPassword() async {
-    _transactionVM = context.read<TransactionViewModel>();
-    await _transactionVM.verifyTransferPassword();
+    await _transactionViewModel.verifyTransferPassword();
 
-    if (!_transactionVM.hasPassword && context.mounted) {
+    if (!_transactionViewModel.hasPassword && context.mounted) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.2,
@@ -85,7 +82,7 @@ class _TransferScreenState extends State<TransferScreen> {
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
                       onCompleted: (transferPassword) {
-                        _transactionVM.setTransferPassword(transferPassword);
+                        _transactionViewModel.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
                       },
                     );
@@ -102,8 +99,6 @@ class _TransferScreenState extends State<TransferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final transactionVM = context.read<TransactionViewModel>();
-
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -128,7 +123,7 @@ class _TransferScreenState extends State<TransferScreen> {
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [AccountInputFormatterExt()],
-                  validator: transactionVM.validateToAccount,
+                  validator: _transactionViewModel.validateToAccount,
                   focusNode: _toAccountFocusNode,
                 ),
                 const SizedBox(height: 20),
@@ -141,7 +136,7 @@ class _TransferScreenState extends State<TransferScreen> {
                   ),
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
-                  validator: transactionVM.validateAmount,
+                  validator: _transactionViewModel.validateAmount,
                   focusNode: _amountFocusNode,
                 ),
                 const SizedBox(height: 10),
@@ -172,9 +167,9 @@ class _TransferScreenState extends State<TransferScreen> {
                             width: double.infinity,
                             height: 50,
                             child: FilledButton(
-                              onPressed: transactionVM.hasPassword
+                              onPressed: _transactionViewModel.hasPassword
                                   ? () async {
-                                      transactionVM.showErrors = true;
+                                      _transactionViewModel.showErrors = true;
                                       if (!_formKey.currentState!.validate()) return;
                                       FocusScope.of(context).unfocus();
                                       PinBottomSheet.show(
@@ -193,7 +188,7 @@ class _TransferScreenState extends State<TransferScreen> {
                                           );
                                           final String toAccount = _toAccountTextEditingController.text;
 
-                                          final bool success = await transactionVM.transferBetweenAccounts(
+                                          final bool success = await _transactionViewModel.transferBetweenAccounts(
                                             toAccount,
                                             amount,
                                             pin,
@@ -213,7 +208,9 @@ class _TransferScreenState extends State<TransferScreen> {
                                           } else {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
-                                                content: Text(transactionVM.errorMessage ?? 'Erro na transferência'),
+                                                content: Text(
+                                                  _transactionViewModel.errorMessage ?? 'Erro na transferência',
+                                                ),
                                                 backgroundColor: Colors.red,
                                                 behavior: SnackBarBehavior.floating,
                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

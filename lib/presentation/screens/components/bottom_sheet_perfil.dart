@@ -1,3 +1,4 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/screens/components/bottom_sheet_home_edit.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -15,14 +16,12 @@ class BottomSheetPerfil extends StatefulWidget {
 class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
   String? userName;
   String? accountNumber;
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
+  final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
 
   @override
   initState() {
     super.initState();
-    _authViewModel = context.read<AuthViewModel>();
-    _accountViewModel = context.read<AccountViewModel>();
     accountNumber = _accountViewModel.account?.accountNumber;
     userName = _authViewModel.currentUser?.username;
   }

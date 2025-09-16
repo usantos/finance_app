@@ -1,5 +1,7 @@
 import 'package:financial_app/core/extensions/money_ext.dart';
+import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
+import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +35,8 @@ class AccountViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      _account = await _getAccount(userId);
+      final user = await _getAccount.userLocalDataSource.getUser();
+      _account = await _getAccount(user?.user.id ?? "");
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
@@ -68,5 +71,10 @@ class AccountViewModel extends ChangeNotifier {
   String get displayBalance {
     if (_isHidden) return '••••••';
     return _balance;
+  }
+
+  Future<UserResponse?> getUser() async {
+    final user = await _getAccount.userLocalDataSource.getUser();
+    return user;
   }
 }

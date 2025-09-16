@@ -7,11 +7,11 @@ class GetCurrentUser {
 
   final UserLocalDataSource userLocalDataSource;
 
-  GetCurrentUser(this.repository,this.userLocalDataSource);
+  GetCurrentUser(this.repository, this.userLocalDataSource);
 
   Future<User?> call() async {
     final user = await userLocalDataSource.getUser();
     final token = user?.token;
-    return repository.getCurrentUser(token ?? "");
+    return await repository.getCurrentUser(token ?? "");
   }
 }

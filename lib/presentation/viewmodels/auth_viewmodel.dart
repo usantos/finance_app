@@ -141,7 +141,10 @@ class AuthViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      _currentUser = (await _getCurrentUser());
+      _currentUser = await _getCurrentUser();
+      if (_currentUser != null) {
+        _account = await _getAccount(_currentUser!.id);
+      }
     } catch (e) {
       _errorMessage = e.toString();
     } finally {

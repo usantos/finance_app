@@ -62,7 +62,8 @@ class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  userName!,
+                  //userName!,
+                  "JAO",
                   style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(

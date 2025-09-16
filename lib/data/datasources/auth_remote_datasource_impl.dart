@@ -40,8 +40,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<User?> getCurrentUser(String token) async {
     final userJson = await realApi.getCurrentUser(token);
-    if (userJson != null) {
-      return User.fromJson(userJson);
+    if (userJson != null && userJson['user'] != null) {
+      return User.fromJson(userJson['user']);
     }
     return null;
   }

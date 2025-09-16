@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RealApi {
   final Dio _dio;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000'));
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
@@ -44,10 +44,7 @@ class RealApi {
 
   Future<Map<String, dynamic>?> getCurrentUser(String token) async {
     try {
-      final response = await _dio.get(
-          '/me',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      final response = await _dio.get('/me', options: Options(headers: {'Authorization': 'Bearer $token'}));
       return response.data;
     } catch (e) {
       debugPrint('Erro ao buscar usuário atual: $e');

@@ -1,12 +1,11 @@
 import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
-import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/domain/usecases/get_account.dart';
+import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:flutter/material.dart';
 
 class AccountViewModel extends ChangeNotifier {
-  final GetAccount _getAccount;
+  final AccountUseCase _accountUseCase;
 
   Account? _account;
   bool _isLoading = false;
@@ -20,7 +19,12 @@ class AccountViewModel extends ChangeNotifier {
     _account = account;
   }
 
-  AccountViewModel({required GetAccount getAccount}) : _getAccount = getAccount;
+  void updateBalance(Account account) {
+    _account = account;
+    notifyListeners();
+  }
+
+  AccountViewModel({required AccountUseCase accountUseCase}) : _accountUseCase = accountUseCase;
 
   Account? get account => _account;
 
@@ -30,13 +34,12 @@ class AccountViewModel extends ChangeNotifier {
 
   String? get errorMessage => _errorMessage;
 
-  Future<void> fetchAccount(String userId) async {
+  Future<void> fetchAccount() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      final user = await _getAccount.userLocalDataSource.getUser();
-      _account = await _getAccount(user?.user.id ?? "");
+      _account = await _accountUseCase();
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
@@ -44,6 +47,7 @@ class AccountViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   List<String> get nomes => [
     'Área Pix e \nTransferir',
@@ -74,7 +78,7 @@ class AccountViewModel extends ChangeNotifier {
   }
 
   Future<UserResponse?> getUser() async {
-    final user = await _getAccount.userLocalDataSource.getUser();
+    final user = await _accountUseCase.userLocalDataSource.getUser();
     return user;
   }
 }

@@ -1,19 +1,19 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/domain/usecases/get_account.dart';
+import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
-import 'package:financial_app/domain/usecases/login_user.dart';
+import 'package:financial_app/domain/usecases/login_user_usecase.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final LoginUser _loginUser;
+  final LoginUserUseCase _loginUser;
   final RegisterUser _registerUser;
   final LogoutUser _logoutUser;
   final GetCurrentUser _getCurrentUser;
-  final GetAccount _getAccount;
+  final AccountUseCase _accountUseCase;
 
   User? _currentUser;
   bool _isLoading = false;
@@ -21,17 +21,17 @@ class AuthViewModel extends ChangeNotifier {
   Account? _account;
 
   AuthViewModel({
-    required LoginUser loginUser,
+    required LoginUserUseCase loginUser,
     required RegisterUser registerUser,
     required LogoutUser logoutUser,
     required GetCurrentUser getCurrentUser,
-    required GetAccount getAccount,
+    required AccountUseCase accountUseCase,
     required AccountViewModel accountViewModel,
   }) : _loginUser = loginUser,
        _registerUser = registerUser,
        _logoutUser = logoutUser,
        _getCurrentUser = getCurrentUser,
-       _getAccount = getAccount;
+       _accountUseCase = accountUseCase;
 
   User? get currentUser => _currentUser;
   Account? get account => _account;
@@ -44,7 +44,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _currentUser = await _loginUser(username, password);
-      _account = await _getAccount(currentUser?.id ?? "");
+      _account = await _accountUseCase();
       if (_currentUser == null || _account == null) {
         _errorMessage = 'Credenciais inválidas.';
       }
@@ -136,20 +136,18 @@ class AuthViewModel extends ChangeNotifier {
     return false;
   }
 
-  Future<void> checkCurrentUser() async {
+  Future<User?> checkCurrentUser() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
       _currentUser = await _getCurrentUser();
-      if (_currentUser != null) {
-        _account = await _getAccount(_currentUser!.id);
-      }
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+    return null;
   }
 }

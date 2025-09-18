@@ -4,7 +4,6 @@ import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BottomSheetPerfil extends StatefulWidget {
   const BottomSheetPerfil({super.key});

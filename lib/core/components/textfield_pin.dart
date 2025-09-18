@@ -34,10 +34,10 @@ class TextFieldPin extends StatefulWidget {
   });
 
   @override
-  _TextFieldPinState createState() => _TextFieldPinState();
+  TextFieldPinState createState() => TextFieldPinState();
 }
 
-class _TextFieldPinState extends State<TextFieldPin> {
+class TextFieldPinState extends State<TextFieldPin> {
   @override
   Widget build(BuildContext context) {
     final pinTheme = PinTheme(

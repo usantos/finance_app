@@ -13,6 +13,11 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
+  Future<Map<String, dynamic>?> getBalance(String accountId, String token) {
+    return remoteDataSource.getBalance(accountId, token);
+  }
+
+  @override
   Future<Map<String, dynamic>> transferBetweenAccounts(
     String fromAccountNumber,
     String toAccountNumber,

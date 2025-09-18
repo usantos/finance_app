@@ -65,6 +65,28 @@ class RealApi {
     }
   }
 
+  Future<Map<String, dynamic>?> getBalance(String accountId, String token) async {
+    try {
+      final response = await _dio.get(
+        '/accounts/$accountId/balance',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+          validateStatus: (status) => true,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "balance": response.data['balance']};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar saldo'};
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar saldo: $e');
+      return {"success": false, "message": 'Erro inesperado: $e'};
+    }
+  }
+
+
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) async {
     try {
       final response = await _dio.post(

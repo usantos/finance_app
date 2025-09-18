@@ -1,6 +1,5 @@
 import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {

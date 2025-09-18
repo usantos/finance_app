@@ -1,15 +1,13 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
-import 'package:financial_app/domain/usecases/get_account.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
-import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../../core/components/custom_bottom_sheet.dart';
 
 class TransferScreen extends StatefulWidget {
   const TransferScreen({super.key});
@@ -19,7 +17,6 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
-  late GetAccount _getAccount;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _toAccountTextEditingController = TextEditingController();
   final TextEditingController _amountTextEditingController = TextEditingController();
@@ -64,8 +61,8 @@ class _TransferScreenState extends State<TransferScreen> {
               children: [
                 FilledButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all(const BorderSide(color: Colors.black, width: 1)),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    side: WidgetStateProperty.all(const BorderSide(color: Colors.black, width: 1)),
+                    backgroundColor: WidgetStateProperty.all(Colors.white),
                   ),
                   onPressed: () {
                     FocusScope.of(context).unfocus();

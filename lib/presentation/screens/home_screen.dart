@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   final _authViewModel = sl.get<AuthViewModel>();
-  final _accountViewModel = sl.get<AccountViewModel>();
 
   static final List<Widget> _widgetOptions = <Widget>[
     BalanceScreen(),

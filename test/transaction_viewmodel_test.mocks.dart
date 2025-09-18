@@ -3,14 +3,28 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i7;
+import 'dart:ui' as _i16;
 
-import 'package:financial_app/domain/entities/transaction.dart' as _i5;
+import 'package:financial_app/data/datasources/account_local_data_source.dart'
+    as _i4;
+import 'package:financial_app/data/datasources/user_local_data_source.dart'
+    as _i5;
+import 'package:financial_app/data/models/user_response.dart' as _i15;
+import 'package:financial_app/domain/entities/account.dart' as _i12;
+import 'package:financial_app/domain/entities/transaction.dart' as _i8;
+import 'package:financial_app/domain/repositories/account_repository.dart'
+    as _i3;
 import 'package:financial_app/domain/repositories/transaction_repository.dart'
     as _i2;
-import 'package:financial_app/domain/usecases/add_transaction.dart' as _i6;
-import 'package:financial_app/domain/usecases/get_transactions.dart' as _i3;
+import 'package:financial_app/domain/usecases/account_usecase.dart' as _i11;
+import 'package:financial_app/domain/usecases/add_transaction.dart' as _i9;
+import 'package:financial_app/domain/usecases/get_transactions.dart' as _i6;
+import 'package:financial_app/domain/usecases/transfer_balance.dart' as _i10;
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart'
+    as _i13;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i14;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -32,10 +46,28 @@ class _FakeTransactionRepository_0 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeAccountRepository_1 extends _i1.SmartFake
+    implements _i3.AccountRepository {
+  _FakeAccountRepository_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAccountLocalDataSource_2 extends _i1.SmartFake
+    implements _i4.AccountLocalDataSource {
+  _FakeAccountLocalDataSource_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeUserLocalDataSource_3 extends _i1.SmartFake
+    implements _i5.UserLocalDataSource {
+  _FakeUserLocalDataSource_3(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [GetTransactions].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetTransactions extends _i1.Mock implements _i3.GetTransactions {
+class MockGetTransactions extends _i1.Mock implements _i6.GetTransactions {
   MockGetTransactions() {
     _i1.throwOnMissingStub(this);
   }
@@ -52,20 +84,20 @@ class MockGetTransactions extends _i1.Mock implements _i3.GetTransactions {
           as _i2.TransactionRepository);
 
   @override
-  _i4.Future<List<_i5.Transaction>> call(String? accountId) =>
+  _i7.Future<List<_i8.Transaction>> call(String? accountId) =>
       (super.noSuchMethod(
             Invocation.method(#call, [accountId]),
-            returnValue: _i4.Future<List<_i5.Transaction>>.value(
-              <_i5.Transaction>[],
+            returnValue: _i7.Future<List<_i8.Transaction>>.value(
+              <_i8.Transaction>[],
             ),
           )
-          as _i4.Future<List<_i5.Transaction>>);
+          as _i7.Future<List<_i8.Transaction>>);
 }
 
 /// A class which mocks [AddTransaction].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAddTransaction extends _i1.Mock implements _i6.AddTransaction {
+class MockAddTransaction extends _i1.Mock implements _i9.AddTransaction {
   MockAddTransaction() {
     _i1.throwOnMissingStub(this);
   }
@@ -82,11 +114,262 @@ class MockAddTransaction extends _i1.Mock implements _i6.AddTransaction {
           as _i2.TransactionRepository);
 
   @override
-  _i4.Future<void> call(_i5.Transaction? transaction) =>
+  _i7.Future<void> call(_i8.Transaction? transaction) =>
       (super.noSuchMethod(
             Invocation.method(#call, [transaction]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
           )
-          as _i4.Future<void>);
+          as _i7.Future<void>);
+}
+
+/// A class which mocks [TransferBalance].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTransferBalance extends _i1.Mock implements _i10.TransferBalance {
+  MockTransferBalance() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.AccountRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeAccountRepository_1(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i3.AccountRepository);
+
+  @override
+  _i4.AccountLocalDataSource get accountLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#accountLocalDataSource),
+            returnValue: _FakeAccountLocalDataSource_2(
+              this,
+              Invocation.getter(#accountLocalDataSource),
+            ),
+          )
+          as _i4.AccountLocalDataSource);
+
+  @override
+  _i5.UserLocalDataSource get userLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#userLocalDataSource),
+            returnValue: _FakeUserLocalDataSource_3(
+              this,
+              Invocation.getter(#userLocalDataSource),
+            ),
+          )
+          as _i5.UserLocalDataSource);
+
+  @override
+  _i7.Future<Map<String, dynamic>> call(
+    String? toAccountNumber,
+    double? amount,
+    String? password,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [toAccountNumber, amount, password]),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(
+              <String, dynamic>{},
+            ),
+          )
+          as _i7.Future<Map<String, dynamic>>);
+
+  @override
+  _i7.Future<Map<String, dynamic>> verifyTransferPassword() =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyTransferPassword, []),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(
+              <String, dynamic>{},
+            ),
+          )
+          as _i7.Future<Map<String, dynamic>>);
+
+  @override
+  _i7.Future<Map<String, dynamic>> setTransferPassword(
+    String? transferPassword,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#setTransferPassword, [transferPassword]),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(
+              <String, dynamic>{},
+            ),
+          )
+          as _i7.Future<Map<String, dynamic>>);
+
+  @override
+  _i7.Future<Map<String, dynamic>> changeTransferPassword(
+    String? oldTransferPassword,
+    String? newTransferPassword,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#changeTransferPassword, [
+              oldTransferPassword,
+              newTransferPassword,
+            ]),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(
+              <String, dynamic>{},
+            ),
+          )
+          as _i7.Future<Map<String, dynamic>>);
+}
+
+/// A class which mocks [AccountUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAccountUseCase extends _i1.Mock implements _i11.AccountUseCase {
+  MockAccountUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.AccountRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeAccountRepository_1(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i3.AccountRepository);
+
+  @override
+  _i5.UserLocalDataSource get userLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#userLocalDataSource),
+            returnValue: _FakeUserLocalDataSource_3(
+              this,
+              Invocation.getter(#userLocalDataSource),
+            ),
+          )
+          as _i5.UserLocalDataSource);
+
+  @override
+  _i4.AccountLocalDataSource get accountLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#accountLocalDataSource),
+            returnValue: _FakeAccountLocalDataSource_2(
+              this,
+              Invocation.getter(#accountLocalDataSource),
+            ),
+          )
+          as _i4.AccountLocalDataSource);
+
+  @override
+  _i7.Future<_i12.Account?> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i7.Future<_i12.Account?>.value(),
+          )
+          as _i7.Future<_i12.Account?>);
+}
+
+/// A class which mocks [AccountViewModel].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAccountViewModel extends _i1.Mock implements _i13.AccountViewModel {
+  MockAccountViewModel() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get isHidden =>
+      (super.noSuchMethod(Invocation.getter(#isHidden), returnValue: false)
+          as bool);
+
+  @override
+  bool get isLoading =>
+      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
+          as bool);
+
+  @override
+  List<String> get nomes =>
+      (super.noSuchMethod(Invocation.getter(#nomes), returnValue: <String>[])
+          as List<String>);
+
+  @override
+  List<String> get iconAssets =>
+      (super.noSuchMethod(
+            Invocation.getter(#iconAssets),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  String get displayBalance =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayBalance),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#displayBalance),
+            ),
+          )
+          as String);
+
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+
+  @override
+  void setAccount(_i12.Account? account) => super.noSuchMethod(
+    Invocation.method(#setAccount, [account]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void updateBalance(_i12.Account? account) => super.noSuchMethod(
+    Invocation.method(#updateBalance, [account]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<void> fetchAccount() =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchAccount, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  void toggleVisibility() => super.noSuchMethod(
+    Invocation.method(#toggleVisibility, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<_i15.UserResponse?> getUser() =>
+      (super.noSuchMethod(
+            Invocation.method(#getUser, []),
+            returnValue: _i7.Future<_i15.UserResponse?>.value(),
+          )
+          as _i7.Future<_i15.UserResponse?>);
+
+  @override
+  void addListener(_i16.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeListener(_i16.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
 }

@@ -17,6 +17,11 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
+  Future<Map<String, dynamic>?> getBalance(String accountId, String token) async {
+    return await realApi.getBalance(accountId, token);
+  }
+
+  @override
   Future<Map<String, dynamic>> transferBetweenAccounts(
     String fromAccountNumber,
     String toAccountNumber,

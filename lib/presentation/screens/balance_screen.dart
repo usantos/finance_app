@@ -21,7 +21,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
   Future<void> _loadData() async {
     await authViewModel.checkCurrentUser();
     if (authViewModel.currentUser != null) {
-      await accountViewModel.fetchAccount(authViewModel.currentUser!.id);
+      await accountViewModel.fetchAccount();
     }
   }
 

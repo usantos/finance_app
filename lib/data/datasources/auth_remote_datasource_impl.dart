@@ -2,14 +2,12 @@ import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/data/models/logout_response.dart';
 import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/services/mock_api.dart';
 import 'package:financial_app/services/real_api.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final MockApi mockApi;
   final RealApi realApi;
 
-  AuthRemoteDataSourceImpl(this.mockApi, this.realApi);
+  AuthRemoteDataSourceImpl(this.realApi);
 
   @override
   Future<UserResponse?> login(String username, String password) async {
@@ -40,10 +38,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User?> getCurrentUser() async {
-    final userJson = await mockApi.getCurrentUser();
-    if (userJson != null) {
-      return User.fromJson(userJson);
+  Future<User?> getCurrentUser(String token) async {
+    final userJson = await realApi.getCurrentUser(token);
+    if (userJson != null && userJson['user'] != null) {
+      return User.fromJson(userJson['user']);
     }
     return null;
   }

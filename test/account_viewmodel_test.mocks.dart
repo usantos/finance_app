@@ -2,11 +2,17 @@
 // in financial_app/test/account_viewmodel_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i4;
-import 'package:financial_app/domain/entities/account.dart' as _i5;
-import 'package:financial_app/domain/repositories/account_repository.dart' as _i2;
-import 'package:financial_app/domain/usecases/get_account.dart' as _i3;
-import 'package:financial_app/domain/usecases/transfer_balance.dart' as _i6;
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i6;
+
+import 'package:financial_app/data/datasources/account_local_data_source.dart'
+    as _i4;
+import 'package:financial_app/data/datasources/user_local_data_source.dart'
+    as _i3;
+import 'package:financial_app/domain/entities/account.dart' as _i7;
+import 'package:financial_app/domain/repositories/account_repository.dart'
+    as _i2;
+import 'package:financial_app/domain/usecases/account_usecase.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -14,53 +20,79 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: avoid_setters_without_getters
 // ignore_for_file: comment_references
 // ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: implementation_imports
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: must_be_immutable
+// ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeAccountRepository_0 extends _i1.SmartFake implements _i2.AccountRepository {
-  _FakeAccountRepository_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
+class _FakeAccountRepository_0 extends _i1.SmartFake
+    implements _i2.AccountRepository {
+  _FakeAccountRepository_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
-/// A class which mocks [GetAccount].
-class MockGetAccount extends _i1.Mock implements _i3.GetAccount {
-  MockGetAccount() {
+class _FakeUserLocalDataSource_1 extends _i1.SmartFake
+    implements _i3.UserLocalDataSource {
+  _FakeUserLocalDataSource_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeAccountLocalDataSource_2 extends _i1.SmartFake
+    implements _i4.AccountLocalDataSource {
+  _FakeAccountLocalDataSource_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+/// A class which mocks [AccountUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAccountUseCase extends _i1.Mock implements _i5.AccountUseCase {
+  MockAccountUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i2.AccountRepository get repository =>
       (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeAccountRepository_0(this, Invocation.getter(#repository)),
-      ) as _i2.AccountRepository);
+            Invocation.getter(#repository),
+            returnValue: _FakeAccountRepository_0(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i2.AccountRepository);
 
   @override
-  _i4.Future<_i5.Account?> call(String? userId) =>
+  _i3.UserLocalDataSource get userLocalDataSource =>
       (super.noSuchMethod(
-        Invocation.method(#call, [userId]),
-        returnValue: _i4.Future<_i5.Account?>.value(),
-      ) as _i4.Future<_i5.Account?>);
-}
-
-/// A class which mocks [TransferBalance].
-class MockTransferBalance extends _i1.Mock implements _i6.TransferBalance {
-  MockTransferBalance() {
-    _i1.throwOnMissingStub(this);
-  }
+            Invocation.getter(#userLocalDataSource),
+            returnValue: _FakeUserLocalDataSource_1(
+              this,
+              Invocation.getter(#userLocalDataSource),
+            ),
+          )
+          as _i3.UserLocalDataSource);
 
   @override
-  _i2.AccountRepository get repository =>
+  _i4.AccountLocalDataSource get accountLocalDataSource =>
       (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeAccountRepository_0(this, Invocation.getter(#repository)),
-      ) as _i2.AccountRepository);
+            Invocation.getter(#accountLocalDataSource),
+            returnValue: _FakeAccountLocalDataSource_2(
+              this,
+              Invocation.getter(#accountLocalDataSource),
+            ),
+          )
+          as _i4.AccountLocalDataSource);
 
   @override
-  _i4.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount, String password) =>
+  _i6.Future<_i7.Account?> call() =>
       (super.noSuchMethod(
-        Invocation.method(#call, [toAccountNumber, amount]),
-        returnValue: _i4.Future<Map<String, dynamic>>.value({'success': true, 'message': ''}),
-        returnValueForMissingStub: _i4.Future<Map<String, dynamic>>.value({'success': true, 'message': ''}),
-      ) as _i4.Future<Map<String, dynamic>>);
+            Invocation.method(#call, []),
+            returnValue: _i6.Future<_i7.Account?>.value(),
+          )
+          as _i6.Future<_i7.Account?>);
 }

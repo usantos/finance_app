@@ -1,3 +1,5 @@
+import 'package:financial_app/domain/usecases/account_usecase.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
@@ -10,6 +12,8 @@ class TransactionViewModel extends ChangeNotifier {
   final GetTransactions _getTransactions;
   final AddTransaction _addTransaction;
   final TransferBalance _transferBalance;
+  final AccountUseCase _accountUseCase;
+  final AccountViewModel _accountViewModel;
 
   List<Transaction> _transactions = [];
   bool _isLoading = false;
@@ -22,10 +26,14 @@ class TransactionViewModel extends ChangeNotifier {
   TransactionViewModel({
     required GetTransactions getTransactions,
     required AddTransaction addTransaction,
-    required TransferBalance updateAccountBalance,
-  }) : _getTransactions = getTransactions,
-       _addTransaction = addTransaction,
-       _transferBalance = updateAccountBalance;
+    required TransferBalance transferBalance,
+    required AccountUseCase accountUseCase,
+    required AccountViewModel accountViewModel,
+  })  : _getTransactions = getTransactions,
+        _addTransaction = addTransaction,
+        _transferBalance = transferBalance,
+        _accountUseCase = accountUseCase,
+        _accountViewModel = accountViewModel;
 
   List<Transaction> get transactions => _transactions;
   bool get isLoading => _isLoading;
@@ -35,7 +43,7 @@ class TransactionViewModel extends ChangeNotifier {
   Account? get account => _account;
 
   @visibleForTesting
-  void setAccount(Account account) {
+  void setAccount(Account? account) {
     _account = account;
   }
 
@@ -117,8 +125,7 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
-
-      _account = _account?.copyWith(balance: amount);
+      await refreshAccountBalance();
       notifyListeners();
       return true;
     } catch (e) {
@@ -126,6 +133,19 @@ class TransactionViewModel extends ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<void> refreshAccountBalance() async {
+    try {
+      final account = await _accountUseCase.call();
+      if (account != null) {
+        _account = account;
+        _accountViewModel.updateBalance(account);
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      notifyListeners();
     }
   }
 

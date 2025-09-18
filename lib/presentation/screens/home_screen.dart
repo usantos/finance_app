@@ -1,3 +1,4 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/screens/components/bottom_sheet_perfil.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -19,8 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
+
+  final _authViewModel = sl.get<AuthViewModel>();
 
   static final List<Widget> _widgetOptions = <Widget>[
     BalanceScreen(),
@@ -38,13 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authViewModel = context.read<AuthViewModel>();
-      _accountViewModel = context.read<AccountViewModel>();
-      if (_authViewModel.currentUser != null) {
-        _accountViewModel.fetchAccount(_authViewModel.currentUser!.id);
-      }
-    });
   }
 
   @override

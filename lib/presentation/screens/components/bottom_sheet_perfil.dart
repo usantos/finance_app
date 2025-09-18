@@ -1,9 +1,9 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/screens/components/bottom_sheet_home_edit.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BottomSheetPerfil extends StatefulWidget {
   const BottomSheetPerfil({super.key});
@@ -15,14 +15,12 @@ class BottomSheetPerfil extends StatefulWidget {
 class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
   String? userName;
   String? accountNumber;
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
+  final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
 
   @override
   initState() {
     super.initState();
-    _authViewModel = context.read<AuthViewModel>();
-    _accountViewModel = context.read<AccountViewModel>();
     accountNumber = _accountViewModel.account?.accountNumber;
     userName = _authViewModel.currentUser?.username;
   }
@@ -63,7 +61,8 @@ class _BottomSheetPerfilState extends State<BottomSheetPerfil> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  userName!,
+                  //userName!,
+                  "JAO",
                   style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Text(

@@ -1,3 +1,4 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -12,77 +13,59 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  late AccountViewModel _accountViewModel;
-  late AuthViewModel _authViewModel;
-  bool _isLoading = false;
+  final authViewModel = sl.get<AuthViewModel>();
+  final accountViewModel = sl.get<AccountViewModel>();
 
-  void _accountListener() {
-    if (!mounted) return;
-    setState(() {
-      _isLoading = _accountViewModel.isLoading;
-    });
+  late Future<void> _future;
+
+  Future<void> _loadData() async {
+    await authViewModel.checkCurrentUser();
+    if (authViewModel.currentUser != null) {
+      await accountViewModel.fetchAccount();
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    _accountViewModel = context.read<AccountViewModel>();
-    _accountViewModel.addListener(_accountListener);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authViewModel = context.read<AuthViewModel>();
-
-      if (_authViewModel.currentUser != null) {
-        _accountViewModel.fetchAccount(_authViewModel.currentUser!.id);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _accountViewModel.removeListener(_accountListener);
-    super.dispose();
+    _future = _loadData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<AccountViewModel>(
-        builder: (context, accountViewModel, child) {
-          if (_isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (accountViewModel.errorMessage != null) {
-            return Center(child: Text('Erro: ${accountViewModel.errorMessage}'));
-          } else if (accountViewModel.account == null) {
-            // TODO criar tela de erro
-            return const SizedBox.shrink();
-          } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Saldo em conta',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                          ),
-                          Text(
-                            accountViewModel.displayBalance,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: SizedBox(
+    return Consumer<AccountViewModel>(
+      builder: (context, accountViewModel, child) {
+        return FutureBuilder<void>(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            if (snapshot.hasError) {
+              return Scaffold(body: Center(child: Text('Erro: ${snapshot.error}')));
+            }
+
+            if (accountViewModel.account == null) {
+              return const Scaffold(body: Center(child: Text('Nenhuma conta encontrada')));
+            }
+
+            return Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Saldo em conta',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    Text(
+                      accountViewModel.displayBalance,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    const SizedBox(height: 15),
+                    SizedBox(
                       height: 150,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -90,41 +73,38 @@ class _BalanceScreenState extends State<BalanceScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 32,
-                                    backgroundColor: Colors.teal,
-                                    child: SvgPicture.asset(
-                                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                                      accountViewModel.iconAssets[index],
-                                      width: 32,
-                                      height: 32,
-                                    ),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 32,
+                                  backgroundColor: Colors.teal,
+                                  child: SvgPicture.asset(
+                                    accountViewModel.iconAssets[index],
+                                    width: 32,
+                                    height: 32,
+                                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                                   ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    accountViewModel.nomes[index],
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: const TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  accountViewModel.nomes[index],
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: const TextStyle(fontSize: 15),
+                                ),
+                              ],
                             ),
                           );
                         },
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
-          }
-        },
-      ),
+          },
+        );
+      },
     );
   }
 }

@@ -15,10 +15,10 @@ import 'package:financial_app/domain/repositories/account_repository.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 import 'package:financial_app/domain/repositories/transaction_repository.dart';
 import 'package:financial_app/domain/usecases/add_transaction.dart';
-import 'package:financial_app/domain/usecases/get_account.dart';
+import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
 import 'package:financial_app/domain/usecases/get_transactions.dart';
-import 'package:financial_app/domain/usecases/login_user.dart';
+import 'package:financial_app/domain/usecases/login_user_usecase.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
 import 'package:financial_app/domain/usecases/transfer_balance.dart';
@@ -33,27 +33,34 @@ final sl = GetIt.instance;
 
 void init() {
   // ViewModels
+  sl.registerLazySingleton<AccountViewModel>(() => AccountViewModel(accountUseCase: sl()));
+
   sl.registerFactory(
     () => AuthViewModel(
       loginUser: sl(),
       registerUser: sl(),
       logoutUser: sl(),
       getCurrentUser: sl(),
-      getAccount: sl(),
-      accountViewModel: sl(),
+      accountUseCase: sl(),
+      accountViewModel: sl(), // garante que pega o singleton
     ),
   );
-  sl.registerFactory(() => AccountViewModel(getAccount: sl()));
+
   sl.registerFactory(
-    () => TransactionViewModel(getTransactions: sl(), addTransaction: sl(), updateAccountBalance: sl()),
+    () => TransactionViewModel(
+        getTransactions: sl(),
+        addTransaction: sl(),
+        transferBalance: sl(),
+        accountUseCase: sl(),
+        accountViewModel: sl()),
   );
 
   // Use cases
-  sl.registerLazySingleton(() => LoginUser(sl(), sl()));
+  sl.registerLazySingleton(() => LoginUserUseCase(sl(), sl()));
   sl.registerLazySingleton(() => RegisterUser(sl()));
   sl.registerLazySingleton(() => LogoutUser(sl(), sl()));
-  sl.registerLazySingleton(() => GetCurrentUser(sl()));
-  sl.registerLazySingleton(() => GetAccount(sl(), sl(), sl()));
+  sl.registerLazySingleton(() => GetCurrentUser(sl(), sl()));
+  sl.registerLazySingleton(() => AccountUseCase(sl(), sl(), sl()));
   sl.registerLazySingleton(() => TransferBalance(sl(), sl(), sl()));
   sl.registerLazySingleton(() => GetTransactions(sl()));
   sl.registerLazySingleton(() => AddTransaction(sl()));
@@ -64,7 +71,7 @@ void init() {
   sl.registerLazySingleton<TransactionRepository>(() => TransactionRepositoryImpl(sl()));
 
   // Data sources
-  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl(), sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<AccountRemoteDataSource>(() => AccountRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<UserLocalDataSource>(() => UserLocalDataSourceImpl());
@@ -73,6 +80,6 @@ void init() {
   // Internal
   sl.registerLazySingleton(() => MockApi());
 
-  //External
+  // External
   sl.registerLazySingleton(() => RealApi());
 }

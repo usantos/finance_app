@@ -1,10 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:financial_app/core/components/double_pin_bottom_sheet.dart';
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class BottomSheetHomeEdit extends StatefulWidget {
   const BottomSheetHomeEdit({super.key});
@@ -16,16 +16,13 @@ class BottomSheetHomeEdit extends StatefulWidget {
 class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
   String? userName;
   String? accountNumber;
-  late AuthViewModel _authViewModel;
-  late AccountViewModel _accountViewModel;
-  late TransactionViewModel _transactionViewModel;
+  final _transactionViewModel = sl.get<TransactionViewModel>();
+  final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
 
   @override
   initState() {
     super.initState();
-    _transactionViewModel = context.read<TransactionViewModel>();
-    _authViewModel = context.read<AuthViewModel>();
-    _accountViewModel = context.read<AccountViewModel>();
     accountNumber = _accountViewModel.account?.accountNumber;
     userName = _authViewModel.currentUser?.username;
   }

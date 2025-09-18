@@ -1,8 +1,8 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
-import 'package:financial_app/domain/usecases/get_account.dart';
+import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/get_current_user.dart';
-import 'package:financial_app/domain/usecases/login_user.dart';
+import 'package:financial_app/domain/usecases/login_user_usecase.dart';
 import 'package:financial_app/domain/usecases/logout_user.dart';
 import 'package:financial_app/domain/usecases/register_user.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -10,19 +10,24 @@ import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'account_viewmodel_test.mocks.dart';
-import 'auth_viewmodel_test.mocks.dart' hide MockGetAccount;
 
-class MockAccountViewModel extends Mock implements AccountViewModel {}
+import 'auth_viewmodel_test.mocks.dart';
 
-@GenerateMocks([LoginUser, RegisterUser, LogoutUser, GetCurrentUser, GetAccount])
+@GenerateMocks([
+  LoginUserUseCase,
+  RegisterUser,
+  LogoutUser,
+  GetCurrentUser,
+  AccountUseCase,
+  AccountViewModel
+])
 void main() {
-  late MockLoginUser mockLoginUser;
+  late MockLoginUserUseCase mockLoginUserUseCase;
   late MockRegisterUser mockRegisterUser;
   late MockLogoutUser mockLogoutUser;
   late MockGetCurrentUser mockGetCurrentUser;
+  late MockAccountUseCase mockAccountUseCase;
   late MockAccountViewModel mockAccountViewModel;
-  late MockGetAccount mockGetAccount;
   late AuthViewModel authViewModel;
 
   final testUser = User(
@@ -32,37 +37,35 @@ void main() {
   );
 
   final testAccount = Account(
-      id: "acc1",
-      userId: "user1",
-      accountNumber: "12345-6",
-      balance: 1500.75
+    id: "acc1",
+    userId: "user1",
+    accountNumber: "12345-6",
+    balance: 1500.75,
   );
 
   setUp(() {
-    mockLoginUser = MockLoginUser();
+    mockLoginUserUseCase = MockLoginUserUseCase();
     mockRegisterUser = MockRegisterUser();
     mockLogoutUser = MockLogoutUser();
     mockGetCurrentUser = MockGetCurrentUser();
-    mockGetAccount = MockGetAccount();
+    mockAccountUseCase = MockAccountUseCase();
     mockAccountViewModel = MockAccountViewModel();
 
     authViewModel = AuthViewModel(
-      loginUser: mockLoginUser,
+      loginUser: mockLoginUserUseCase,
       registerUser: mockRegisterUser,
       logoutUser: mockLogoutUser,
       getCurrentUser: mockGetCurrentUser,
-      getAccount: mockGetAccount,
+      accountUseCase: mockAccountUseCase,
       accountViewModel: mockAccountViewModel,
     );
   });
 
   group('AuthViewModel', () {
     test('login returns true and sets currentUser on success', () async {
-      when(mockLoginUser('username', 'password'))
+      when(mockLoginUserUseCase('username', 'password'))
           .thenAnswer((_) async => testUser);
-
-      when(mockGetAccount('user1'))
-          .thenAnswer((_) async => testAccount);
+      when(mockAccountUseCase()).thenAnswer((_) async => testAccount);
 
       final result = await authViewModel.login('username', 'password');
 
@@ -73,13 +76,10 @@ void main() {
       expect(authViewModel.isLoading, false);
     });
 
-
     test('login returns false and sets errorMessage on invalid credentials', () async {
-      when(mockLoginUser('username', 'password'))
+      when(mockLoginUserUseCase('username', 'password'))
           .thenAnswer((_) async => null);
-
-      when(mockGetAccount(any))
-          .thenAnswer((_) async => null);
+      when(mockAccountUseCase()).thenAnswer((_) async => null);
 
       final result = await authViewModel.login('username', 'password');
 
@@ -91,11 +91,9 @@ void main() {
     });
 
     test('login returns false and sets errorMessage on exception', () async {
-      when(mockLoginUser('username', 'password'))
+      when(mockLoginUserUseCase('username', 'password'))
           .thenThrow(Exception('Erro no login'));
-
-      when(mockGetAccount(any))
-          .thenAnswer((_) async => null);
+      when(mockAccountUseCase()).thenAnswer((_) async => null);
 
       final result = await authViewModel.login('username', 'password');
 
@@ -144,37 +142,19 @@ void main() {
     test('logout sets currentUser to null on success', () async {
       when(mockLogoutUser()).thenAnswer((_) async => true);
 
-      authViewModel = AuthViewModel(
-        loginUser: mockLoginUser,
-        registerUser: mockRegisterUser,
-        logoutUser: mockLogoutUser,
-        getCurrentUser: mockGetCurrentUser,
-        getAccount: mockGetAccount,
-        accountViewModel: mockAccountViewModel,
-      );
-
       authViewModel.setCurrentUser(testUser);
 
       final result = await authViewModel.logout();
 
       expect(result, isTrue);
       expect(authViewModel.currentUser, isNull);
+      expect(authViewModel.account, isNull);
       expect(authViewModel.errorMessage, isNull);
-      expect(authViewModel.isLoading, isFalse);
+      expect(authViewModel.isLoading, false);
     });
-
 
     test('logout sets errorMessage on exception', () async {
       when(mockLogoutUser()).thenThrow(Exception('Erro no logout'));
-
-      authViewModel = AuthViewModel(
-        loginUser: mockLoginUser,
-        registerUser: mockRegisterUser,
-        logoutUser: mockLogoutUser,
-        getCurrentUser: mockGetCurrentUser,
-        getAccount: mockGetAccount,
-        accountViewModel: mockAccountViewModel,
-      );
 
       authViewModel.setCurrentUser(testUser);
 
@@ -182,9 +162,8 @@ void main() {
 
       expect(result, isFalse);
       expect(authViewModel.errorMessage, contains('Erro no logout'));
-      expect(authViewModel.isLoading, isFalse);
+      expect(authViewModel.isLoading, false);
     });
-
 
     test('checkCurrentUser sets currentUser on success', () async {
       when(mockGetCurrentUser()).thenAnswer((_) async => testUser);

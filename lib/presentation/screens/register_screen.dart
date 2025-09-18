@@ -1,3 +1,4 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -14,13 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  late AuthViewModel _authViewModel;
-
-  @override
-  void initState() {
-    _authViewModel = context.read<AuthViewModel>();
-    super.initState();
-  }
+  final _authViewModel = sl.get<AuthViewModel>();
 
   @override
   void dispose() {

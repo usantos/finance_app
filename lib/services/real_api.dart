@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RealApi {
   final Dio _dio;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000'));
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000'));
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
@@ -42,9 +42,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getCurrentUser() async {
+  Future<Map<String, dynamic>?> getCurrentUser(String token) async {
     try {
-      final response = await _dio.get('/me');
+      final response = await _dio.get('/me', options: Options(headers: {'Authorization': 'Bearer $token'}));
       return response.data;
     } catch (e) {
       debugPrint('Erro ao buscar usuário atual: $e');
@@ -64,6 +64,28 @@ class RealApi {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> getBalance(String accountId, String token) async {
+    try {
+      final response = await _dio.get(
+        '/accounts/$accountId/balance',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+          validateStatus: (status) => true,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "balance": response.data['balance']};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar saldo'};
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar saldo: $e');
+      return {"success": false, "message": 'Erro inesperado: $e'};
+    }
+  }
+
 
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) async {
     try {

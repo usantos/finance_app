@@ -14,13 +14,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-
+  bool _obscurePassword = true;
   final _authViewModel = sl.get<AuthViewModel>();
 
   @override
   void initState() {
     super.initState();
     _authViewModel.addListener(_authListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+    });
   }
 
   void _authListener() {
@@ -44,93 +47,169 @@ class _LoginScreenState extends State<LoginScreen> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: const Color.fromARGB(255, 2, 13, 35),
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.account_balance_wallet_rounded, size: 64, color: colorScheme.primary),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Bem-vindo de volta!',
-                    style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 32),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Usuário',
-                      prefixIcon: const Icon(Icons.person),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              height: MediaQuery.of(context).size.height * 0.62,
+              width: MediaQuery.of(context).size.width * 0.95,
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.account_balance_wallet_rounded,
+                        size: 64, color: colorScheme.primary),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Bem-vindo',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 20, 24, 56),
+                      ),
                     ),
-                    validator: _authViewModel.validateUser,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      prefixIcon: const Icon(Icons.lock),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Entre na sua conta',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: const Color.fromARGB(255, 102, 108, 153),
+                      ),
                     ),
-                    validator: _authViewModel.validatePassword,
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: FilledButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () async {
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
-                              final success = await _authViewModel.login(
-                                _usernameController.text,
-                                _passwordController.text,
-                              );
+                    const SizedBox(height: 20),
 
-                              if (!context.mounted) return;
-
-                              if (success) {
-                                Navigator.pushReplacementNamed(context, '/home');
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(_authViewModel.errorMessage ?? 'Erro de login'),
-                                    backgroundColor: Colors.redAccent,
-                                  ),
-                                );
-                              }
-                            },
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [Icon(Icons.login), SizedBox(width: 8), Text('Entrar')],
-                            ),
+                    TextFormField(
+                      controller: _usernameController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        labelText: 'Usuário',
+                        labelStyle: const TextStyle(fontSize: 14),
+                        prefixIcon: const Icon(Icons.person, size: 18),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      validator: _authViewModel.validateUser,
                     ),
-                  ),
 
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/register');
-                    },
-                    child: const Text('Não tem uma conta? Cadastre-se'),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        labelText: 'Senha',
+                        labelStyle: const TextStyle(fontSize: 14),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        prefixIcon: const Icon(Icons.lock, size: 18),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      validator: _authViewModel.validatePassword,
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
+                        onPressed: _isLoading
+                            ? null
+                            : () async {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          final success = await _authViewModel.login(
+                            _usernameController.text,
+                            _passwordController.text,
+                          );
+
+                          if (!context.mounted) return;
+
+                          if (success) {
+                            Navigator.pushReplacementNamed(
+                                context, '/home');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(_authViewModel.errorMessage ??
+                                    'Erro de login'),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
+                        },
+                        child: _isLoading
+                            ? const SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.5,
+                          ),
+                        )
+                            : const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.login),
+                            SizedBox(width: 8),
+                            Text('Entrar'),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Não tem uma conta?'),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          child: const Text(
+                            'Cadastre-se',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

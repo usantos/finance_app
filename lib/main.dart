@@ -28,14 +28,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(devicePixelRatio: 1.0, textScaler: TextScaler.linear(1.0)),
+      data: MediaQuery.of(context).copyWith(
+          devicePixelRatio: 1.0,
+          textScaler: TextScaler.linear(1.0),
+      ),
       child: MaterialApp(
         title: 'Financial App',
         theme: ThemeData(
           primarySwatch: Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 2, 13, 35)),
           useMaterial3: true,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 2, 13, 35),
+              foregroundColor: Colors.white, // cor do texto/ícone
+            ),
+          ),
+          filledButtonTheme: FilledButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 2, 13, 35),
+              foregroundColor: Colors.white, // cor do texto/ícone
+            ),
+          ),
         ),
         initialRoute: '/',
         routes: {

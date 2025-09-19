@@ -48,7 +48,6 @@ class AccountViewModel extends ChangeNotifier {
     }
   }
 
-
   List<String> get nomes => [
     'Área Pix e \nTransferir',
     'Pagar',

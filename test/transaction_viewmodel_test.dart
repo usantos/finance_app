@@ -1,31 +1,29 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
-import 'package:financial_app/domain/usecases/add_transaction.dart';
-import 'package:financial_app/domain/usecases/get_transactions.dart';
-import 'package:financial_app/domain/usecases/transfer_balance.dart';
+import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'transaction_viewmodel_test.mocks.dart';
+import 'account_viewmodel_test.mocks.dart';
+import 'transaction_viewmodel_test.mocks.dart' hide MockAccountUseCase;
+
 
 @GenerateMocks([
-  GetTransactions,
-  AddTransaction,
-  TransferBalance,
+  TransferUseCase,
   AccountUseCase,
   AccountViewModel,
+  TransactionViewModel,
 ])
 void main() {
-  late MockGetTransactions mockGetTransactions;
-  late MockAddTransaction mockAddTransaction;
-  late MockTransferBalance mockTransferBalance;
+  late MockTransferUseCase mockTransferUseCase;
   late MockAccountUseCase mockAccountUseCase;
   late MockAccountViewModel mockAccountViewModel;
   late TransactionViewModel transactionViewModel;
+
 
   final testAccount = Account(
     id: 'acc1',
@@ -46,16 +44,12 @@ void main() {
   );
 
   setUp(() {
-    mockGetTransactions = MockGetTransactions();
-    mockAddTransaction = MockAddTransaction();
-    mockTransferBalance = MockTransferBalance();
+    mockTransferUseCase = MockTransferUseCase();
     mockAccountUseCase = MockAccountUseCase();
     mockAccountViewModel = MockAccountViewModel();
 
     transactionViewModel = TransactionViewModel(
-      getTransactions: mockGetTransactions,
-      addTransaction: mockAddTransaction,
-      transferBalance: mockTransferBalance,
+      transferUseCase: mockTransferUseCase,
       accountUseCase: mockAccountUseCase,
       accountViewModel: mockAccountViewModel,
     );
@@ -70,7 +64,7 @@ void main() {
     });
 
     test('fetchTransactions updates list on success', () async {
-      when(mockGetTransactions('acc1'))
+      when(mockTransferUseCase.getTransactions('acc1'))
           .thenAnswer((_) async => [testTransaction]);
 
       await transactionViewModel.fetchTransactions('acc1');
@@ -81,7 +75,7 @@ void main() {
     });
 
     test('fetchTransactions sets errorMessage on failure', () async {
-      when(mockGetTransactions('acc1')).thenThrow(Exception('Falha ao buscar'));
+      when(mockTransferUseCase.getTransactions('acc1')).thenThrow(Exception('Falha ao buscar'));
 
       await transactionViewModel.fetchTransactions('acc1');
 
@@ -91,7 +85,7 @@ void main() {
     });
 
     test('addTransaction adds transaction on success', () async {
-      when(mockAddTransaction(testTransaction)).thenAnswer((_) async {});
+      when(mockTransferUseCase.addTransaction(testTransaction)).thenAnswer((_) async {});
       when(mockAccountViewModel.updateBalance(any)).thenReturn(null);
 
       final result = await transactionViewModel.addTransaction(testTransaction);
@@ -103,7 +97,7 @@ void main() {
     });
 
     test('addTransaction sets errorMessage on failure', () async {
-      when(mockAddTransaction(testTransaction))
+      when(mockTransferUseCase.addTransaction(testTransaction))
           .thenThrow(Exception('Erro ao adicionar'));
 
       final result = await transactionViewModel.addTransaction(testTransaction);
@@ -122,7 +116,7 @@ void main() {
 
       test('successfully transfers and updates account balance', () async {
         // simula sucesso na transferência
-        when(mockTransferBalance('accDest1', 50.0, 'password'))
+        when(mockTransferUseCase('accDest1', 50.0, 'password'))
             .thenAnswer((_) async =>
         {'success': true, 'message': 'Transferência realizada'});
 
@@ -146,7 +140,7 @@ void main() {
 
 
       test('fails transfer and sets errorMessage', () async {
-        when(mockTransferBalance('accDest2', 150.0, 'password'))
+        when(mockTransferUseCase('accDest2', 150.0, 'password'))
             .thenAnswer((_) async =>
         {'success': false, 'message': 'Saldo insuficiente'});
 
@@ -159,7 +153,7 @@ void main() {
       });
 
       test('throws exception during transfer', () async {
-        when(mockTransferBalance('accDest3', 50.0, 'password'))
+        when(mockTransferUseCase('accDest3', 50.0, 'password'))
             .thenThrow(Exception('Erro no servidor'));
 
         final result = await transactionViewModel.transferBetweenAccounts(
@@ -183,19 +177,4 @@ void main() {
   });
 }
 
-// Extensão para copyWith em Account
-extension on Account {
-  Account copyWith({
-    String? id,
-    String? userId,
-    String? accountNumber,
-    double? balance,
-  }) {
-    return Account(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      accountNumber: accountNumber ?? this.accountNumber,
-      balance: balance ?? this.balance,
-    );
-  }
-}
+

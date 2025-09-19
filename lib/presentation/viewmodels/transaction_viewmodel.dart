@@ -4,14 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/transaction.dart';
-import 'package:financial_app/domain/usecases/add_transaction.dart';
-import 'package:financial_app/domain/usecases/get_transactions.dart';
-import 'package:financial_app/domain/usecases/transfer_balance.dart';
+import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 
 class TransactionViewModel extends ChangeNotifier {
-  final GetTransactions _getTransactions;
-  final AddTransaction _addTransaction;
-  final TransferBalance _transferBalance;
+  final TransferUseCase _transferUseCase;
   final AccountUseCase _accountUseCase;
   final AccountViewModel _accountViewModel;
 
@@ -24,16 +20,12 @@ class TransactionViewModel extends ChangeNotifier {
   bool showErrors = false;
 
   TransactionViewModel({
-    required GetTransactions getTransactions,
-    required AddTransaction addTransaction,
-    required TransferBalance transferBalance,
+    required TransferUseCase transferUseCase,
     required AccountUseCase accountUseCase,
     required AccountViewModel accountViewModel,
-  })  : _getTransactions = getTransactions,
-        _addTransaction = addTransaction,
-        _transferBalance = transferBalance,
-        _accountUseCase = accountUseCase,
-        _accountViewModel = accountViewModel;
+  }) : _transferUseCase = transferUseCase,
+       _accountUseCase = accountUseCase,
+       _accountViewModel = accountViewModel;
 
   List<Transaction> get transactions => _transactions;
   bool get isLoading => _isLoading;
@@ -82,7 +74,7 @@ class TransactionViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      _transactions = await _getTransactions(accountId);
+      _transactions = await _transferUseCase.getTransactions(accountId);
     } catch (e) {
       _errorMessage = e.toString();
     } finally {
@@ -96,7 +88,7 @@ class TransactionViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await _addTransaction(transaction);
+      await _transferUseCase.addTransaction(transaction);
       _transactions.add(transaction);
       return true;
     } catch (e) {
@@ -115,7 +107,7 @@ class TransactionViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await _transferBalance(accountId, amount, password);
+      final result = await _transferUseCase(accountId, amount, password);
 
       _isLoading = false;
 
@@ -156,7 +148,7 @@ class TransactionViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await _transferBalance.verifyTransferPassword();
+      final result = await _transferUseCase.verifyTransferPassword();
       _isLoading = false;
 
       if (result['success'] == true) {
@@ -184,7 +176,7 @@ class TransactionViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await _transferBalance.setTransferPassword(transferPassword);
+      final result = await _transferUseCase.setTransferPassword(transferPassword);
 
       _isLoading = false;
 
@@ -212,7 +204,7 @@ class TransactionViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await _transferBalance.changeTransferPassword(oldTransferPassword, newTransferPassword);
+      final result = await _transferUseCase.changeTransferPassword(oldTransferPassword, newTransferPassword);
 
       _isLoading = false;
 

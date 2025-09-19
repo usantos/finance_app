@@ -14,14 +14,9 @@ import 'package:financial_app/data/repositories/impl/transaction_repository_impl
 import 'package:financial_app/domain/repositories/account_repository.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 import 'package:financial_app/domain/repositories/transaction_repository.dart';
-import 'package:financial_app/domain/usecases/add_transaction.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
-import 'package:financial_app/domain/usecases/get_current_user.dart';
-import 'package:financial_app/domain/usecases/get_transactions.dart';
-import 'package:financial_app/domain/usecases/login_user_usecase.dart';
-import 'package:financial_app/domain/usecases/logout_user.dart';
-import 'package:financial_app/domain/usecases/register_user.dart';
-import 'package:financial_app/domain/usecases/transfer_balance.dart';
+import 'package:financial_app/domain/usecases/auth_usecase.dart';
+import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -35,35 +30,14 @@ void init() {
   // ViewModels
   sl.registerLazySingleton<AccountViewModel>(() => AccountViewModel(accountUseCase: sl()));
 
-  sl.registerFactory(
-    () => AuthViewModel(
-      loginUser: sl(),
-      registerUser: sl(),
-      logoutUser: sl(),
-      getCurrentUser: sl(),
-      accountUseCase: sl(),
-      accountViewModel: sl(), // garante que pega o singleton
-    ),
-  );
+  sl.registerFactory(() => AuthViewModel(authUseCase: sl(), accountUseCase: sl()));
 
-  sl.registerFactory(
-    () => TransactionViewModel(
-        getTransactions: sl(),
-        addTransaction: sl(),
-        transferBalance: sl(),
-        accountUseCase: sl(),
-        accountViewModel: sl()),
-  );
+  sl.registerFactory(() => TransactionViewModel(transferUseCase: sl(), accountUseCase: sl(), accountViewModel: sl()));
 
   // Use cases
-  sl.registerLazySingleton(() => LoginUserUseCase(sl(), sl()));
-  sl.registerLazySingleton(() => RegisterUser(sl()));
-  sl.registerLazySingleton(() => LogoutUser(sl(), sl()));
-  sl.registerLazySingleton(() => GetCurrentUser(sl(), sl()));
+  sl.registerLazySingleton(() => AuthUseCase(sl(), sl()));
   sl.registerLazySingleton(() => AccountUseCase(sl(), sl(), sl()));
-  sl.registerLazySingleton(() => TransferBalance(sl(), sl(), sl()));
-  sl.registerLazySingleton(() => GetTransactions(sl()));
-  sl.registerLazySingleton(() => AddTransaction(sl()));
+  sl.registerLazySingleton(() => TransferUseCase(sl(), sl(), sl(), sl()));
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));

@@ -1,11 +1,7 @@
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
-import 'package:financial_app/domain/usecases/get_current_user.dart';
-import 'package:financial_app/domain/usecases/login_user_usecase.dart';
-import 'package:financial_app/domain/usecases/logout_user.dart';
-import 'package:financial_app/domain/usecases/register_user.dart';
-import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
+import 'package:financial_app/domain/usecases/auth_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -13,21 +9,15 @@ import 'package:mockito/mockito.dart';
 
 import 'auth_viewmodel_test.mocks.dart';
 
+
 @GenerateMocks([
-  LoginUserUseCase,
-  RegisterUser,
-  LogoutUser,
-  GetCurrentUser,
+  AuthUseCase,
   AccountUseCase,
-  AccountViewModel
+  AuthViewModel,
 ])
 void main() {
-  late MockLoginUserUseCase mockLoginUserUseCase;
-  late MockRegisterUser mockRegisterUser;
-  late MockLogoutUser mockLogoutUser;
-  late MockGetCurrentUser mockGetCurrentUser;
+  late MockAuthUseCase mockAuthUseCase;
   late MockAccountUseCase mockAccountUseCase;
-  late MockAccountViewModel mockAccountViewModel;
   late AuthViewModel authViewModel;
 
   final testUser = User(
@@ -44,26 +34,18 @@ void main() {
   );
 
   setUp(() {
-    mockLoginUserUseCase = MockLoginUserUseCase();
-    mockRegisterUser = MockRegisterUser();
-    mockLogoutUser = MockLogoutUser();
-    mockGetCurrentUser = MockGetCurrentUser();
+    mockAuthUseCase = MockAuthUseCase();
     mockAccountUseCase = MockAccountUseCase();
-    mockAccountViewModel = MockAccountViewModel();
 
     authViewModel = AuthViewModel(
-      loginUser: mockLoginUserUseCase,
-      registerUser: mockRegisterUser,
-      logoutUser: mockLogoutUser,
-      getCurrentUser: mockGetCurrentUser,
+      authUseCase: mockAuthUseCase,
       accountUseCase: mockAccountUseCase,
-      accountViewModel: mockAccountViewModel,
     );
   });
 
   group('AuthViewModel', () {
     test('login returns true and sets currentUser on success', () async {
-      when(mockLoginUserUseCase('username', 'password'))
+      when(mockAuthUseCase('username', 'password'))
           .thenAnswer((_) async => testUser);
       when(mockAccountUseCase()).thenAnswer((_) async => testAccount);
 
@@ -77,7 +59,7 @@ void main() {
     });
 
     test('login returns false and sets errorMessage on invalid credentials', () async {
-      when(mockLoginUserUseCase('username', 'password'))
+      when(mockAuthUseCase('username', 'password'))
           .thenAnswer((_) async => null);
       when(mockAccountUseCase()).thenAnswer((_) async => null);
 
@@ -91,7 +73,7 @@ void main() {
     });
 
     test('login returns false and sets errorMessage on exception', () async {
-      when(mockLoginUserUseCase('username', 'password'))
+      when(mockAuthUseCase('username', 'password'))
           .thenThrow(Exception('Erro no login'));
       when(mockAccountUseCase()).thenAnswer((_) async => null);
 
@@ -104,7 +86,7 @@ void main() {
     });
 
     test('register returns true and sets currentUser on success', () async {
-      when(mockRegisterUser('username', 'email', 'password'))
+      when(mockAuthUseCase.register('username', 'email', 'password'))
           .thenAnswer((_) async => testUser);
 
       final result = await authViewModel.register('username', 'email', 'password');
@@ -116,7 +98,7 @@ void main() {
     });
 
     test('register returns false and sets errorMessage on failure', () async {
-      when(mockRegisterUser('username', 'email', 'password'))
+      when(mockAuthUseCase.register('username', 'email', 'password'))
           .thenAnswer((_) async => null);
 
       final result = await authViewModel.register('username', 'email', 'password');
@@ -128,7 +110,7 @@ void main() {
     });
 
     test('register returns false and sets errorMessage on exception', () async {
-      when(mockRegisterUser('username', 'email', 'password'))
+      when(mockAuthUseCase.register('username', 'email', 'password'))
           .thenThrow(Exception('Erro no cadastro'));
 
       final result = await authViewModel.register('username', 'email', 'password');
@@ -140,7 +122,7 @@ void main() {
     });
 
     test('logout sets currentUser to null on success', () async {
-      when(mockLogoutUser()).thenAnswer((_) async => true);
+      when(mockAuthUseCase.logout()).thenAnswer((_) async => true);
 
       authViewModel.setCurrentUser(testUser);
 
@@ -154,7 +136,7 @@ void main() {
     });
 
     test('logout sets errorMessage on exception', () async {
-      when(mockLogoutUser()).thenThrow(Exception('Erro no logout'));
+      when(mockAuthUseCase.logout()).thenThrow(Exception('Erro no logout'));
 
       authViewModel.setCurrentUser(testUser);
 
@@ -166,7 +148,7 @@ void main() {
     });
 
     test('checkCurrentUser sets currentUser on success', () async {
-      when(mockGetCurrentUser()).thenAnswer((_) async => testUser);
+      when(mockAuthUseCase.getCurrentUser()).thenAnswer((_) async => testUser);
 
       await authViewModel.checkCurrentUser();
 
@@ -176,7 +158,7 @@ void main() {
     });
 
     test('checkCurrentUser sets errorMessage on exception', () async {
-      when(mockGetCurrentUser()).thenThrow(Exception('Erro ao buscar usuário'));
+      when(mockAuthUseCase.getCurrentUser()).thenThrow(Exception('Erro ao buscar usuário'));
 
       await authViewModel.checkCurrentUser();
 

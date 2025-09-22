@@ -28,10 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-          devicePixelRatio: 1.0,
-          textScaler: TextScaler.linear(1.0),
-      ),
+      data: MediaQuery.of(context).copyWith(devicePixelRatio: 1.0, textScaler: TextScaler.linear(1.0)),
       child: MaterialApp(
         title: 'Financial App',
         theme: ThemeData(

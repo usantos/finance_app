@@ -1,5 +1,6 @@
 import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 
@@ -32,7 +33,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
+      _clearErrors();
     });
+  }
+
+  void _clearErrors() {
+    _usernameController.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _formKey.currentState?.reset();
   }
 
   @override
@@ -41,13 +50,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: const Color.fromARGB(255, 2, 13, 35),
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
           icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
         ),
-        title: const Text(
-          'Entrar',
-          style: TextStyle(color: Colors.white, fontSize: 22),
-        ),
+        title: const Text('Entrar', style: TextStyle(color: Colors.white, fontSize: 22)),
         backgroundColor: const Color.fromARGB(255, 2, 13, 35),
       ),
       body: SafeArea(
@@ -55,11 +61,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              height: MediaQuery.of(context).size.height * 0.46,
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              height: 360,
               width: MediaQuery.of(context).size.width * 0.95,
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -87,9 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Usuário',
                         labelStyle: const TextStyle(fontSize: 14),
                         prefixIcon: const Icon(Icons.person, size: 18),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: _authViewModel.validateUser,
                     ),
@@ -106,15 +107,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Email',
                         labelStyle: const TextStyle(fontSize: 14),
                         prefixIcon: const Icon(Icons.email, size: 18),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: _authViewModel.validateEmail,
                     ),
                     const SizedBox(height: 16),
 
                     TextFormField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       style: const TextStyle(fontSize: 14),
@@ -126,20 +127,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelStyle: const TextStyle(fontSize: 14),
                         prefixIcon: const Icon(Icons.lock, size: 18),
                         suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
+                          icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
                             });
                           },
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: _authViewModel.validatePassword,
                     ),
@@ -150,58 +145,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return authViewModel.isLoading
                             ? const CircularProgressIndicator()
                             : SizedBox(
-                          width: double.infinity,
-                          height: 48,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                            ),
-                            onPressed: () async {
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
-                              final success =
-                              await authViewModel.register(
-                                _usernameController.text,
-                                _emailController.text,
-                                _passwordController.text,
+                                width: double.infinity,
+                                height: 48,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                  ),
+                                  onPressed: () async {
+                                    if (!_formKey.currentState!.validate()) {
+                                      return;
+                                    }
+                                    final success = await authViewModel.register(
+                                      _usernameController.text,
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                    if (!context.mounted) return;
+                                    if (success) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Cadastro realizado com sucesso! Faça login.')),
+                                      );
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [Icon(Icons.app_registration), SizedBox(width: 8), Text('Cadastrar')],
+                                  ),
+                                ),
                               );
-                              if (!context.mounted) return;
-                              if (success) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Cadastro realizado com sucesso! Faça login.',
-                                    ),
-                                  ),
-                                );
-                                Navigator.pop(context);
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      authViewModel.errorMessage ??
-                                          'Erro no cadastro',
-                                    ),
-                                    backgroundColor: Colors.redAccent,
-                                  ),
-                                );
-                              }
-                            },
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.app_registration),
-                                SizedBox(width: 8),
-                                Text('Cadastrar'),
-                              ],
-                            ),
-                          ),
-                        );
                       },
                     ),
                   ],

@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 2, 13, 35),
+      backgroundColor: const Color(0xFF2C2C54),
       body: SafeArea(
         child: Form(
           key: _formKey,

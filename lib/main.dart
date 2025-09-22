@@ -34,18 +34,18 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 2, 13, 35)),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF2C2C54)),
           useMaterial3: true,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 2, 13, 35),
-              foregroundColor: Colors.white, // cor do texto/ícone
+              backgroundColor: const Color(0xFF2C2C54),
+              foregroundColor: Colors.white,
             ),
           ),
           filledButtonTheme: FilledButtonThemeData(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 2, 13, 35),
-              foregroundColor: Colors.white, // cor do texto/ícone
+              backgroundColor: const Color(0xFF2C2C54),
+              foregroundColor: Colors.white,
             ),
           ),
         ),

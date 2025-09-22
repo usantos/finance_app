@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatementScreen extends StatefulWidget {
-  const StatementScreen({super.key});
+  const StatementScreen({super.key, required this.title, required this.description});
+  final String title;
+  final String description;
 
   @override
   State<StatementScreen> createState() => _StatementScreenState();

@@ -45,7 +45,7 @@ class _QuickActionsState extends State<QuickActions> {
         Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(24)),
           child: Icon(icon, color: iconColor, size: 28),
         ),
         const SizedBox(height: 8),

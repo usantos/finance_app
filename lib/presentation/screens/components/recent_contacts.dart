@@ -9,10 +9,10 @@ class RecentContacts extends StatefulWidget {
 
 class _RecentContactsState extends State<RecentContacts> {
   final List<Map<String, dynamic>> contacts = [
-    {'name': 'Victor',},
-    {'name': 'Ana',},
-    {'name': 'João',},
-    {'name': 'Mariana',},
+    {'name': 'Victor'},
+    {'name': 'Ana'},
+    {'name': 'João'},
+    {'name': 'Mariana'},
   ];
 
   @override
@@ -23,23 +23,20 @@ class _RecentContactsState extends State<RecentContacts> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: contacts
             .take(3)
-            .map((contact) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: _buildContactItem(
-            context,
-            contact['name'] as String,
-          ),
-        ))
+            .map(
+              (contact) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: _buildContactItem(context, contact['name'] as String),
+              ),
+            )
             .toList(),
       ),
     );
   }
 
-  Widget _buildContactItem(BuildContext context, String name,
-      ) {
-    final color =
-     Theme.of(context).primaryColor ;
-    final textColor = Colors.white ;
+  Widget _buildContactItem(BuildContext context, String name) {
+    final color = Theme.of(context).primaryColor;
+    final textColor = Colors.white;
 
     final initial = name.isNotEmpty ? name[0].toUpperCase() : "?";
 
@@ -48,18 +45,11 @@ class _RecentContactsState extends State<RecentContacts> {
         Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           alignment: Alignment.center,
           child: Text(
             initial,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: textColor, fontSize: 25, fontWeight: FontWeight.bold),
           ),
         ),
         const SizedBox(height: 8),

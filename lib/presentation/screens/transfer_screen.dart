@@ -23,6 +23,7 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           CustomAppbar(title: widget.title, description: widget.description),
@@ -43,7 +44,7 @@ class _TransferScreenState extends State<TransferScreen> {
                     child: Padding(padding: const EdgeInsets.all(16.0), child: TransferCard()),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 11, vertical: 10),
                     child: Column(
                       children: [
                         const Align(

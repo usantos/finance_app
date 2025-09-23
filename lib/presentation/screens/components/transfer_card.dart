@@ -106,25 +106,36 @@ class _TransferCardState extends State<TransferCard> {
             key: _formKey,
             child: Column(
               children: [
-                Row(children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const Text('Enviar PIX', style: TextStyle(fontSize: 20, color: Colors.black,fontWeight: FontWeight.bold)),
-                  ),
-                  Spacer(),
-                  InkWell(
+                Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Enviar PIX',
+                        style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Spacer(),
+                    InkWell(
                       onTap: () {
                         setState(() {
                           accountViewModel.toggleVisibility();
                         });
                       },
-                      child: Icon(accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility, color: Colors.black),
+                      child: Icon(
+                        accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.black,
+                      ),
                     ),
-                ],),
+                  ],
+                ),
                 const SizedBox(height: 35),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text('Chave PIX', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    'Chave PIX',
+                    style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -144,7 +155,10 @@ class _TransferCardState extends State<TransferCard> {
                 const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text('Valor', style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    'Valor',
+                    style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -186,7 +200,7 @@ class _TransferCardState extends State<TransferCard> {
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
-                          onPressed:  _transactionViewModel.hasPassword
+                          onPressed: _transactionViewModel.hasPassword
                               ? () async {
                                   _transactionViewModel.showErrors = true;
                                   if (!_formKey.currentState!.validate()) return;

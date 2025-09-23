@@ -18,7 +18,7 @@ class _BalanceCardState extends State<BalanceCard> {
       color: const Color(0xFF4A4A7A),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

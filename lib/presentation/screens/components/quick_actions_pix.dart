@@ -21,20 +21,21 @@ class _QuickActionsPixState extends State<QuickActionsPix> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: actions
-            .map((action) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: _buildActionItem(
-            context,
-            action['icon'] as IconData,
-            action['label'] as String,
-            isEnabled: action['enabled'] == true,
-          ),
-        ))
+            .map(
+              (action) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: _buildActionItem(
+                  context,
+                  action['icon'] as IconData,
+                  action['label'] as String,
+                  isEnabled: action['enabled'] == true,
+                ),
+              ),
+            )
             .toList(),
       ),
     );
   }
-
 
   Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
     final color = isEnabled ? Theme.of(context).primaryColor : Colors.grey.shade300;

@@ -14,7 +14,7 @@ class CustomAppbar extends StatelessWidget {
       pinned: false,
       floating: true,
       snap: true,
-      expandedHeight: 100.0,
+      expandedHeight: 90.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           padding: const EdgeInsets.only(top: 60, left: 16, right: 16),

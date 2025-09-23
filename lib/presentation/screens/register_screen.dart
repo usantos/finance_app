@@ -47,14 +47,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 2, 13, 35),
+      backgroundColor: const Color(0xFF2C2C54),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pushReplacementNamed(context, '/'),
           icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
         ),
         title: const Text('Entrar', style: TextStyle(color: Colors.white, fontSize: 22)),
-        backgroundColor: const Color.fromARGB(255, 2, 13, 35),
+        backgroundColor: const Color(0xFF2C2C54),
       ),
       body: SafeArea(
         child: Form(

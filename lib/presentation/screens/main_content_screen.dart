@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:financial_app/presentation/screens/components/balance_card.dart';
-import 'package:financial_app/presentation/screens/components/quick_actions.dart';
-import 'package:financial_app/presentation/screens/components/recent_transactions.dart';
+import 'package:financial_app/presentation/screens/balance_card.dart';
+import 'package:financial_app/presentation/screens/quick_actions.dart';
+import 'package:financial_app/presentation/screens/recent_transactions.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/presentation/screens/components/bottom_sheet_perfil.dart';
 

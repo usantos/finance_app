@@ -6,7 +6,7 @@ import 'package:financial_app/presentation/screens/transfer_screen.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'components/main_content_screen.dart';
+import 'main_content_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,9 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _widgetOptions.elementAt(_selectedIndex),
-
       bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.white,
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onItemTapped,
         height: 70,

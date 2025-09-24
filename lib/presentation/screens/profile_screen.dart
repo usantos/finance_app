@@ -19,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           CustomAppbar(title: widget.title, description: widget.description),
@@ -53,9 +54,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildUserInfoCard() {
     return Card(
+      color: Colors.white,
       elevation: 2,
-      shadowColor: Colors.black12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: Colors.grey),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -101,8 +106,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildMenuOption({required IconData icon, required String text, required VoidCallback onTap}) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: const BorderSide(color: Colors.grey),
+      ),
       child: ListTile(
         leading: Icon(icon, color: Colors.black54),
         title: Text(text, style: const TextStyle(fontWeight: FontWeight.w500)),

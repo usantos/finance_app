@@ -1,9 +1,9 @@
-import 'package:financial_app/presentation/screens/components/recent_contacts.dart';
-import 'package:financial_app/presentation/screens/components/transfer_card.dart';
+import 'package:financial_app/presentation/screens/recent_contacts.dart';
+import 'package:financial_app/presentation/screens/transfer_card.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
-import 'components/quick_actions_pix.dart';
-import 'components/recent_pix.dart';
+import 'quick_actions_pix.dart';
+import 'recent_pix.dart';
 
 class TransferScreen extends StatefulWidget {
   const TransferScreen({super.key, required this.title, required this.description});

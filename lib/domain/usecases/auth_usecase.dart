@@ -36,6 +36,7 @@ class AuthUseCase {
   Future<User?> getCurrentUser() async {
     final user = await userLocalDataSource.getUser();
     final token = user?.token;
-    return await authRepository.getCurrentUser(token ?? "");
+    final currentUser = await authRepository.getCurrentUser(token ?? "");
+    return currentUser;
   }
 }

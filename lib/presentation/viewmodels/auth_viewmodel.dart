@@ -132,6 +132,6 @@ class AuthViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-    return null;
+    return _currentUser;
   }
 }

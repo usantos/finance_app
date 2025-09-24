@@ -19,17 +19,14 @@ class _RecentContactsState extends State<RecentContacts> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 120,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: contacts
-            .take(3)
-            .map(
-              (contact) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: _buildContactItem(context, contact['name'] as String),
-              ),
-            )
-            .toList(),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: contacts.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 18),
+        itemBuilder: (context, index) {
+          final contact = contacts[index];
+          return _buildContactItem(context, contact['name'] as String);
+        },
       ),
     );
   }

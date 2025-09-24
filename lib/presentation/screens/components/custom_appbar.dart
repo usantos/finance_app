@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CustomAppbar extends StatelessWidget {
+class CustomAppbar extends StatefulWidget {
   const CustomAppbar({super.key, required this.title, required this.description});
 
   final String title;
   final String description;
 
+  @override
+  State<CustomAppbar> createState() => _CustomAppbarState();
+}
+
+class _CustomAppbarState extends State<CustomAppbar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -23,11 +28,11 @@ class CustomAppbar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                widget.title,
                 style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text(description, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+              Text(widget.description, style: const TextStyle(color: Colors.white70, fontSize: 16)),
             ],
           ),
         ),

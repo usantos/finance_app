@@ -36,12 +36,11 @@ class _TransferCardState extends State<TransferCard> {
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkTransferPassword();
       FocusScope.of(context).unfocus();
     });
-
-    super.initState();
   }
 
   Future<void> _checkTransferPassword() async {

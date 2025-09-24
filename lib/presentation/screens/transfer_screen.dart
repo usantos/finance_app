@@ -46,18 +46,14 @@ class _TransferScreenState extends State<TransferScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 11, vertical: 10),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Text('Contatos recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        ),
+                        Text('Contatos recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         RecentContacts(),
                         const SizedBox(height: 24),
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Text('Últimos PIX', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        ),
+                        Text('Últimos PIX', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         RecentPix(),
                       ],

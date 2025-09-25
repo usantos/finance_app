@@ -114,6 +114,7 @@ class TransactionViewModel extends ChangeNotifier {
       if (!result['success']) {
         _errorMessage = result['message'];
         _errorCode = result['code'];
+        await refreshAccountBalance();
         notifyListeners();
         return false;
       }

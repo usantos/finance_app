@@ -8,6 +8,7 @@ class PinBottomSheet {
     required String title,
     required void Function(String pin) onCompleted,
     double? width,
+    double? height,
     double spacing = 20,
     double titleFontSize = 20,
     Color titleColor = Colors.black,
@@ -19,61 +20,61 @@ class PinBottomSheet {
     bool obscureText = true,
     bool isDismissible = false,
     bool enableDrag = false,
-    bool iconClose = true,
   }) async {
     final controller = TextEditingController();
     final errorNotifier = ValueNotifier<String?>(null);
     final obscureNotifier = ValueNotifier<bool>(obscureText);
-
     void confirmPin() {
       final pin = controller.text.trim();
-
       if (pin.length != pinLength) {
         errorNotifier.value = "Digite os $pinLength dígitos";
         return;
       }
-
       if (pin.split('').toSet().length == 1) {
         errorNotifier.value = "Não pode usar números repetidos";
         return;
       }
-
       FocusScope.of(context).unfocus();
       Navigator.of(context).pop();
       onCompleted(pin);
     }
 
     await CustomBottomSheet.show(
+      context,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
-      iconClose: iconClose,
-      context,
+      iconClose: false,
+      height: autoSubmitOnComplete == false ? MediaQuery.of(context).size.height * 0.4 : height,
       width: width ?? MediaQuery.of(context).size.width,
       child: AnimatedSize(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         child: Padding(
-          padding: EdgeInsets.zero,
+          padding: padding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: obscureNotifier,
-                  builder: (context, isObscured, _) {
-                    return IconButton(
-                      icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () {
-                        obscureNotifier.value = !obscureNotifier.value;
-                      },
-                    );
-                  },
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.of(context).pop()),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: obscureNotifier,
+                    builder: (context, isObscured, _) {
+                      return IconButton(
+                        icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                        onPressed: () {
+                          obscureNotifier.value = !obscureNotifier.value;
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: titleFontSize, fontWeight: titleFontWeight, color: titleColor),
               ),
               SizedBox(height: spacing),
@@ -102,23 +103,34 @@ class PinBottomSheet {
                 },
               ),
               SizedBox(height: spacing),
-              autoSubmitOnComplete
-                  ? SizedBox.shrink()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FilledButton(
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.black, width: 1),
-                          ),
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
+              if (!autoSubmitOnComplete)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          side: const BorderSide(color: Colors.black),
                         ),
-                        FilledButton(onPressed: confirmPin, child: const Text("Confirmar")),
-                        if (extraActions != null) ...extraActions,
-                      ],
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
                     ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          side: const BorderSide(color: Colors.black),
+                        ),
+                      ),
+                      onPressed: confirmPin,
+                      child: const Text("Confirmar"),
+                    ),
+                    if (extraActions != null) ...extraActions,
+                  ],
+                ),
             ],
           ),
         ),

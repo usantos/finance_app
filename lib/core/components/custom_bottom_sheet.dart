@@ -9,10 +9,9 @@ class CustomBottomSheet {
     bool isFull = false,
     bool isDismissible = false,
     bool enableDrag = false,
-    bool iconClose = true,
+    bool iconClose = false,
   }) {
     FocusManager.instance.primaryFocus?.unfocus();
-
     return showModalBottomSheet<T>(
       context: context,
       useRootNavigator: true,
@@ -20,47 +19,43 @@ class CustomBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.5),
+      barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+          onTap: () => FocusScope.of(context).unfocus(),
           child: SafeArea(
             top: false,
             child: Container(
-              height: isFull ? MediaQuery.of(context).size.height * 0.920 : height,
+              height: isFull ? MediaQuery.of(context).size.height * 0.92 : height,
               width: width,
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        width: 40,
-                        height: 5,
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(2)),
-                      ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 5,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(2)),
+                  ),
+                  if (iconClose)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                        ),
+                      ],
                     ),
-                    iconClose
-                        ? Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.close, color: Colors.black, size: 20),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                    child,
-                  ],
-                ),
+                  Expanded(child: SingleChildScrollView(child: child)),
+                ],
               ),
             ),
           ),

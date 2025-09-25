@@ -49,23 +49,30 @@ class _TransferCardState extends State<TransferCard> {
     if (!_transactionViewModel.hasPassword && context.mounted) {
       CustomBottomSheet.show(
         context,
+        height: MediaQuery.of(context).size.height * 0.35,
+        iconClose: true,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 30),
             const Center(
               child: Text(
-                'Para efetuar a transação é necessário cadastrar a senha de 4 dígitos.',
+                'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
                 style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FilledButton(
-                  style: ButtonStyle(
-                    side: WidgetStateProperty.all(const BorderSide(color: Colors.black, width: 1)),
-                    backgroundColor: WidgetStateProperty.all(Colors.white),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      side: const BorderSide(color: Colors.black),
+                    ),
                   ),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
@@ -74,10 +81,18 @@ class _TransferCardState extends State<TransferCard> {
                   child: const Text("Depois", style: TextStyle(color: Colors.black)),
                 ),
                 const SizedBox(width: 20),
-                FilledButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                      side: const BorderSide(color: Colors.black),
+                    ),
+                  ),
                   onPressed: () {
                     PinBottomSheet.show(
                       context,
+
+                      height: MediaQuery.of(context).size.height * 0.4,
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
                       onCompleted: (transferPassword) {
@@ -207,6 +222,8 @@ class _TransferCardState extends State<TransferCard> {
 
                                   PinBottomSheet.show(
                                     context,
+                                    autoSubmitOnComplete: false,
+                                    height: MediaQuery.of(context).size.height * 0.35,
                                     title: 'Insira sua senha de 4 dígitos',
                                     onCompleted: (pin) async {
                                       if (await _accountViewModel.getUser() == null ||

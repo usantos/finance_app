@@ -82,7 +82,6 @@ class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
             IconButton(
               onPressed: () async {
                 await DoublePinBottomSheet.showDouble(
-                  iconClose: false,
                   autoSubmitOnComplete: false,
                   context,
                   titleOld: "Senha de transferência atual",

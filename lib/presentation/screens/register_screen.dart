@@ -161,18 +161,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       _passwordController.text,
                                     );
                                     if (!context.mounted) return;
-                                    if (success) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Cadastro realizado com sucesso! Faça login.')),
-                                      );
-                                      Navigator.pop(context);
-                                    } else {
+                                    if (!success) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                           content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
                                           backgroundColor: Colors.redAccent,
                                         ),
                                       );
+                                    } else {
+                                      Navigator.popAndPushNamed(context, '/home');
                                     }
                                   },
                                   child: const Row(

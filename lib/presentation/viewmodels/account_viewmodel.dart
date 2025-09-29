@@ -8,7 +8,7 @@ class AccountViewModel extends ChangeNotifier {
   final AccountUseCase _accountUseCase;
 
   Account? _account;
-  bool _isLoading = false;
+  final bool _isLoading = false;
   String? _errorMessage;
 
   bool _isHidden = true;
@@ -19,7 +19,7 @@ class AccountViewModel extends ChangeNotifier {
     _account = account;
   }
 
-  void updateBalance(Account account) {
+  void updateAccount(Account account) {
     _account = account;
     notifyListeners();
   }
@@ -28,25 +28,11 @@ class AccountViewModel extends ChangeNotifier {
 
   Account? get account => _account;
 
-  String get _balance => '${_account?.balance.toReal()}';
+  String get _balance => _account?.balance.toReal() ?? '';
 
   bool get isLoading => _isLoading;
 
   String? get errorMessage => _errorMessage;
-
-  Future<void> fetchAccount() async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-    try {
-      _account = await _accountUseCase();
-    } catch (e) {
-      _errorMessage = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
 
   List<String> get nomes => [
     'Área Pix e \nTransferir',

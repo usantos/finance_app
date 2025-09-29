@@ -4,22 +4,24 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:ui' as _i12;
+import 'dart:ui' as _i14;
 
 import 'package:financial_app/data/datasources/account_local_data_source.dart'
-    as _i5;
+    as _i4;
 import 'package:financial_app/data/datasources/user_local_data_source.dart'
     as _i3;
+import 'package:financial_app/data/models/user_response.dart' as _i13;
 import 'package:financial_app/domain/entities/account.dart' as _i10;
 import 'package:financial_app/domain/entities/user.dart' as _i8;
 import 'package:financial_app/domain/repositories/account_repository.dart'
-    as _i4;
+    as _i5;
 import 'package:financial_app/domain/repositories/auth_repository.dart' as _i2;
 import 'package:financial_app/domain/usecases/account_usecase.dart' as _i9;
 import 'package:financial_app/domain/usecases/auth_usecase.dart' as _i6;
-import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart'
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart'
     as _i11;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -47,15 +49,15 @@ class _FakeUserLocalDataSource_1 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeAccountRepository_2 extends _i1.SmartFake
-    implements _i4.AccountRepository {
-  _FakeAccountRepository_2(Object parent, Invocation parentInvocation)
+class _FakeAccountLocalDataSource_2 extends _i1.SmartFake
+    implements _i4.AccountLocalDataSource {
+  _FakeAccountLocalDataSource_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeAccountLocalDataSource_3 extends _i1.SmartFake
-    implements _i5.AccountLocalDataSource {
-  _FakeAccountLocalDataSource_3(Object parent, Invocation parentInvocation)
+class _FakeAccountRepository_3 extends _i1.SmartFake
+    implements _i5.AccountRepository {
+  _FakeAccountRepository_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -88,6 +90,17 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
             ),
           )
           as _i3.UserLocalDataSource);
+
+  @override
+  _i4.AccountLocalDataSource get accountLocalDataSource =>
+      (super.noSuchMethod(
+            Invocation.getter(#accountLocalDataSource),
+            returnValue: _FakeAccountLocalDataSource_2(
+              this,
+              Invocation.getter(#accountLocalDataSource),
+            ),
+          )
+          as _i4.AccountLocalDataSource);
 
   @override
   _i7.Future<_i8.User?> call(String? username, String? password) =>
@@ -135,15 +148,15 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
   }
 
   @override
-  _i4.AccountRepository get repository =>
+  _i5.AccountRepository get repository =>
       (super.noSuchMethod(
             Invocation.getter(#repository),
-            returnValue: _FakeAccountRepository_2(
+            returnValue: _FakeAccountRepository_3(
               this,
               Invocation.getter(#repository),
             ),
           )
-          as _i4.AccountRepository);
+          as _i5.AccountRepository);
 
   @override
   _i3.UserLocalDataSource get userLocalDataSource =>
@@ -157,15 +170,15 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
           as _i3.UserLocalDataSource);
 
   @override
-  _i5.AccountLocalDataSource get accountLocalDataSource =>
+  _i4.AccountLocalDataSource get accountLocalDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#accountLocalDataSource),
-            returnValue: _FakeAccountLocalDataSource_3(
+            returnValue: _FakeAccountLocalDataSource_2(
               this,
               Invocation.getter(#accountLocalDataSource),
             ),
           )
-          as _i5.AccountLocalDataSource);
+          as _i4.AccountLocalDataSource);
 
   @override
   _i7.Future<_i10.Account?> call() =>
@@ -174,15 +187,28 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
             returnValue: _i7.Future<_i10.Account?>.value(),
           )
           as _i7.Future<_i10.Account?>);
+
+  @override
+  _i7.Future<_i10.Account?> getAccountLocal() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAccountLocal, []),
+            returnValue: _i7.Future<_i10.Account?>.value(),
+          )
+          as _i7.Future<_i10.Account?>);
 }
 
-/// A class which mocks [AuthViewModel].
+/// A class which mocks [AccountViewModel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthViewModel extends _i1.Mock implements _i11.AuthViewModel {
-  MockAuthViewModel() {
+class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
+  MockAccountViewModel() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  bool get isHidden =>
+      (super.noSuchMethod(Invocation.getter(#isHidden), returnValue: false)
+          as bool);
 
   @override
   bool get isLoading =>
@@ -190,60 +216,68 @@ class MockAuthViewModel extends _i1.Mock implements _i11.AuthViewModel {
           as bool);
 
   @override
+  List<String> get nomes =>
+      (super.noSuchMethod(Invocation.getter(#nomes), returnValue: <String>[])
+          as List<String>);
+
+  @override
+  List<String> get iconAssets =>
+      (super.noSuchMethod(
+            Invocation.getter(#iconAssets),
+            returnValue: <String>[],
+          )
+          as List<String>);
+
+  @override
+  String get displayBalance =>
+      (super.noSuchMethod(
+            Invocation.getter(#displayBalance),
+            returnValue: _i12.dummyValue<String>(
+              this,
+              Invocation.getter(#displayBalance),
+            ),
+          )
+          as String);
+
+  @override
   bool get hasListeners =>
       (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
           as bool);
 
   @override
-  _i7.Future<bool> login(String? username, String? password) =>
-      (super.noSuchMethod(
-            Invocation.method(#login, [username, password]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
-
-  @override
-  void setCurrentUser(_i8.User? user) => super.noSuchMethod(
-    Invocation.method(#setCurrentUser, [user]),
+  void setAccount(_i10.Account? account) => super.noSuchMethod(
+    Invocation.method(#setAccount, [account]),
     returnValueForMissingStub: null,
   );
 
   @override
-  _i7.Future<bool> register(
-    String? username,
-    String? email,
-    String? password,
-  ) =>
-      (super.noSuchMethod(
-            Invocation.method(#register, [username, email, password]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
+  void updateAccount(_i10.Account? account) => super.noSuchMethod(
+    Invocation.method(#updateAccount, [account]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i7.Future<bool> logout() =>
-      (super.noSuchMethod(
-            Invocation.method(#logout, []),
-            returnValue: _i7.Future<bool>.value(false),
-          )
-          as _i7.Future<bool>);
+  void toggleVisibility() => super.noSuchMethod(
+    Invocation.method(#toggleVisibility, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i7.Future<_i8.User?> checkCurrentUser() =>
+  _i7.Future<_i13.UserResponse?> getUser() =>
       (super.noSuchMethod(
-            Invocation.method(#checkCurrentUser, []),
-            returnValue: _i7.Future<_i8.User?>.value(),
+            Invocation.method(#getUser, []),
+            returnValue: _i7.Future<_i13.UserResponse?>.value(),
           )
-          as _i7.Future<_i8.User?>);
+          as _i7.Future<_i13.UserResponse?>);
 
   @override
-  void addListener(_i12.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#addListener, [listener]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void removeListener(_i12.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#removeListener, [listener]),
     returnValueForMissingStub: null,
   );

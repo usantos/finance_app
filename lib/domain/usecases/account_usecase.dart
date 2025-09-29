@@ -12,9 +12,12 @@ class AccountUseCase {
 
   Future<Account?> call() async {
     final user = await userLocalDataSource.getUser();
-    final token = user?.token;
-    final account = await repository.getAccount(user?.user.id ?? "", token ?? "");
+    final account = await repository.getAccount(user?.user.id ?? "");
     accountLocalDataSource.saveAccount(account);
     return account;
+  }
+
+  Future<Account?> getAccountLocal() async {
+    return await accountLocalDataSource.getAccount();
   }
 }

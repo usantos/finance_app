@@ -30,12 +30,12 @@ void init() {
   // ViewModels
   sl.registerLazySingleton<AccountViewModel>(() => AccountViewModel(accountUseCase: sl()));
 
-  sl.registerFactory(() => AuthViewModel(authUseCase: sl(), accountUseCase: sl()));
+  sl.registerFactory(() => AuthViewModel(authUseCase: sl(), accountUseCase: sl(), accountViewModel: sl()));
 
   sl.registerFactory(() => TransactionViewModel(transferUseCase: sl(), accountUseCase: sl(), accountViewModel: sl()));
 
   // Use cases
-  sl.registerLazySingleton(() => AuthUseCase(sl(), sl()));
+  sl.registerLazySingleton(() => AuthUseCase(sl(), sl(), sl()));
   sl.registerLazySingleton(() => AccountUseCase(sl(), sl(), sl()));
   sl.registerLazySingleton(() => TransferUseCase(sl(), sl(), sl(), sl()));
 

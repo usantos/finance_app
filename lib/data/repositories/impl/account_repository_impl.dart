@@ -8,13 +8,13 @@ class AccountRepositoryImpl implements AccountRepository {
   AccountRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Account?> getAccount(String userId, String token) {
-    return remoteDataSource.getAccount(userId, token);
+  Future<Account?> getAccount(String userId) {
+    return remoteDataSource.getAccount(userId);
   }
 
   @override
-  Future<Map<String, dynamic>?> getBalance(String accountId, String token) {
-    return remoteDataSource.getBalance(accountId, token);
+  Future<Map<String, dynamic>?> getBalance(String accountId) {
+    return remoteDataSource.getBalance(accountId);
   }
 
   @override
@@ -23,19 +23,18 @@ class AccountRepositoryImpl implements AccountRepository {
     String toAccountNumber,
     double amount,
     String password,
-    String token,
   ) {
-    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password, token);
+    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
   }
 
   @override
-  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) {
-    return remoteDataSource.verifyTransferPassword(accountNumber, token);
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) {
+    return remoteDataSource.verifyTransferPassword(accountNumber);
   }
 
   @override
-  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) {
-    return remoteDataSource.setTransferPassword(accountNumber, transferPassword, token);
+  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) {
+    return remoteDataSource.setTransferPassword(accountNumber, transferPassword);
   }
 
   @override
@@ -43,8 +42,7 @@ class AccountRepositoryImpl implements AccountRepository {
     String accountNumber,
     String oldtransferPassword,
     newTransferPassword,
-    String token,
   ) {
-    return remoteDataSource.changeTransferPassword(accountNumber, oldtransferPassword, newTransferPassword, token);
+    return remoteDataSource.changeTransferPassword(accountNumber, oldtransferPassword, newTransferPassword);
   }
 }

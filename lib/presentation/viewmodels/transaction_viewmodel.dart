@@ -134,7 +134,7 @@ class TransactionViewModel extends ChangeNotifier {
       final account = await _accountUseCase.call();
       if (account != null) {
         _account = account;
-        _accountViewModel.updateBalance(account);
+        _accountViewModel.updateAccount(account);
       }
     } catch (e) {
       _errorMessage = e.toString();

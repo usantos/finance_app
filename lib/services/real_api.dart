@@ -3,14 +3,29 @@ import 'package:flutter/material.dart';
 
 class RealApi {
   final Dio _dio;
+  String? _token;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'https://finance-server-js.onrender.com'));
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000')) {
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          if (_token != null) {
+            options.headers['Authorization'] = 'Bearer $_token';
+          }
+          return handler.next(options);
+        },
+      ),
+    );
+  }
 
   Future<Map<String, dynamic>?> login(String username, String password) async {
     try {
-      final response = await _dio.post('/login', data: {'username': username, 'password': password});
+      final response = await _dio.post('/users/login', data: {'username': username, 'password': password});
 
       if (response.data != null && response.data is Map<String, dynamic>) {
+        if (response.data['token'] != null) {
+          _token = response.data['token'];
+        }
         return response.data;
       }
       debugPrint('Resposta inesperada do servidor: ${response.data}');
@@ -23,7 +38,10 @@ class RealApi {
 
   Future<Map<String, dynamic>?> register(String username, String email, String password) async {
     try {
-      final response = await _dio.post('/register', data: {'username': username, 'email': email, 'password': password});
+      final response = await _dio.post(
+        '/users/register',
+        data: {'username': username, 'email': email, 'password': password},
+      );
 
       return response.data;
     } catch (e) {
@@ -32,9 +50,12 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> logout(String token) async {
+  Future<Map<String, dynamic>?> logout() async {
     try {
-      final response = await _dio.post('/logout', options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await _dio.post('/users/logout');
+      if (response.statusCode == 200) {
+        _token = null;
+      }
       return response.data;
     } catch (e) {
       debugPrint('Erro no logout: $e');
@@ -42,9 +63,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getCurrentUser(String token) async {
+  Future<Map<String, dynamic>?> getCurrentUser() async {
     try {
-      final response = await _dio.get('/me', options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await _dio.get('/users/me');
       return response.data;
     } catch (e) {
       debugPrint('Erro ao buscar usuário atual: $e');
@@ -52,12 +73,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getAccount(String userId, String token) async {
+  Future<Map<String, dynamic>?> getAccount(String userId) async {
     try {
-      final response = await _dio.get(
-        '/accounts/$userId',
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
-      );
+      final response = await _dio.get('/accounts/$userId');
       return response.data;
     } catch (e) {
       debugPrint('Erro ao buscar conta: $e');
@@ -65,11 +83,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getBalance(String accountId, String token) async {
+  Future<Map<String, dynamic>?> getBalance(String accountId) async {
     try {
       final response = await _dio.get(
         '/accounts/$accountId/balance',
-        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        options: Options(validateStatus: (status) => true),
       );
 
       if (response.statusCode == 200) {
@@ -83,11 +101,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber, String token) async {
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) async {
     try {
       final response = await _dio.post(
         '/accounts/verify_transfer_password',
-        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber},
       );
 
@@ -101,11 +119,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword, String token) async {
+  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) async {
     try {
       final response = await _dio.post(
         '/accounts/set_transfer_password',
-        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber, 'transfer_password': transferPassword},
       );
 
@@ -126,12 +144,11 @@ class RealApi {
     String accountNumber,
     String oldTransferPassword,
     String newTransferPassword,
-    String token,
   ) async {
     try {
       final response = await _dio.post(
         '/accounts/change_transfer_password',
-        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        options: Options(validateStatus: (status) => true),
         data: {
           'accountNumber': accountNumber,
           'old_transfer_password': oldTransferPassword,
@@ -154,12 +171,11 @@ class RealApi {
     String toAccountNumber,
     double amount,
     String password,
-    String token,
   ) async {
     try {
       final response = await _dio.post(
         '/accounts/transfer',
-        options: Options(headers: {'Authorization': 'Bearer $token'}, validateStatus: (status) => true),
+        options: Options(validateStatus: (status) => true),
         data: {
           'fromAccountNumber': fromAccountNumber,
           'toAccountNumber': toAccountNumber,

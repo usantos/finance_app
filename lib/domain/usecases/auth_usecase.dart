@@ -1,3 +1,4 @@
+import 'package:financial_app/data/datasources/account_local_data_source.dart';
 import 'package:financial_app/data/datasources/user_local_data_source.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
@@ -5,8 +6,9 @@ import 'package:financial_app/domain/repositories/auth_repository.dart';
 class AuthUseCase {
   final AuthRepository authRepository;
   final UserLocalDataSource userLocalDataSource;
+  final AccountLocalDataSource accountLocalDataSource;
 
-  AuthUseCase(this.authRepository, this.userLocalDataSource);
+  AuthUseCase(this.authRepository, this.userLocalDataSource, this.accountLocalDataSource);
 
   Future<User?> call(String username, String password) async {
     final userResponse = await authRepository.login(username, password);
@@ -24,6 +26,11 @@ class AuthUseCase {
     if (user != null) {
       final token = user.token;
       final logoutResponse = await authRepository.logout(token);
+      if (logoutResponse?.status == true) {
+        //TODO Deixar a limpeza em um local generico
+        await userLocalDataSource.clearUser();
+        await accountLocalDataSource.clearAccount();
+      }
       return logoutResponse?.status;
     }
     return false;

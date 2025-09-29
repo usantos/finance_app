@@ -95,4 +95,12 @@ class MockAccountUseCase extends _i1.Mock implements _i5.AccountUseCase {
             returnValue: _i6.Future<_i7.Account?>.value(),
           )
           as _i6.Future<_i7.Account?>);
+
+  @override
+  _i6.Future<_i7.Account?> getAccountLocal() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAccountLocal, []),
+            returnValue: _i6.Future<_i7.Account?>.value(),
+          )
+          as _i6.Future<_i7.Account?>);
 }

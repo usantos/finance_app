@@ -19,40 +19,25 @@ class TransferUseCase {
 
   Future<Map<String, dynamic>> call(String toAccountNumber, double amount, String password) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    final user = await userLocalDataSource.getUser();
-    final token = user!.token;
-    return accountRepository.transferBetweenAccounts(
-      fromAccount!.accountNumber,
-      toAccountNumber,
-      amount,
-      password,
-      token,
-    );
+    return accountRepository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password);
   }
 
   Future<Map<String, dynamic>> verifyTransferPassword() async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    final user = await userLocalDataSource.getUser();
-    final token = user!.token;
-    return accountRepository.verifyTransferPassword(fromAccount!.accountNumber, token);
+    return accountRepository.verifyTransferPassword(fromAccount!.accountNumber);
   }
 
   Future<Map<String, dynamic>> setTransferPassword(String transferPassword) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    final user = await userLocalDataSource.getUser();
-    final token = user!.token;
-    return accountRepository.setTransferPassword(fromAccount!.accountNumber, transferPassword, token);
+    return accountRepository.setTransferPassword(fromAccount!.accountNumber, transferPassword);
   }
 
   Future<Map<String, dynamic>> changeTransferPassword(String oldTransferPassword, String newTransferPassword) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    final user = await userLocalDataSource.getUser();
-    final token = user!.token;
     return accountRepository.changeTransferPassword(
       fromAccount!.accountNumber,
       oldTransferPassword,
       newTransferPassword,
-      token,
     );
   }
 

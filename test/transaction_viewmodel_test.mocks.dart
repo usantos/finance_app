@@ -21,6 +21,8 @@ import 'package:financial_app/domain/usecases/account_usecase.dart' as _i9;
 import 'package:financial_app/domain/usecases/transfer_usecase.dart' as _i6;
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart'
     as _i11;
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart'
+    as _i15;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i12;
 
@@ -234,6 +236,14 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
             returnValue: _i7.Future<_i10.Account?>.value(),
           )
           as _i7.Future<_i10.Account?>);
+
+  @override
+  _i7.Future<_i10.Account?> getAccountLocal() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAccountLocal, []),
+            returnValue: _i7.Future<_i10.Account?>.value(),
+          )
+          as _i7.Future<_i10.Account?>);
 }
 
 /// A class which mocks [AccountViewModel].
@@ -290,19 +300,10 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
   );
 
   @override
-  void updateBalance(_i10.Account? account) => super.noSuchMethod(
-    Invocation.method(#updateBalance, [account]),
+  void updateAccount(_i10.Account? account) => super.noSuchMethod(
+    Invocation.method(#updateAccount, [account]),
     returnValueForMissingStub: null,
   );
-
-  @override
-  _i7.Future<void> fetchAccount() =>
-      (super.noSuchMethod(
-            Invocation.method(#fetchAccount, []),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
-          )
-          as _i7.Future<void>);
 
   @override
   void toggleVisibility() => super.noSuchMethod(
@@ -317,6 +318,152 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
             returnValue: _i7.Future<_i13.UserResponse?>.value(),
           )
           as _i7.Future<_i13.UserResponse?>);
+
+  @override
+  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [TransactionViewModel].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTransactionViewModel extends _i1.Mock
+    implements _i15.TransactionViewModel {
+  MockTransactionViewModel() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get showErrors =>
+      (super.noSuchMethod(Invocation.getter(#showErrors), returnValue: false)
+          as bool);
+
+  @override
+  List<_i8.Transaction> get transactions =>
+      (super.noSuchMethod(
+            Invocation.getter(#transactions),
+            returnValue: <_i8.Transaction>[],
+          )
+          as List<_i8.Transaction>);
+
+  @override
+  bool get isLoading =>
+      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
+          as bool);
+
+  @override
+  bool get hasPassword =>
+      (super.noSuchMethod(Invocation.getter(#hasPassword), returnValue: false)
+          as bool);
+
+  @override
+  set showErrors(bool? _showErrors) => super.noSuchMethod(
+    Invocation.setter(#showErrors, _showErrors),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+
+  @override
+  void setAccount(_i10.Account? account) => super.noSuchMethod(
+    Invocation.method(#setAccount, [account]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i7.Future<void> fetchTransactions(String? accountId) =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchTransactions, [accountId]),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  _i7.Future<bool> addTransaction(_i8.Transaction? transaction) =>
+      (super.noSuchMethod(
+            Invocation.method(#addTransaction, [transaction]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> transferBetweenAccounts(
+    String? accountId,
+    double? amount,
+    String? password,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#transferBetweenAccounts, [
+              accountId,
+              amount,
+              password,
+            ]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<void> refreshAccountBalance() =>
+      (super.noSuchMethod(
+            Invocation.method(#refreshAccountBalance, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
+
+  @override
+  _i7.Future<bool> verifyTransferPassword() =>
+      (super.noSuchMethod(
+            Invocation.method(#verifyTransferPassword, []),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> setTransferPassword(String? transferPassword) =>
+      (super.noSuchMethod(
+            Invocation.method(#setTransferPassword, [transferPassword]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
+
+  @override
+  _i7.Future<bool> changeTransferPassword(
+    String? oldTransferPassword,
+    String? newTransferPassword,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#changeTransferPassword, [
+              oldTransferPassword,
+              newTransferPassword,
+            ]),
+            returnValue: _i7.Future<bool>.value(false),
+          )
+          as _i7.Future<bool>);
 
   @override
   void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(

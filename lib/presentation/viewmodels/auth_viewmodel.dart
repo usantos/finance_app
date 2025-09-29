@@ -2,23 +2,28 @@ import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/auth_usecase.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthUseCase _authUseCase;
   final AccountUseCase _accountUseCase;
+  final AccountViewModel _accountViewModel;
 
   User? _currentUser;
   bool _isLoading = false;
   String? _errorMessage;
   Account? _account;
 
-  AuthViewModel({required AuthUseCase authUseCase, required AccountUseCase accountUseCase})
-    : _authUseCase = authUseCase,
-      _accountUseCase = accountUseCase;
+  AuthViewModel({
+    required AuthUseCase authUseCase,
+    required AccountUseCase accountUseCase,
+    required AccountViewModel accountViewModel,
+  }) : _authUseCase = authUseCase,
+       _accountUseCase = accountUseCase,
+       _accountViewModel = accountViewModel;
 
   User? get currentUser => _currentUser;
-  Account? get account => _account;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -28,11 +33,14 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       _currentUser = await _authUseCase(username, password);
-      _account = await _accountUseCase();
-      if (_currentUser == null || _account == null) {
+      final account = await _accountUseCase();
+      if (account != null) {
+        _accountViewModel.updateAccount(account);
+      }
+      if (_currentUser == null || account == null) {
         _errorMessage = 'Credenciais inválidas.';
       }
-      return _currentUser != null && _account != null;
+      return _currentUser != null && account != null;
     } catch (e) {
       _errorMessage = e.toString();
       return false;
@@ -85,11 +93,20 @@ class AuthViewModel extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      _currentUser = (await _authUseCase.register(username, email, password));
-      if (_currentUser == null) {
+      _currentUser = await _authUseCase.register(username, email, password);
+      var successLogin = false;
+
+      if (_currentUser != null) {
+        final account = await _accountUseCase();
+        if (account != null) {
+          successLogin = await login(username, password);
+        } else {
+          _errorMessage = 'Cadastro realizado, mas não foi possível carregar a conta.';
+        }
+      } else {
         _errorMessage = 'Falha no cadastro.';
       }
-      return _currentUser != null;
+      return successLogin;
     } catch (e) {
       _errorMessage = e.toString();
       return false;

@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Future<void> _loadData() async {
+  /*Future<void> _loadData() async {
     await authViewModel.checkCurrentUser();
     if (authViewModel.currentUser != null) {
       await accountViewModel.fetchAccount();
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadData();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

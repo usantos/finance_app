@@ -45,7 +45,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          'Olá, ${authVM.currentUser?.username ?? ''}!',
+                          'Olá, ${authVM.currentUser?.user.username ?? ''}!',
                           style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ),

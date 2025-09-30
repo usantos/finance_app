@@ -20,10 +20,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User?> register(String username, String email, String password) async {
+  Future<UserResponse?> register(String username, String email, String password) async {
     final responseJson = await realApi.register(username, email, password);
-    if (responseJson != null && responseJson['user'] != null) {
-      return User.fromJson(responseJson['user']);
+    if (responseJson != null) {
+      return UserResponse.fromJson(responseJson);
     }
     return null;
   }
@@ -38,10 +38,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<User?> getCurrentUser(String token) async {
+  Future<UserResponse?> getCurrentUser(String token) async {
     final userJson = await realApi.getCurrentUser();
-    if (userJson != null && userJson['user'] != null) {
-      return User.fromJson(userJson['user']);
+    if (userJson != null) {
+      return UserResponse.fromJson(userJson);
     }
     return null;
   }

@@ -34,19 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  /*Future<void> _loadData() async {
-    await authViewModel.checkCurrentUser();
-    if (authViewModel.currentUser != null) {
-      await accountViewModel.fetchAccount();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

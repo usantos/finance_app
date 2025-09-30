@@ -1,5 +1,6 @@
 import 'package:financial_app/data/datasources/account_local_data_source.dart';
 import 'package:financial_app/data/datasources/user_local_data_source.dart';
+import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 
@@ -10,12 +11,12 @@ class AuthUseCase {
 
   AuthUseCase(this.authRepository, this.userLocalDataSource, this.accountLocalDataSource);
 
-  Future<User?> call(String username, String password) async {
+  Future<UserResponse?> call(String username, String password) async {
     final userResponse = await authRepository.login(username, password);
 
     if (userResponse != null) {
       await userLocalDataSource.saveUser(userResponse);
-      return userResponse.user;
+      return userResponse;
     }
 
     return null;
@@ -36,11 +37,16 @@ class AuthUseCase {
     return false;
   }
 
-  Future<User?> register(String username, String email, String password) {
-    return authRepository.register(username, email, password);
+  Future<UserResponse?> register(String username, String email, String password) async {
+    final userResponse = await authRepository.register(username, email, password);
+    if (userResponse != null) {
+      await userLocalDataSource.saveUser(userResponse);
+      return userResponse;
+    }
+    return null;
   }
 
-  Future<User?> getCurrentUser() async {
+  Future<UserResponse?> getCurrentUser() async {
     final user = await userLocalDataSource.getUser();
     final token = user?.token;
     final currentUser = await authRepository.getCurrentUser(token ?? "");

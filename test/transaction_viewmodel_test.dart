@@ -1,5 +1,4 @@
 import 'package:financial_app/domain/entities/account.dart';
-import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -32,16 +31,6 @@ void main() {
     balance: 100.0,
   );
 
-  final testTransaction = Transaction(
-    id: 'tx1',
-    accountId: 'acc1',
-    type: 'deposit',
-    amount: 100.0,
-    date: DateTime.parse('2024-07-11'),
-    description: 'Depósito inicial',
-    fromAccount: null,
-    toAccount: null,
-  );
 
   setUp(() {
     mockTransferUseCase = MockTransferUseCase();

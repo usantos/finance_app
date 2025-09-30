@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      authVM.currentUser?.username ?? '-',
+                      authVM.currentUser?.user.username ?? '-',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             const Divider(height: 30),
-            _buildInfoRow('E-mail', authVM.currentUser?.email ?? '-'),
+            _buildInfoRow('E-mail', authVM.currentUser?.user.email ?? '-'),
             const SizedBox(height: 16),
             _buildInfoRow('Telefone', '(11) 99999-9999'),
             const SizedBox(height: 16),

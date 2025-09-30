@@ -4,7 +4,7 @@ import 'package:financial_app/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<UserResponse?> login(String username, String password);
-  Future<User?> register(String username, String email, String password);
+  Future<UserResponse?> register(String username, String email, String password);
   Future<LogoutResponse?> logout(String token);
-  Future<User?> getCurrentUser(String token);
+  Future<UserResponse?> getCurrentUser(String token);
 }

@@ -10,7 +10,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<User?> register(String username, String email, String password) {
+  Future<UserResponse?> register(String username, String email, String password) {
     return remoteDataSource.register(username, email, password);
   }
 
@@ -20,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User?> getCurrentUser(String token) {
+  Future<UserResponse?> getCurrentUser(String token) {
     return remoteDataSource.getCurrentUser(token);
   }
 

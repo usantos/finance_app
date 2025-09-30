@@ -1,3 +1,4 @@
+import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
@@ -10,7 +11,7 @@ class AuthViewModel extends ChangeNotifier {
   final AccountUseCase _accountUseCase;
   final AccountViewModel _accountViewModel;
 
-  User? _currentUser;
+  UserResponse? _currentUser;
   bool _isLoading = false;
   String? _errorMessage;
   Account? _account;
@@ -23,7 +24,7 @@ class AuthViewModel extends ChangeNotifier {
        _accountUseCase = accountUseCase,
        _accountViewModel = accountViewModel;
 
-  User? get currentUser => _currentUser;
+  UserResponse? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -84,7 +85,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   @visibleForTesting
-  void setCurrentUser(User? user) {
+  void setCurrentUser(UserResponse? user) {
     _currentUser = user;
   }
 
@@ -95,13 +96,10 @@ class AuthViewModel extends ChangeNotifier {
     try {
       _currentUser = await _authUseCase.register(username, email, password);
       var successLogin = false;
-
       if (_currentUser != null) {
-        final account = await _accountUseCase();
-        if (account != null) {
-          successLogin = await login(username, password);
-        } else {
-          _errorMessage = 'Cadastro realizado, mas não foi possível carregar a conta.';
+        successLogin = await login(username, password);
+        if(!successLogin) {
+          _errorMessage = 'Não foi possível realizar o login.';
         }
       } else {
         _errorMessage = 'Falha no cadastro.';
@@ -137,7 +135,7 @@ class AuthViewModel extends ChangeNotifier {
     return false;
   }
 
-  Future<User?> checkCurrentUser() async {
+  Future<UserResponse?> checkCurrentUser() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();

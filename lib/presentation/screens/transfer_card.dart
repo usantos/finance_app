@@ -125,7 +125,7 @@ class _TransferCardState extends State<TransferCard> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: const Text(
-                        'Enviar PIX',
+                        'Fazer transferência',
                         style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ),

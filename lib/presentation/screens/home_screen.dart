@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MainContentScreen(),
     StatementScreen(title: "Extrato", description: "Suas movimentções"),
     HistoryScreen(),
-    TransferScreen(title: "PIX", description: "Transferência instantânea"),
+    TransferScreen(title: "Transferência", description: "Realizar transferência"),
     ProfileScreen(title: "Perfil", description: "Suas informações pessoais"),
   ];
 
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIcon: Icon(Icons.credit_card),
             label: 'Cartão',
           ),
-          NavigationDestination(icon: Icon(Icons.send_outlined), selectedIcon: Icon(Icons.send), label: 'PIX'),
+          NavigationDestination(icon: Icon(Icons.send_outlined), selectedIcon: Icon(Icons.send), label: 'Transferência'),
           NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),

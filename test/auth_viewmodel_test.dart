@@ -1,3 +1,4 @@
+import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
@@ -27,6 +28,12 @@ void main() {
     email: 'test@example.com',
   );
 
+  final testUserResponse = UserResponse(
+    message: 'Login successful',
+    token: 'dummy_token',
+    user: testUser,
+  );
+
   final testAccount = Account(
     id: "acc1",
     userId: "user1",
@@ -49,13 +56,13 @@ void main() {
   group('AuthViewModel', () {
     test('login success sets currentUser and calls updateAccount', () async {
       when(mockAuthUseCase.call('username', 'password'))
-          .thenAnswer((_) async => testUser);
+          .thenAnswer((_) async => testUserResponse);
       when(mockAccountUseCase.call()).thenAnswer((_) async => testAccount);
 
       final result = await authViewModel.login('username', 'password');
 
       expect(result, true);
-      expect(authViewModel.currentUser, testUser);
+      expect(authViewModel.currentUser, testUserResponse);
       expect(authViewModel.errorMessage, isNull);
       verify(mockAccountViewModel.updateAccount(testAccount)).called(1);
       expect(authViewModel.isLoading, false);
@@ -64,7 +71,8 @@ void main() {
     test('login failure sets errorMessage', () async {
       when(mockAuthUseCase.call('username', 'password'))
           .thenAnswer((_) async => null);
-      when(mockAccountUseCase.call()).thenAnswer((_) async => null);
+      when(mockAccountUseCase.call())
+          .thenAnswer((_) async => null);
 
       final result = await authViewModel.login('username', 'password');
 
@@ -76,22 +84,22 @@ void main() {
 
     test('register success calls login and sets currentUser', () async {
       when(mockAuthUseCase.register('username', 'email', 'password'))
-          .thenAnswer((_) async => testUser);
+          .thenAnswer((_) async => testUserResponse);
       when(mockAccountUseCase.call()).thenAnswer((_) async => testAccount);
       when(mockAuthUseCase.call('username', 'password'))
-          .thenAnswer((_) async => testUser);
+          .thenAnswer((_) async => testUserResponse);
 
       final result = await authViewModel.register('username', 'email', 'password');
 
       expect(result, true);
-      expect(authViewModel.currentUser, testUser);
+      expect(authViewModel.currentUser, testUserResponse);
       expect(authViewModel.errorMessage, isNull);
     });
 
     test('logout success sets currentUser to null', () async {
       when(mockAuthUseCase.logout()).thenAnswer((_) async => true);
 
-      authViewModel.setCurrentUser(testUser);
+      authViewModel.setCurrentUser(testUserResponse);
 
       final result = await authViewModel.logout();
 
@@ -99,6 +107,16 @@ void main() {
       expect(authViewModel.currentUser, isNull);
       expect(authViewModel.errorMessage, isNull);
       expect(authViewModel.isLoading, false);
+    });
+
+    test('checkCurrentUser returns currentUser', () async {
+      when(mockAuthUseCase.getCurrentUser())
+          .thenAnswer((_) async => testUserResponse);
+
+      final user = await authViewModel.checkCurrentUser();
+
+      expect(user, testUserResponse);
+      expect(authViewModel.currentUser, testUserResponse);
     });
   });
 }

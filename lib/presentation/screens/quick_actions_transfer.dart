@@ -19,26 +19,10 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
   void initState() {
     super.initState();
     actions = [
-      {
-        'icon': Icons.send,
-        'label': 'Enviar Pix',
-        'widget': const TransferCardPix(),
-      },
-      {
-        'icon': Icons.call_received,
-        'label': 'Receber Pix',
-        'widget': null,
-      },
-      {
-        'icon': Icons.qr_code_2_sharp,
-        'label': 'QR Code Pix',
-        'widget': null,
-      },
-      {
-        'icon': Icons.compare_arrows,
-        'label': 'Entre contas',
-        'widget': const TransferCard(),
-      },
+      {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferCardPix()},
+      {'icon': Icons.call_received, 'label': 'Receber Pix', 'widget': null},
+      {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code Pix', 'widget': null},
+      {'icon': Icons.compare_arrows, 'label': 'Entre contas', 'widget': const TransferCard()},
     ];
 
     final initialWidget = actions[selectedIndex]['widget'] as Widget?;
@@ -70,11 +54,11 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
               borderRadius: BorderRadius.circular(16),
               onTap: widgetToShow != null
                   ? () {
-                setState(() {
-                  selectedIndex = index;
-                });
-                widget.onSelect(widgetToShow);
-              }
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                      widget.onSelect(widgetToShow);
+                    }
                   : null,
               child: _buildActionItem(
                 context,
@@ -89,12 +73,7 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
     );
   }
 
-  Widget _buildActionItem(
-      BuildContext context,
-      IconData icon,
-      String label, {
-        bool isEnabled = false,
-      }) {
+  Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
     final color = isEnabled ? Theme.of(context).primaryColor : Colors.grey.shade300;
     final iconColor = isEnabled ? Colors.white : Colors.grey.shade500;
 
@@ -104,13 +83,8 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
         Ink(
           width: 70,
           height: 70,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Center(
-            child: Icon(icon, color: iconColor, size: 28),
-          ),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
+          child: Center(child: Icon(icon, color: iconColor, size: 28)),
         ),
         const SizedBox(height: 8),
         Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),

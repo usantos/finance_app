@@ -1,7 +1,6 @@
 import 'package:financial_app/data/datasources/account_local_data_source.dart';
 import 'package:financial_app/data/datasources/user_local_data_source.dart';
 import 'package:financial_app/data/models/user_response.dart';
-import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 
 class AuthUseCase {

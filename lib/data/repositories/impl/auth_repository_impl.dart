@@ -1,7 +1,6 @@
 import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/data/models/logout_response.dart';
-import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

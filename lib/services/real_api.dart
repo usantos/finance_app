@@ -108,8 +108,10 @@ class RealApi {
         options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber},
       );
-      return {"success": response.data['success'] ?? false, "message": response.data['message'] ?? 'Senha de transferência válida'};
-
+      return {
+        "success": response.data['success'] ?? false,
+        "message": response.data['message'] ?? 'Senha de transferência válida',
+      };
     } catch (e) {
       return {"success": false, "message": 'Erro inesperado ao realizar validação: $e'};
     }

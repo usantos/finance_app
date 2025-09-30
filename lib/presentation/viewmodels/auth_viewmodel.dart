@@ -1,6 +1,5 @@
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
-import 'package:financial_app/domain/entities/user.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/domain/usecases/auth_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -98,7 +97,7 @@ class AuthViewModel extends ChangeNotifier {
       var successLogin = false;
       if (_currentUser != null) {
         successLogin = await login(username, password);
-        if(!successLogin) {
+        if (!successLogin) {
           _errorMessage = 'Não foi possível realizar o login.';
         }
       } else {

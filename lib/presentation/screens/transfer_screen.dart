@@ -1,4 +1,5 @@
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
+import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
 import 'quick_actions_transfer.dart';
@@ -57,11 +58,14 @@ class _TransferScreenState extends State<TransferScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (_selectedWidget.runtimeType == TransferCardPix) ...[
+                          Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          RecentContacts(),
+                          const SizedBox(height: 24),
+                        ] else
+                          const SizedBox.shrink(),
 
-                        Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 16),
-                        RecentContacts(),
-                        const SizedBox(height: 24),
                         Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         RecentPix(),

@@ -147,7 +147,7 @@ class _TransferCardState extends State<TransferCard> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: const Text(
-                    'Chave PIX',
+                    'Conta',
                     style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -158,7 +158,7 @@ class _TransferCardState extends State<TransferCard> {
                     filled: true,
                     fillColor: const Color.fromARGB(255, 242, 242, 242),
                     enabledBorder: InputBorder.none,
-                    hintText: 'CPF, e-mail, telefone ou chave aleatória',
+                    hintText: 'EX: 00000-0',
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   ),
                   keyboardType: TextInputType.number,

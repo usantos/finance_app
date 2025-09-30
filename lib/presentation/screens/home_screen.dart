@@ -57,7 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIcon: Icon(Icons.credit_card),
             label: 'Cartão',
           ),
-          NavigationDestination(icon: Icon(Icons.send_outlined), selectedIcon: Icon(Icons.send), label: 'Transferência'),
+          NavigationDestination(
+            icon: Icon(Icons.send_outlined),
+            selectedIcon: Icon(Icons.send),
+            label: 'Transferência',
+          ),
           NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),

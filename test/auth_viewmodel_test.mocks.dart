@@ -4,15 +4,14 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:ui' as _i14;
+import 'dart:ui' as _i13;
 
 import 'package:financial_app/data/datasources/account_local_data_source.dart'
     as _i4;
 import 'package:financial_app/data/datasources/user_local_data_source.dart'
     as _i3;
-import 'package:financial_app/data/models/user_response.dart' as _i13;
+import 'package:financial_app/data/models/user_response.dart' as _i8;
 import 'package:financial_app/domain/entities/account.dart' as _i10;
-import 'package:financial_app/domain/entities/user.dart' as _i8;
 import 'package:financial_app/domain/repositories/account_repository.dart'
     as _i5;
 import 'package:financial_app/domain/repositories/auth_repository.dart' as _i2;
@@ -103,12 +102,12 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
           as _i4.AccountLocalDataSource);
 
   @override
-  _i7.Future<_i8.User?> call(String? username, String? password) =>
+  _i7.Future<_i8.UserResponse?> call(String? username, String? password) =>
       (super.noSuchMethod(
             Invocation.method(#call, [username, password]),
-            returnValue: _i7.Future<_i8.User?>.value(),
+            returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
-          as _i7.Future<_i8.User?>);
+          as _i7.Future<_i8.UserResponse?>);
 
   @override
   _i7.Future<bool?> logout() =>
@@ -119,24 +118,24 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
           as _i7.Future<bool?>);
 
   @override
-  _i7.Future<_i8.User?> register(
+  _i7.Future<_i8.UserResponse?> register(
     String? username,
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#register, [username, email, password]),
-            returnValue: _i7.Future<_i8.User?>.value(),
+            returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
-          as _i7.Future<_i8.User?>);
+          as _i7.Future<_i8.UserResponse?>);
 
   @override
-  _i7.Future<_i8.User?> getCurrentUser() =>
+  _i7.Future<_i8.UserResponse?> getCurrentUser() =>
       (super.noSuchMethod(
             Invocation.method(#getCurrentUser, []),
-            returnValue: _i7.Future<_i8.User?>.value(),
+            returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
-          as _i7.Future<_i8.User?>);
+          as _i7.Future<_i8.UserResponse?>);
 }
 
 /// A class which mocks [AccountUseCase].
@@ -263,21 +262,21 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
   );
 
   @override
-  _i7.Future<_i13.UserResponse?> getUser() =>
+  _i7.Future<_i8.UserResponse?> getUser() =>
       (super.noSuchMethod(
             Invocation.method(#getUser, []),
-            returnValue: _i7.Future<_i13.UserResponse?>.value(),
+            returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
-          as _i7.Future<_i13.UserResponse?>);
+          as _i7.Future<_i8.UserResponse?>);
 
   @override
-  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i13.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#addListener, [listener]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i13.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#removeListener, [listener]),
     returnValueForMissingStub: null,
   );

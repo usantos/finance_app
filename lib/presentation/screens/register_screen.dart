@@ -13,7 +13,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -22,7 +24,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    _cpfController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -38,7 +42,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _clearErrors() {
-    _usernameController.clear();
+    _cpfController.clear();
+    _nameController.clear();
+    _phoneController.clear();
     _emailController.clear();
     _passwordController.clear();
     _formKey.currentState?.reset();
@@ -62,14 +68,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              height: 360,
               width: MediaQuery.of(context).size.width * 0.95,
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 padding: EdgeInsets.zero,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 15),
                     const Text(
                       'Cadastro',
                       style: TextStyle(
@@ -79,23 +86,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     TextFormField(
-                      controller: _usernameController,
+                      keyboardType: TextInputType.text,
+                      controller: _nameController,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
                         fillColor: const Color.fromARGB(255, 242, 242, 242),
-                        labelText: 'Usuário',
+                        labelText: 'Nome',
                         labelStyle: const TextStyle(fontSize: 14),
                         prefixIcon: const Icon(Icons.person, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateUser,
+                      validator: _authViewModel.validateName,
                     ),
                     const SizedBox(height: 16),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      maxLength: 14,
+                      buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                      controller: _cpfController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        labelText: 'Cpf',
+                        labelStyle: const TextStyle(fontSize: 14),
+                        prefixIcon: const Icon(Icons.assignment_ind, size: 18),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                      validator: _authViewModel.validateCpf,
+                    ),
 
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      maxLength: 11,
+                      buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                      controller: _phoneController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        labelText: 'Telefone',
+                        labelStyle: const TextStyle(fontSize: 14),
+                        prefixIcon: const Icon(Icons.phone, size: 18),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                      ),
+                      validator: _authViewModel.validatePhone,
+                    ),
+
+                    const SizedBox(height: 24),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -112,7 +157,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: _authViewModel.validateEmail,
                     ),
                     const SizedBox(height: 16),
-
                     TextFormField(
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -138,7 +182,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       validator: _authViewModel.validatePassword,
                     ),
-                    const SizedBox(height: 24),
+
+                    const SizedBox(height: 16),
 
                     Consumer<AuthViewModel>(
                       builder: (context, authViewModel, child) {
@@ -155,12 +200,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     if (!_formKey.currentState!.validate()) {
                                       return;
                                     }
-                                    final success = await authViewModel.register(
-                                      _usernameController.text,
+
+                                    final userRequest = authViewModel.toUserRequest(
+                                      _nameController.text,
+                                      _cpfController.text,
+                                      _phoneController.text,
                                       _emailController.text,
                                       _passwordController.text,
                                     );
+
+                                    final success = await authViewModel.register(userRequest);
+
                                     if (!context.mounted) return;
+
                                     if (!success) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(

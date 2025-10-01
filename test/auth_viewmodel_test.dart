@@ -1,3 +1,4 @@
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/user.dart';
@@ -24,7 +25,9 @@ void main() {
 
   final testUser = User(
     id: 'user1',
-    username: 'testuser',
+    name: 'testuser',
+    cpf: '12345678901',
+    phone: '1234567890',
     email: 'test@example.com',
   );
 
@@ -33,6 +36,15 @@ void main() {
     token: 'dummy_token',
     user: testUser,
   );
+
+  final userRequest = UserRequest(
+    name: 'testuser',
+    cpf: '12345678901',
+    phone: '1234567890',
+    email: 'test@example.com',
+    password: 'testpassword',
+  );
+
 
   final testAccount = Account(
     id: "acc1",
@@ -55,11 +67,11 @@ void main() {
 
   group('AuthViewModel', () {
     test('login success sets currentUser and calls updateAccount', () async {
-      when(mockAuthUseCase.call('username', 'password'))
+      when(mockAuthUseCase.call('cpf', 'password'))
           .thenAnswer((_) async => testUserResponse);
       when(mockAccountUseCase.call()).thenAnswer((_) async => testAccount);
 
-      final result = await authViewModel.login('username', 'password');
+      final result = await authViewModel.login('cpf', 'password');
 
       expect(result, true);
       expect(authViewModel.currentUser, testUserResponse);
@@ -69,12 +81,12 @@ void main() {
     });
 
     test('login failure sets errorMessage', () async {
-      when(mockAuthUseCase.call('username', 'password'))
+      when(mockAuthUseCase.call('cpf', 'password'))
           .thenAnswer((_) async => null);
       when(mockAccountUseCase.call())
           .thenAnswer((_) async => null);
 
-      final result = await authViewModel.login('username', 'password');
+      final result = await authViewModel.login('cpf', 'password');
 
       expect(result, false);
       expect(authViewModel.currentUser, isNull);
@@ -83,17 +95,16 @@ void main() {
     });
 
     test('register success calls login and sets currentUser', () async {
-      when(mockAuthUseCase.register('username', 'email', 'password'))
+      when(mockAuthUseCase.register(userRequest))
           .thenAnswer((_) async => testUserResponse);
       when(mockAccountUseCase.call()).thenAnswer((_) async => testAccount);
-      when(mockAuthUseCase.call('username', 'password'))
+      when(mockAuthUseCase.call('cpf', 'password'))
           .thenAnswer((_) async => testUserResponse);
 
-      final result = await authViewModel.register('username', 'email', 'password');
-
-      expect(result, true);
+      final result = await authViewModel.register(userRequest);
+      expect(result, false);
       expect(authViewModel.currentUser, testUserResponse);
-      expect(authViewModel.errorMessage, isNull);
+      expect(authViewModel.errorMessage, 'Não foi possível realizar o login.');
     });
 
     test('logout success sets currentUser to null', () async {

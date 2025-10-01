@@ -1,4 +1,5 @@
 import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/data/models/logout_response.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
@@ -9,8 +10,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<UserResponse?> register(String username, String email, String password) {
-    return remoteDataSource.register(username, email, password);
+  Future<UserResponse?> register(UserRequest userRequest) {
+    return remoteDataSource.register(userRequest);
   }
 
   @override
@@ -24,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserResponse?> login(String username, String password) {
-    return remoteDataSource.login(username, password);
+  Future<UserResponse?> login(String cpf, String password) {
+    return remoteDataSource.login(cpf, password);
   }
 }

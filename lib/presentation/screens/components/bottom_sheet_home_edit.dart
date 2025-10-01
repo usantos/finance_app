@@ -24,7 +24,7 @@ class _BottomSheetHomeEditState extends State<BottomSheetHomeEdit> {
   initState() {
     super.initState();
     accountNumber = _accountViewModel.account?.accountNumber;
-    userName = _authViewModel.currentUser?.user.username;
+    userName = _authViewModel.currentUser?.user.name;
   }
 
   @override

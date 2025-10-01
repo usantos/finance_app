@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
@@ -107,17 +108,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 28,
-                  backgroundColor: Color(0xFF2C2C54),
-                  child: Text('J', style: TextStyle(color: Colors.white, fontSize: 24)),
+                  backgroundColor: const Color(0xFF2C2C54),
+                  child: Text(
+                    authVM.currentUser?.user.name.firstLetter ?? "",
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      authVM.currentUser?.user.username ?? '-',
+                      authVM.currentUser?.user.name ?? '-',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(

@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          'Olá, ${authVM.currentUser?.user.username ?? ''}!',
+                          'Olá, ${authVM.currentUser?.user.name ?? ''}!',
                           style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -60,12 +61,12 @@ class _MainContentScreenState extends State<MainContentScreen> {
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       radius: 18,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Color(0xFF4A4A7A),
                       child: Text(
-                        'J',
-                        style: TextStyle(color: Color(0xFF2C2C54), fontWeight: FontWeight.bold),
+                        authVM.currentUser?.user.name.firstLetter ?? '',
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),

@@ -1,4 +1,5 @@
 import 'package:financial_app/data/datasources/auth_remote_datasource.dart';
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/data/models/logout_response.dart';
 import 'package:financial_app/services/real_api.dart';
@@ -9,8 +10,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this.realApi);
 
   @override
-  Future<UserResponse?> login(String username, String password) async {
-    final response = await realApi.login(username, password);
+  Future<UserResponse?> login(String cpf, String password) async {
+    final response = await realApi.login(cpf, password);
     if (response != null) {
       final user = UserResponse.fromJson(response);
       return user;
@@ -19,8 +20,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserResponse?> register(String username, String email, String password) async {
-    final responseJson = await realApi.register(username, email, password);
+  Future<UserResponse?> register(UserRequest userRequest) async {
+    final responseJson = await realApi.register(userRequest);
     if (responseJson != null) {
       return UserResponse.fromJson(responseJson);
     }

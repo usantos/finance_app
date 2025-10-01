@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _clearErrors() {
-    _usernameController.clear();
+    _cpfController.clear();
     _passwordController.clear();
     _formKey.currentState?.reset();
   }
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _authViewModel.removeListener(_authListener);
-    _usernameController.dispose();
+    _cpfController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -62,12 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              height: 440,
               width: MediaQuery.of(context).size.width * 0.95,
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 padding: EdgeInsets.zero,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.account_balance_wallet_rounded, size: 64, color: colorScheme.primary),
@@ -90,18 +90,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
 
                     TextFormField(
-                      controller: _usernameController,
+                      controller: _cpfController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      maxLength: 11,
+                      buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
                         fillColor: const Color.fromARGB(255, 242, 242, 242),
-                        labelText: 'Usuário',
+                        labelText: 'Cpf',
                         labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.person, size: 18),
+                        prefixIcon: const Icon(Icons.assignment_ind, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateUser,
+                      validator: _authViewModel.validateCpf,
                     ),
 
                     const SizedBox(height: 16),
@@ -148,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return;
                                 }
                                 final success = await _authViewModel.login(
-                                  _usernameController.text,
+                                  _cpfController.text,
                                   _passwordController.text,
                                 );
 

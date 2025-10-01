@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:flutter/material.dart';
 
 class RealApi {
@@ -18,9 +19,9 @@ class RealApi {
     );
   }
 
-  Future<Map<String, dynamic>?> login(String username, String password) async {
+  Future<Map<String, dynamic>?> login(String cpf, String password) async {
     try {
-      final response = await _dio.post('/users/login', data: {'username': username, 'password': password});
+      final response = await _dio.post('/users/login', data: {'cpf': cpf, 'password': password});
 
       if (response.data != null && response.data is Map<String, dynamic>) {
         if (response.data['token'] != null) {
@@ -36,12 +37,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> register(String username, String email, String password) async {
+  Future<Map<String, dynamic>?> register(UserRequest userRequest) async {
     try {
-      final response = await _dio.post(
-        '/users/register',
-        data: {'username': username, 'email': email, 'password': password},
-      );
+      final response = await _dio.post('/users/register', data: userRequest.toMap());
 
       return response.data;
     } catch (e) {
@@ -122,7 +120,7 @@ class RealApi {
       final response = await _dio.post(
         '/accounts/set_transfer_password',
         options: Options(validateStatus: (status) => true),
-        data: {'accountNumber': accountNumber, 'transfer_password': transferPassword},
+        data: {'accountNumber': accountNumber, 'transferPassword': transferPassword},
       );
 
       if (response.statusCode == 200) {

@@ -1,5 +1,6 @@
 import 'package:financial_app/data/datasources/account_local_data_source.dart';
 import 'package:financial_app/data/datasources/user_local_data_source.dart';
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/repositories/auth_repository.dart';
 
@@ -10,8 +11,8 @@ class AuthUseCase {
 
   AuthUseCase(this.authRepository, this.userLocalDataSource, this.accountLocalDataSource);
 
-  Future<UserResponse?> call(String username, String password) async {
-    final userResponse = await authRepository.login(username, password);
+  Future<UserResponse?> call(String cpf, String password) async {
+    final userResponse = await authRepository.login(cpf, password);
 
     if (userResponse != null) {
       await userLocalDataSource.saveUser(userResponse);
@@ -36,8 +37,8 @@ class AuthUseCase {
     return false;
   }
 
-  Future<UserResponse?> register(String username, String email, String password) async {
-    final userResponse = await authRepository.register(username, email, password);
+  Future<UserResponse?> register(UserRequest userRequest) async {
+    final userResponse = await authRepository.register(userRequest);
     if (userResponse != null) {
       await userLocalDataSource.saveUser(userResponse);
       return userResponse;

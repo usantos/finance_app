@@ -1,3 +1,4 @@
+import 'package:financial_app/data/models/user_request.dart';
 import 'package:financial_app/data/models/user_response.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
@@ -27,12 +28,12 @@ class AuthViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  Future<bool> login(String username, String password) async {
+  Future<bool> login(String cpf, String password) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      _currentUser = await _authUseCase(username, password);
+      _currentUser = await _authUseCase(cpf, password);
       final account = await _accountUseCase();
       if (account != null) {
         _accountViewModel.updateAccount(account);
@@ -50,53 +51,25 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  String? validateUser(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Campo obrigatório";
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Campo obrigatório";
-    }
-
-    if (value.length < 4) {
-      return "A senha deve ter pelo menos 4 caracteres";
-    }
-
-    return null;
-  }
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Campo obrigatório";
-    }
-
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-    if (!emailRegex.hasMatch(value)) {
-      return "E-mail inválido";
-    }
-
-    return null;
-  }
-
   @visibleForTesting
   void setCurrentUser(UserResponse? user) {
     _currentUser = user;
   }
 
-  Future<bool> register(String username, String email, String password) async {
+  UserRequest toUserRequest(String name, String cpf, String phone, String email, String password) {
+    UserRequest userRequest = UserRequest(name: name, cpf: cpf, phone: phone, email: email, password: password);
+    return userRequest;
+  }
+
+  Future<bool> register(UserRequest userRequest) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      _currentUser = await _authUseCase.register(username, email, password);
+      _currentUser = await _authUseCase.register(userRequest);
       var successLogin = false;
       if (_currentUser != null) {
-        successLogin = await login(username, password);
+        successLogin = await login(userRequest.cpf, userRequest.password);
         if (!successLogin) {
           _errorMessage = 'Não foi possível realizar o login.';
         }
@@ -147,5 +120,85 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     }
     return _currentUser;
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    return null;
+  }
+
+  String? validateCpf(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    final cpf = value.replaceAll(RegExp(r'\D'), '');
+    if (cpf.length != 11) return "CPF deve conter 11 dígitos";
+    if (RegExp(r'^(\d)\1{10}$').hasMatch(cpf)) return "CPF inválido";
+    final digits = cpf.split('').map(int.parse).toList();
+    int sum = 0;
+    for (int i = 0; i < 9; i++) {
+      sum += digits[i] * (10 - i);
+    }
+    int remainder = sum % 11;
+    int firstVerifier = (remainder < 2) ? 0 : 11 - remainder;
+    if (digits[9] != firstVerifier) return "CPF inválido";
+    sum = 0;
+    for (int i = 0; i < 10; i++) {
+      sum += digits[i] * (11 - i);
+    }
+    remainder = sum % 11;
+    int secondVerifier = (remainder < 2) ? 0 : 11 - remainder;
+    if (digits[10] != secondVerifier) return "CPF inválido";
+
+    return null;
+  }
+
+  String? validatePhone(String? value, {bool strictMobileRule = true}) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final phone = value.replaceAll(RegExp(r'\D'), '');
+
+    if (phone.length != 10 && phone.length != 11) return "Telefone inválido";
+
+    if (RegExp(r'^(\d)\1+$').hasMatch(phone)) return "Telefone inválido";
+
+    final ddd = phone.substring(0, 2);
+    if (ddd.startsWith('0')) return "DDD inválido";
+
+    if (strictMobileRule && phone.length == 11) {
+      if (phone[2] != '9') return "Número de celular inválido";
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    if (value.length < 4) {
+      return "A senha deve ter pelo menos 4 caracteres";
+    }
+
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    if (!emailRegex.hasMatch(value)) {
+      return "E-mail inválido";
+    }
+
+    return null;
   }
 }

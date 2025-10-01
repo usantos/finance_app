@@ -4,23 +4,24 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:ui' as _i13;
+import 'dart:ui' as _i14;
 
 import 'package:financial_app/data/datasources/account_local_data_source.dart'
     as _i4;
 import 'package:financial_app/data/datasources/user_local_data_source.dart'
     as _i3;
+import 'package:financial_app/data/models/user_request.dart' as _i9;
 import 'package:financial_app/data/models/user_response.dart' as _i8;
-import 'package:financial_app/domain/entities/account.dart' as _i10;
+import 'package:financial_app/domain/entities/account.dart' as _i11;
 import 'package:financial_app/domain/repositories/account_repository.dart'
     as _i5;
 import 'package:financial_app/domain/repositories/auth_repository.dart' as _i2;
-import 'package:financial_app/domain/usecases/account_usecase.dart' as _i9;
+import 'package:financial_app/domain/usecases/account_usecase.dart' as _i10;
 import 'package:financial_app/domain/usecases/auth_usecase.dart' as _i6;
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart'
-    as _i11;
+    as _i12;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i12;
+import 'package:mockito/src/dummies.dart' as _i13;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -102,9 +103,9 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
           as _i4.AccountLocalDataSource);
 
   @override
-  _i7.Future<_i8.UserResponse?> call(String? username, String? password) =>
+  _i7.Future<_i8.UserResponse?> call(String? cpf, String? password) =>
       (super.noSuchMethod(
-            Invocation.method(#call, [username, password]),
+            Invocation.method(#call, [cpf, password]),
             returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
           as _i7.Future<_i8.UserResponse?>);
@@ -118,13 +119,9 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
           as _i7.Future<bool?>);
 
   @override
-  _i7.Future<_i8.UserResponse?> register(
-    String? username,
-    String? email,
-    String? password,
-  ) =>
+  _i7.Future<_i8.UserResponse?> register(_i9.UserRequest? userRequest) =>
       (super.noSuchMethod(
-            Invocation.method(#register, [username, email, password]),
+            Invocation.method(#register, [userRequest]),
             returnValue: _i7.Future<_i8.UserResponse?>.value(),
           )
           as _i7.Future<_i8.UserResponse?>);
@@ -141,7 +138,7 @@ class MockAuthUseCase extends _i1.Mock implements _i6.AuthUseCase {
 /// A class which mocks [AccountUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
+class MockAccountUseCase extends _i1.Mock implements _i10.AccountUseCase {
   MockAccountUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -180,26 +177,26 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
           as _i4.AccountLocalDataSource);
 
   @override
-  _i7.Future<_i10.Account?> call() =>
+  _i7.Future<_i11.Account?> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i7.Future<_i10.Account?>.value(),
+            returnValue: _i7.Future<_i11.Account?>.value(),
           )
-          as _i7.Future<_i10.Account?>);
+          as _i7.Future<_i11.Account?>);
 
   @override
-  _i7.Future<_i10.Account?> getAccountLocal() =>
+  _i7.Future<_i11.Account?> getAccountLocal() =>
       (super.noSuchMethod(
             Invocation.method(#getAccountLocal, []),
-            returnValue: _i7.Future<_i10.Account?>.value(),
+            returnValue: _i7.Future<_i11.Account?>.value(),
           )
-          as _i7.Future<_i10.Account?>);
+          as _i7.Future<_i11.Account?>);
 }
 
 /// A class which mocks [AccountViewModel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
+class MockAccountViewModel extends _i1.Mock implements _i12.AccountViewModel {
   MockAccountViewModel() {
     _i1.throwOnMissingStub(this);
   }
@@ -231,7 +228,7 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
   String get displayBalance =>
       (super.noSuchMethod(
             Invocation.getter(#displayBalance),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i13.dummyValue<String>(
               this,
               Invocation.getter(#displayBalance),
             ),
@@ -244,13 +241,13 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
           as bool);
 
   @override
-  void setAccount(_i10.Account? account) => super.noSuchMethod(
+  void setAccount(_i11.Account? account) => super.noSuchMethod(
     Invocation.method(#setAccount, [account]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void updateAccount(_i10.Account? account) => super.noSuchMethod(
+  void updateAccount(_i11.Account? account) => super.noSuchMethod(
     Invocation.method(#updateAccount, [account]),
     returnValueForMissingStub: null,
   );
@@ -270,13 +267,13 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
           as _i7.Future<_i8.UserResponse?>);
 
   @override
-  void addListener(_i13.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#addListener, [listener]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void removeListener(_i13.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
     Invocation.method(#removeListener, [listener]),
     returnValueForMissingStub: null,
   );

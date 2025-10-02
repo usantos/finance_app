@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -11,17 +12,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final FocusNode _cpfFocusNode = FocusNode();
+  final _authViewModel = sl.get<AuthViewModel>();
   bool _isLoading = false;
   bool _obscurePassword = true;
-  final _authViewModel = sl.get<AuthViewModel>();
+  bool _isCpfMasked = false;
+  String _rawCpf = "";
 
   @override
   void initState() {
     super.initState();
     _authViewModel.addListener(_authListener);
+    _cpfFocusNode.addListener(() {
+      if (!_cpfFocusNode.hasFocus) {
+        _maskCpfIfComplete();
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).unfocus();
       _clearErrors();
@@ -46,7 +55,18 @@ class _LoginScreenState extends State<LoginScreen> {
     _authViewModel.removeListener(_authListener);
     _cpfController.dispose();
     _passwordController.dispose();
+    _cpfFocusNode.dispose();
     super.dispose();
+  }
+
+  void _maskCpfIfComplete() {
+    if (_rawCpf.length == 11 && !_isCpfMasked) {
+      setState(() {
+        _cpfController.text = _rawCpf.maskCPFMid();
+        _cpfController.selection = TextSelection.fromPosition(TextPosition(offset: _cpfController.text.length));
+        _isCpfMasked = true;
+      });
+    }
   }
 
   @override
@@ -91,11 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     TextFormField(
                       controller: _cpfController,
+                      focusNode: _cpfFocusNode,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       maxLength: 11,
                       buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
                       style: const TextStyle(fontSize: 14),
+                      readOnly: _isCpfMasked,
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
@@ -103,9 +125,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Cpf',
                         labelStyle: const TextStyle(fontSize: 14),
                         prefixIcon: const Icon(Icons.assignment_ind, size: 18),
+                        suffixIcon: _isCpfMasked
+                            ? IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  setState(() {
+                                    _isCpfMasked = false;
+                                    _cpfController.text = _rawCpf.toCPFProgressive();
+                                    _cpfController.selection = TextSelection.fromPosition(
+                                      TextPosition(offset: _cpfController.text.length),
+                                    );
+                                    _cpfFocusNode.requestFocus();
+                                  });
+                                },
+                              )
+                            : null,
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateCpf,
+                      validator: (_) {
+                        final cpf = _rawCpf;
+                        return _authViewModel.validateCpf(cpf);
+                      },
+                      onChanged: (value) {
+                        _rawCpf = value.replaceAll(RegExp(r'\D'), '');
+                        if (!_isCpfMasked) {
+                          setState(() {
+                            _cpfController.text = _rawCpf.toCPFProgressive();
+                            _cpfController.selection = TextSelection.fromPosition(
+                              TextPosition(offset: _cpfController.text.length),
+                            );
+                          });
+                        }
+                      },
+                      onEditingComplete: () {
+                        if (_rawCpf.length == 11 && !_isCpfMasked) {
+                          setState(() {
+                            _cpfController.text = _rawCpf.maskCPFMid();
+                            _cpfController.selection = TextSelection.fromPosition(
+                              TextPosition(offset: _cpfController.text.length),
+                            );
+                            _isCpfMasked = true;
+                          });
+                        }
+                      },
                     ),
 
                     const SizedBox(height: 16),
@@ -151,10 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (!_formKey.currentState!.validate()) {
                                   return;
                                 }
-                                final success = await _authViewModel.login(
-                                  _cpfController.text,
-                                  _passwordController.text,
-                                );
+                                final success = await _authViewModel.login(_rawCpf, _passwordController.text);
 
                                 if (!context.mounted) return;
 

@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _obscurePassword = true;
   final _authViewModel = sl.get<AuthViewModel>();
+  String _rawCpf = "";
+  String _rawPhone = "";
 
   @override
   void dispose() {
@@ -118,6 +121,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: _authViewModel.validateCpf,
+                      onChanged: (value) {
+                        _rawCpf = value.replaceAll(RegExp(r'\D'), '');
+                        setState(() {
+                          _cpfController.text = _rawCpf.toCPFProgressive();
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 16),
@@ -138,6 +147,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: _authViewModel.validatePhone,
+                      onChanged: (value) {
+                        _rawPhone = value.replaceAll(RegExp(r'\D'), '');
+                        setState(() {
+                          _phoneController.text = _rawPhone.toPhone();
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 24),
@@ -203,8 +218,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                     final userRequest = authViewModel.toUserRequest(
                                       _nameController.text,
-                                      _cpfController.text,
-                                      _phoneController.text,
+                                      _rawCpf,
+                                      _rawPhone,
                                       _emailController.text,
                                       _passwordController.text,
                                     );

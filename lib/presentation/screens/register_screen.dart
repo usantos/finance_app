@@ -1,5 +1,5 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
-import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,14 +14,13 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _cpfFieldKey = GlobalKey<FormFieldState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   bool _obscurePassword = true;
-  final _authViewModel = sl.get<AuthViewModel>();
   String _rawCpf = "";
   String _rawPhone = "";
 
@@ -102,10 +101,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: const Icon(Icons.person, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateName,
+                      validator: Utils.validateName,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      key: _cpfFieldKey,
                       keyboardType: TextInputType.number,
                       maxLength: 14,
                       buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
@@ -120,12 +120,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: const Icon(Icons.assignment_ind, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateCpf,
+                      validator: Utils.validateCpf,
                       onChanged: (value) {
                         _rawCpf = value.replaceAll(RegExp(r'\D'), '');
                         setState(() {
                           _cpfController.text = _rawCpf.toCPFProgressive();
                         });
+                      },
+                      onEditingComplete: () {
+                        if (!(_cpfFieldKey.currentState?.validate() ?? false)) {
+                          _cpfController.selection = TextSelection.fromPosition(
+                            TextPosition(offset: _cpfController.text.length),
+                          );
+                          return;
+                        }
+                        FocusScope.of(context).unfocus();
                       },
                     ),
 
@@ -146,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: const Icon(Icons.phone, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validatePhone,
+                      validator: Utils.validatePhone,
                       onChanged: (value) {
                         _rawPhone = value.replaceAll(RegExp(r'\D'), '');
                         setState(() {
@@ -169,7 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: const Icon(Icons.email, size: 18),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validateEmail,
+                      validator: Utils.validateEmail,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -195,7 +204,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validatePassword,
+                      validator: Utils.validatePassword,
                     ),
 
                     const SizedBox(height: 16),

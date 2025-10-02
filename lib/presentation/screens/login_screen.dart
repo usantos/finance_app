@@ -1,5 +1,6 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _cpfFieldKey = GlobalKey<FormFieldState>();
   final FocusNode _cpfFocusNode = FocusNode();
   final _authViewModel = sl.get<AuthViewModel>();
   bool _isLoading = false;
@@ -110,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
 
                     TextFormField(
+                      key: _cpfFieldKey,
                       controller: _cpfController,
                       focusNode: _cpfFocusNode,
                       keyboardType: TextInputType.number,
@@ -144,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: (_) {
                         final cpf = _rawCpf;
-                        return _authViewModel.validateCpf(cpf);
+                        return Utils.validateCpf(cpf);
                       },
                       onChanged: (value) {
                         _rawCpf = value.replaceAll(RegExp(r'\D'), '');
@@ -159,6 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       onEditingComplete: () {
                         if (_rawCpf.length == 11 && !_isCpfMasked) {
+                          if (!_cpfFieldKey.currentState!.validate()) {
+                            return;
+                          }
                           setState(() {
                             _cpfController.text = _rawCpf.maskCPFMid();
                             _cpfController.selection = TextSelection.fromPosition(
@@ -195,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
-                      validator: _authViewModel.validatePassword,
+                      validator: Utils.validatePassword,
                     ),
 
                     const SizedBox(height: 24),

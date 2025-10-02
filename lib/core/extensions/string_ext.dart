@@ -58,22 +58,27 @@ extension StringExtension on String {
     final digits = replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';
 
-    String d = digits.length > 11 ? digits.substring(0, 11) : digits;
+    final d = digits.length > 11 ? digits.substring(0, 11) : digits;
 
     if (d.length <= 2) {
       return '($d';
-    } else {
+    } else if (d.length <= 6) {
       final ddd = d.substring(0, 2);
       final number = d.substring(2);
       return '($ddd) $number';
+    } else {
+      final ddd = d.substring(0, 2);
+      final number1 = d.substring(2, 7);
+      final number2 = d.length > 7 ? d.substring(7) : '';
+      return '($ddd) $number1${number2.isNotEmpty ? '-$number2' : ''}';
     }
   }
 
   String maskPhoneMid({String maskChar = '•'}) {
     final digits = replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';
-    final d = digits.length > 11 ? digits.substring(0, 11) : digits;
 
+    final d = digits.length > 11 ? digits.substring(0, 11) : digits;
     final chars = d.split('');
 
     for (int i = 2; i < chars.length - 4; i++) {
@@ -84,10 +89,15 @@ extension StringExtension on String {
 
     if (rebuilt.length <= 2) {
       return '($rebuilt';
-    } else {
+    } else if (rebuilt.length <= 6) {
       final ddd = rebuilt.substring(0, 2);
       final number = rebuilt.substring(2);
       return '($ddd) $number';
+    } else {
+      final ddd = rebuilt.substring(0, 2);
+      final number1 = rebuilt.substring(2, 7);
+      final number2 = rebuilt.length > 7 ? rebuilt.substring(7) : '';
+      return '($ddd) $number1${number2.isNotEmpty ? '-$number2' : ''}';
     }
   }
 }

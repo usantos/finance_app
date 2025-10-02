@@ -34,9 +34,7 @@ class _RecentContactsState extends State<RecentContacts> {
   Widget _buildContactItem(BuildContext context, String name) {
     final color = Theme.of(context).primaryColor;
     final textColor = Colors.white;
-
     final initial = name.isNotEmpty ? name[0].toUpperCase() : "?";
-
     return Column(
       children: [
         Container(

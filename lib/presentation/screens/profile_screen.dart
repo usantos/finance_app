@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/injection_container.dart';
-import 'package:financial_app/presentation/screens/components/bottom_sheet_home_edit.dart';
+import 'package:financial_app/presentation/screens/components/bottom_sheet_edit_profile.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'components/custom_appbar.dart';
@@ -61,11 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   CustomBottomSheet.show(
                                     iconClose: false,
                                     context,
-                                    isFull: true,
-                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height * 0.7,
                                     isDismissible: true,
-                                    enableDrag: true,
-                                    child: const BottomSheetHomeEdit(),
+                                    enableDrag: false,
+                                    child: const BottomSheetEditProfile(),
                                   );
                                 },
                               ),

@@ -12,8 +12,13 @@ class QuickActionsTransfer extends StatefulWidget {
 }
 
 class _QuickActionsTransferState extends State<QuickActionsTransfer> {
+  final ScrollController _scrollController = ScrollController();
   late List<Map<String, dynamic>> actions;
   int selectedIndex = 0;
+
+  static const double kItemWidth = 90.0;
+  static const double kIconBoxSize = 70.0;
+  static const double kSeparator = 1.0;
 
   @override
   void initState() {
@@ -33,62 +38,89 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
     }
   }
 
+  void _scrollToIndex(int index) {
+    final offset = index * (kItemWidth + kSeparator);
+    _scrollController.animateTo(
+      offset.clamp(_scrollController.position.minScrollExtent, _scrollController.position.maxScrollExtent),
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 120,
       child: ListView.separated(
+        controller: _scrollController,
         scrollDirection: Axis.horizontal,
         itemCount: actions.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 18),
+        separatorBuilder: (_, __) => const SizedBox(width: kSeparator),
         itemBuilder: (context, index) {
           final action = actions[index];
           final enabled = index == selectedIndex;
           final widgetToShow = action['widget'] as Widget?;
 
-          return Material(
-            color: Colors.transparent,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: widgetToShow != null
-                  ? () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                      widget.onSelect(widgetToShow);
-                    }
-                  : null,
-              child: _buildActionItem(
-                context,
-                action['icon'] as IconData,
-                action['label'] as String,
-                isEnabled: enabled,
-              ),
-            ),
+          return _buildActionItem(
+            context,
+            action['icon'] as IconData,
+            action['label'] as String,
+            isEnabled: enabled,
+            onTap: widgetToShow != null
+                ? () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                    widget.onSelect(widgetToShow);
+                    _scrollToIndex(index);
+                  }
+                : null,
           );
         },
       ),
     );
   }
 
-  Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
+  Widget _buildActionItem(
+    BuildContext context,
+    IconData icon,
+    String label, {
+    bool isEnabled = false,
+    VoidCallback? onTap,
+  }) {
     final color = isEnabled ? Theme.of(context).primaryColor : Colors.grey.shade300;
     final iconColor = isEnabled ? Colors.white : Colors.grey.shade500;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Ink(
-          width: 70,
-          height: 70,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
-          child: Center(child: Icon(icon, color: iconColor, size: 28)),
-        ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
-      ],
+    return SizedBox(
+      width: kItemWidth,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(16),
+            child: Ink(
+              width: kIconBoxSize,
+              height: kIconBoxSize,
+              decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16),
+                onTap: onTap,
+                child: Center(child: Icon(icon, color: iconColor, size: 28)),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
 }

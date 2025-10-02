@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MainContentScreen(),
     StatementScreen(title: "Extrato", description: "Suas movimentções"),
     HistoryScreen(),
-    TransferScreen(title: "Transferência", description: "Realizar transferência"),
+    TransferScreen(title: "Serviços", description: "Realizar transferência"),
     ProfileScreen(title: "Perfil", description: "Suas informações pessoais"),
   ];
 
@@ -39,31 +39,37 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: Colors.white,
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onItemTapped,
-        height: 70,
-        indicatorColor: Colors.blue.shade100,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Início'),
-          NavigationDestination(
-            icon: Icon(Icons.receipt_long_outlined),
-            selectedIcon: Icon(Icons.receipt_long),
-            label: 'Extrato',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.credit_card_outlined),
-            selectedIcon: Icon(Icons.credit_card),
-            label: 'Cartão',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.send_outlined),
-            selectedIcon: Icon(Icons.send),
-            label: 'Transferência',
-          ),
-          NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Perfil'),
-        ],
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          iconTheme: WidgetStateProperty.all(const IconThemeData(size: 22)),
+          labelTextStyle: WidgetStateProperty.all(const TextStyle(fontSize: 11)),
+        ),
+        child: NavigationBar(
+          backgroundColor: Colors.white,
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: _onItemTapped,
+          height: 70,
+          indicatorColor: Colors.blue.shade100,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Início'),
+            NavigationDestination(
+              icon: Icon(Icons.receipt_long_outlined),
+              selectedIcon: Icon(Icons.receipt_long),
+              label: 'Extrato',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.credit_card_outlined),
+              selectedIcon: Icon(Icons.credit_card),
+              label: 'Cartão',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.send_outlined),
+              selectedIcon: Icon(Icons.send),
+              label: 'Transferência',
+            ),
+            NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Perfil'),
+          ],
+        ),
       ),
     );
   }

@@ -83,7 +83,6 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       const QuickActions(),
                       const SizedBox(height: 24),
                       const Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 16),
                       const RecentTransactions(),
                     ],
                   ),

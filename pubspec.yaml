@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.0.5
   get_it: ^7.7.0
-  intl: ^0.18.0
+  intl: ^0.20.2
   mockito: ^5.4.4
   build_runner: ^2.4.8
   flutter_svg: ^2.0.7
@@ -45,7 +45,11 @@ dependencies:
   pinput: ^5.0.1
   another_flushbar: ^1.12.30
   skeletons_forked: ^0.0.4
-  
+
+  flutter_localizations:
+    sdk: flutter
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -67,6 +71,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:

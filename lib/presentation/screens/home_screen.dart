@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainContentScreen(),
-    StatementScreen(title: "Extrato", description: "Suas movimentções"),
+    StatementScreen(title: "Extrato", description: "Suas movimentações"),
     HistoryScreen(),
     TransferScreen(title: "Serviços", description: "Realizar transferência"),
     ProfileScreen(title: "Perfil", description: "Suas informações pessoais"),

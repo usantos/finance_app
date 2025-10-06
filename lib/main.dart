@@ -7,6 +7,7 @@ import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   di.init();
@@ -43,6 +44,12 @@ class MyApp extends StatelessWidget {
             style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2C2C54), foregroundColor: Colors.white),
           ),
         ),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('pt', 'BR')],
         initialRoute: '/',
         routes: {
           '/': (context) => const LoginScreen(),

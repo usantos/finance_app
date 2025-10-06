@@ -1,5 +1,5 @@
 import 'package:financial_app/core/injection_container.dart';
-import 'package:financial_app/presentation/screens/history_screen.dart';
+import 'package:financial_app/presentation/screens/credit_card_screen.dart';
 import 'package:financial_app/presentation/screens/profile_screen.dart';
 import 'package:financial_app/presentation/screens/statement_screen.dart';
 import 'package:financial_app/presentation/screens/transfer_screen.dart';
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     MainContentScreen(),
     StatementScreen(title: "Extrato", description: "Suas movimentações"),
-    HistoryScreen(),
+    CreditCardScreen(title: "Cartão", description: "Cartão de crédito"),
     TransferScreen(title: "Serviços", description: "Realizar transferência"),
     ProfileScreen(title: "Perfil", description: "Suas informações pessoais"),
   ];

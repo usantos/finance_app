@@ -1,4 +1,5 @@
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
+import 'package:financial_app/presentation/screens/statement_screen.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
@@ -65,10 +66,18 @@ class _TransferScreenState extends State<TransferScreen> {
                           const SizedBox(height: 24),
                         ] else
                           const SizedBox.shrink(),
-
                         Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 16),
                         RecentPix(),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                            ),
+                            onPressed: () {},
+                            child: Text('Ver extrato completo', style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
                       ],
                     ),
                   ),

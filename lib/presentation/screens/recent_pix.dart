@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/transaction_card.dart';
 
 class RecentPix extends StatefulWidget {
   const RecentPix({super.key});
@@ -8,46 +9,38 @@ class RecentPix extends StatefulWidget {
 }
 
 class _RecentPixState extends State<RecentPix> {
-  final List<Map<String, dynamic>> transactions = [
-    {'title': 'Maria', 'subtitle': 'Hoje', 'value': '-R\$ 150,00', 'color': Colors.red},
-    {'title': 'Ana', 'subtitle': 'Ontem', 'value': '+R\$ 1.200,00', 'color': Colors.green},
-    {'title': 'João', 'subtitle': 'Ontem', 'value': '+R\$ 300,00', 'color': Colors.green},
+  final List<Transaction> _transactions = [
+    Transaction(
+      description: 'Transferência PIX - João Silva',
+      date: DateTime(2025, 10, 6),
+      time: const TimeOfDay(hour: 14, minute: 30),
+      amount: 150.00,
+      type: TransactionType.debit,
+      category: 'Transferência',
+    ),
+    Transaction(
+      description: 'Transferência PIX - Felipe',
+      date: DateTime(2025, 10, 5),
+      time: const TimeOfDay(hour: 19, minute: 45),
+      amount: 185.50,
+      type: TransactionType.credit,
+      category: 'Transferência',
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (int i = 0; i < transactions.length; i++) ...[
-          _buildTransactionItem(
-            transactions[i]['title'] as String,
-            transactions[i]['subtitle'] as String,
-            transactions[i]['value'] as String,
-            transactions[i]['color'] as Color,
-          ),
-          if (i < transactions.length - 1) const Divider(height: 24),
-        ],
-      ],
-    );
-  }
+    if (_transactions.isEmpty) {
+      return const Center(child: Text('Nenhuma transação encontrada.'));
+    }
 
-  Widget _buildTransactionItem(String title, String subtitle, String value, Color valueColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 4),
-            Text(subtitle, style: const TextStyle(color: Colors.grey)),
-          ],
-        ),
-        Text(
-          value,
-          style: TextStyle(color: valueColor, fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ],
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: _transactions.length,
+      itemBuilder: (context, index) {
+        return TransactionCard(transaction: _transactions[index]);
+      },
     );
   }
 }

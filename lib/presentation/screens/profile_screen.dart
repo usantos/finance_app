@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Text(
                       'Conta: ${accountVM.account?.accountNumber ?? '-'}',
-                      style: const TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.black),
                     ),
                   ],
                 ),
@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(color: Colors.grey)),
+        Text(label, style: const TextStyle(color: Colors.black)),
         Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
       ],
     );
@@ -162,9 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         side: const BorderSide(color: Colors.grey),
       ),
       child: ListTile(
-        leading: Icon(icon, color: Colors.black54),
+        leading: Icon(icon, color: Colors.black),
         title: Text(text, style: const TextStyle(fontWeight: FontWeight.w500)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
         onTap: onTap,
       ),
     );

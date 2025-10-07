@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : Column(
                             children: [
                               _buildUserInfoCard(authVM, accountVM),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 14),
                               _buildMenuOption(
                                 icon: Icons.edit_outlined,
                                 text: 'Editar dados pessoais',
@@ -72,14 +72,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               _buildMenuOption(icon: Icons.notifications_outlined, text: 'Notificações', onTap: () {}),
                               _buildMenuOption(icon: Icons.shield_outlined, text: 'Segurança', onTap: () {}),
                               _buildMenuOption(icon: Icons.help_outline, text: 'Ajuda e suporte', onTap: () {}),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 16),
                               _buildVerifiedAccountCard(),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 16),
                               const Text('Versão do aplicativo', style: TextStyle(color: Colors.grey)),
                               const Text('1.0.0', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 24),
+                              const SizedBox(height: 16),
                               _buildLogoutButton(context, authVM),
-                              const SizedBox(height: 24),
                             ],
                           ),
                   ),

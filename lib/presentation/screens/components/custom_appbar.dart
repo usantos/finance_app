@@ -19,7 +19,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
       pinned: false,
       floating: true,
       snap: true,
-      expandedHeight: 110.0,
+      expandedHeight: MediaQuery.of(context).size.height * 0.14,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           padding: const EdgeInsets.only(top: 60, left: 16, right: 16),

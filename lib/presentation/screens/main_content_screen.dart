@@ -7,6 +7,8 @@ import 'package:financial_app/presentation/screens/quick_actions.dart';
 import 'package:financial_app/presentation/screens/recent_transactions.dart';
 import 'package:provider/provider.dart';
 
+import 'components/skeleton.dart';
+
 class MainContentScreen extends StatefulWidget {
   const MainContentScreen({super.key});
 
@@ -27,6 +29,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [ChangeNotifierProvider.value(value: _authViewModel)],
       child: Consumer<AuthViewModel>(
@@ -37,9 +40,11 @@ class _MainContentScreenState extends State<MainContentScreen> {
                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
                 backgroundColor: const Color(0xFF2C2C54),
                 pinned: true,
-                expandedHeight: 220.0,
+                expandedHeight: 220,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Column(
+                  background:   authVM.isLoading
+                      ?  const LoadSkeleton(itemCount: 2,)
+                      :Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 60),
@@ -59,6 +64,9 @@ class _MainContentScreenState extends State<MainContentScreen> {
                   ),
                 ),
                 actions: [
+                  authVM.isLoading
+                      ? SizedBox.shrink()
+                      :
                   Padding(
                     padding: const EdgeInsets.only(right: 16.0),
                     child: CircleAvatar(
@@ -72,8 +80,11 @@ class _MainContentScreenState extends State<MainContentScreen> {
                   ),
                 ],
               ),
+
               SliverToBoxAdapter(
-                child: Padding(
+                child:  authVM.isLoading
+                    ? const LoadSkeleton(itemCount: 8)
+                    :Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,8 +92,8 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       const Text('Ações rápidas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 16),
                       const QuickActions(),
-                      const SizedBox(height: 24),
                       const Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 16),
                       const RecentTransactions(),
                     ],
                   ),

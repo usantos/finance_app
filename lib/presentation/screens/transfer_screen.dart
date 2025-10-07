@@ -1,8 +1,8 @@
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
-import 'package:financial_app/presentation/screens/statement_screen.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
+import 'components/skeleton.dart';
 import 'quick_actions_transfer.dart';
 import 'recent_pix.dart';
 
@@ -16,9 +16,19 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
+   late  bool _isLoad = true;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        _isLoad = false;
+
+      });
+    });
+  });
   }
 
   Widget? _selectedWidget;
@@ -32,8 +42,11 @@ class _TransferScreenState extends State<TransferScreen> {
           CustomAppbar(title: widget.title, description: widget.description),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
+              padding: const EdgeInsets.all(16.0),
+              child:  _isLoad == true
+                  ? const LoadSkeleton(itemCount: 6)
+                  :
+              Column(
                 children: [
                   QuickActionsTransfer(
                     onSelect: (widget) {
@@ -63,12 +76,12 @@ class _TransferScreenState extends State<TransferScreen> {
                           Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 16),
                           RecentContacts(),
-                          const SizedBox(height: 24),
                         ] else
                           const SizedBox.shrink(),
                         Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 16),
                         RecentPix(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
                         Center(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(

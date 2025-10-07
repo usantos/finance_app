@@ -20,6 +20,7 @@ class _RecentContactsState extends State<RecentContacts> {
     return SizedBox(
       height: 120,
       child: ListView.separated(
+        padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,
         itemCount: contacts.length,
         separatorBuilder: (_, __) => const SizedBox(width: 18),

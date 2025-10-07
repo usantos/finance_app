@@ -35,6 +35,7 @@ class _RecentPixState extends State<RecentPix> {
     }
 
     return ListView.builder(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _transactions.length,

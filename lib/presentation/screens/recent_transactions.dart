@@ -36,6 +36,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
     }
 
     return ListView.builder(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _transactions.length,

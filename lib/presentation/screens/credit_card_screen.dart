@@ -26,7 +26,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+              padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
               child: Text(
                 'Gerencie seus cartões',
                 style: TextStyle(color: Colors.white.withValues(alpha:0.8), fontSize: 16.0),
@@ -166,7 +166,10 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
 
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.grey)),
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -178,7 +181,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   _buildLimitRow('Disponível', 'R\$ 4.250,00', Colors.green),
                   _buildLimitRow('Utilizado', 'R\$ 750,00', Colors.red),
                 ],
-              ),
+              ),),
             ),
 
             Padding(

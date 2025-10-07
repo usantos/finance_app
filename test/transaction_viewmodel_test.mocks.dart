@@ -39,6 +39,7 @@ import 'package:mockito/src/dummies.dart' as _i12;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeAccountRepository_0 extends _i1.SmartFake
     implements _i2.AccountRepository {
@@ -377,8 +378,8 @@ class MockTransactionViewModel extends _i1.Mock
           as bool);
 
   @override
-  set showErrors(bool? _showErrors) => super.noSuchMethod(
-    Invocation.setter(#showErrors, _showErrors),
+  set showErrors(bool? value) => super.noSuchMethod(
+    Invocation.setter(#showErrors, value),
     returnValueForMissingStub: null,
   );
 

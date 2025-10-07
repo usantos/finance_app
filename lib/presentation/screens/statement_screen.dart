@@ -1,3 +1,4 @@
+import 'package:financial_app/presentation/screens/statement_share_service.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
 import 'package:intl/intl.dart';
@@ -125,6 +126,20 @@ class _StatementScreenState extends State<StatementScreen> {
                     ),
                   ),
 
+                  const SizedBox(height: 26),
+                  
+                   Align(
+                     alignment: Alignment.centerRight,
+                     child: IconButton(
+                       autofocus: true,
+                       enableFeedback: true,
+                       highlightColor:  Color(0xFF2C2C54),
+                       onPressed: () {
+                         StatementShare.captureAndSharePdf(context);
+                       },
+                       icon: const Icon(Icons.download, size: 24, color: Colors.black),
+                     )
+                   ),
                   const SizedBox(height: 26),
 
                   ListView.builder(

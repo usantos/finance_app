@@ -1,5 +1,5 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
 import 'components/transaction_card.dart';
 
 class RecentTransactions extends StatefulWidget {
@@ -32,7 +32,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
   @override
   Widget build(BuildContext context) {
     if (_transactions.isEmpty) {
-      return const Center(child: Text('Nenhuma transação encontrada.'));
+      return const Center(child: Text('Nenhuma transação encontrada.', style: TextStyle(color: AppColors.black)));
     }
 
     return ListView.builder(

@@ -1,4 +1,5 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,21 +56,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2C2C54),
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pushReplacementNamed(context, '/'),
-          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+          icon: const Icon(Icons.arrow_back, color: AppColors.white, size: 28),
         ),
-        title: const Text('Entrar', style: TextStyle(color: Colors.white, fontSize: 22)),
-        backgroundColor: const Color(0xFF2C2C54),
+        title: const Text('Entrar', style: TextStyle(color: AppColors.white, fontSize: 22)),
+        backgroundColor: AppColors.primary,
       ),
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(10)),
               width: MediaQuery.of(context).size.width * 0.95,
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -81,11 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 15),
                     const Text(
                       'Cadastro',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: Color.fromARGB(255, 20, 24, 56),
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.black),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -95,10 +92,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Nome',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.person, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.person, size: 18, color: AppColors.black),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: Utils.validateName,
@@ -114,10 +111,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Cpf',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.assignment_ind, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.assignment_ind, size: 18, color: AppColors.black),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: Utils.validateCpf,
@@ -149,10 +146,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Telefone',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.phone, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.phone, size: 18, color: AppColors.black),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: Utils.validatePhone,
@@ -172,10 +169,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Email',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.email, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.email, size: 18, color: AppColors.black),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                       ),
                       validator: Utils.validateEmail,
@@ -190,12 +187,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Senha',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.lock, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.lock, size: 18, color: AppColors.black),
                         suffixIcon: IconButton(
-                          icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: AppColors.black,
+                          ),
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
@@ -218,6 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 48,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primary,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                                   ),
                                   onPressed: () async {
@@ -241,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                           content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
-                                          backgroundColor: Colors.redAccent,
+                                          backgroundColor: AppColors.redError,
                                         ),
                                       );
                                     } else {
@@ -250,7 +251,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   },
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [Icon(Icons.app_registration), SizedBox(width: 8), Text('Cadastrar')],
+                                    children: [
+                                      Icon(Icons.app_registration, color: AppColors.white),
+                                      SizedBox(width: 8),
+                                      Text('Cadastrar', style: TextStyle(color: AppColors.white)),
+                                    ],
                                   ),
                                 ),
                               );

@@ -4,8 +4,9 @@ import 'package:skeletons_forked/skeletons_forked.dart';
 
 class LoadSkeleton extends StatefulWidget {
   final int itemCount;
+  final double? height;
 
-  const LoadSkeleton({super.key, this.itemCount = 6});
+  const LoadSkeleton({super.key, this.itemCount = 6, this.height});
 
   @override
   State<LoadSkeleton> createState() => _LoadSkeletonState();
@@ -23,7 +24,7 @@ class _LoadSkeletonState extends State<LoadSkeleton> {
             child: SkeletonAvatar(
               style: SkeletonAvatarStyle(
                 width: double.infinity,
-                height: index == 0 ? 80 : 60,
+                height: widget.height ?? 60,
                 borderRadius: BorderRadius.circular(12),
               ),
             ),

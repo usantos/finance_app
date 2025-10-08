@@ -16,19 +16,16 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
-   late  bool _isLoad = true;
+  late bool _isLoad = true;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         _isLoad = false;
-
       });
     });
-  });
   }
 
   Widget? _selectedWidget;
@@ -37,68 +34,63 @@ class _TransferScreenState extends State<TransferScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          CustomAppbar(title: widget.title, description: widget.description),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child:  _isLoad == true
-                  ? const LoadSkeleton(itemCount: 6)
-                  :
-              Column(
-                children: [
-                  QuickActionsTransfer(
-                    onSelect: (widget) {
-                      setState(() {
-                        _selectedWidget = widget;
-                      });
-                    },
-                  ),
-                  if (_selectedWidget != null)
-                    Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.all(8),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(color: Colors.grey, width: 1),
-                      ),
-                      child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
+      appBar: CustomAppbar(title: widget.title, description: widget.description),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: _isLoad == true
+              ? const LoadSkeleton(itemCount: 8)
+              : Column(
+                  children: [
+                    QuickActionsTransfer(
+                      onSelect: (widget) {
+                        setState(() {
+                          _selectedWidget = widget;
+                        });
+                      },
                     ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 11, vertical: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (_selectedWidget.runtimeType == TransferCardPix) ...[
-                          Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 16),
-                          RecentContacts(),
-                        ] else
-                          const SizedBox.shrink(),
-                        Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 16),
-                        RecentPix(),
-                        const SizedBox(height: 16),
-                        Center(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                            ),
-                            onPressed: () {},
-                            child: Text('Ver extrato completo', style: TextStyle(color: Colors.white)),
-                          ),
+                    if (_selectedWidget != null)
+                      Card(
+                        color: Colors.white,
+                        margin: const EdgeInsets.all(8),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: Colors.grey, width: 1),
                         ),
-                      ],
+                        child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
+                      ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 11, vertical: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (_selectedWidget.runtimeType == TransferCardPix) ...[
+                            Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 16),
+                            RecentContacts(),
+                          ] else
+                            const SizedBox.shrink(),
+                          Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          RecentPix(),
+                          const SizedBox(height: 16),
+                          Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                              ),
+                              onPressed: () {},
+                              child: Text('Ver extrato completo', style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+                  ],
+                ),
+        ),
       ),
     );
   }

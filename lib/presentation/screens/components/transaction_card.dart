@@ -1,5 +1,6 @@
 import 'package:financial_app/core/extensions/date_ext.dart';
 import 'package:financial_app/core/extensions/time_ext.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 enum TransactionType { credit, debit }
@@ -33,14 +34,14 @@ class TransactionCard extends StatelessWidget {
         ? '+R\$ ${transaction.amount.toStringAsFixed(2).replaceAll('.', ',')}'
         : '-R\$ ${transaction.amount.toStringAsFixed(2).replaceAll('.', ',')}';
 
-    final Color amountColor = transaction.type == TransactionType.credit ? Colors.green[700]! : Colors.red[700]!;
+    final Color amountColor = transaction.type == TransactionType.credit ? AppColors.green : AppColors.red;
 
     return Card(
-      color: Colors.white,
+      color: AppColors.white,
       margin: const EdgeInsets.only(bottom: 10.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
-        side: const BorderSide(color: Colors.grey),
+        side: const BorderSide(color: AppColors.grey),
       ),
       child: Padding(
         padding: const EdgeInsets.all(14.0),
@@ -49,13 +50,13 @@ class TransactionCard extends StatelessWidget {
           children: [
             Text(
               transaction.description,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.black),
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 5),
             Text(
               '${transaction.date.formatDate()} • ${transaction.time.formatHour()}',
-              style: TextStyle(color: Colors.grey[600], fontSize: 13),
+              style: TextStyle(color: AppColors.blackText, fontSize: 13),
             ),
             const SizedBox(height: 8),
 
@@ -64,8 +65,8 @@ class TransactionCard extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                  decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(5.0)),
-                  child: Text(transaction.category, style: TextStyle(color: Colors.grey[700], fontSize: 12)),
+                  decoration: BoxDecoration(color: AppColors.greyBackground, borderRadius: BorderRadius.circular(5.0)),
+                  child: Text(transaction.category, style: TextStyle(color: AppColors.blackText, fontSize: 12)),
                 ),
                 Text(
                   amountText,

@@ -1,4 +1,5 @@
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/credit_card_screen.dart';
 import 'package:financial_app/presentation/screens/profile_screen.dart';
 import 'package:financial_app/presentation/screens/statement_screen.dart';
@@ -37,19 +38,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          iconTheme: WidgetStateProperty.all(const IconThemeData(size: 22)),
-          labelTextStyle: WidgetStateProperty.all(const TextStyle(fontSize: 11)),
+          iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return const IconThemeData(color: AppColors.white, size: 22);
+            }
+            return const IconThemeData(color: AppColors.black, size: 22);
+          }),
+          labelTextStyle: WidgetStateProperty.all(const TextStyle(color: AppColors.black, fontSize: 11)),
         ),
         child: NavigationBar(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white,
           selectedIndex: _selectedIndex,
-          onDestinationSelected: _onItemTapped,
+          onDestinationSelected: (index) {
+            if (index == _selectedIndex) return;
+            setState(() => _selectedIndex = index);
+            _onItemTapped(index);
+          },
           height: 70,
-          indicatorColor: Colors.blue.shade100,
+          indicatorColor: AppColors.secondary,
           destinations: const [
             NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Início'),
             NavigationDestination(
@@ -62,11 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedIcon: Icon(Icons.credit_card),
               label: 'Cartão',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.send_outlined),
-              selectedIcon: Icon(Icons.send),
-              label: 'Transferência',
-            ),
+            NavigationDestination(icon: Icon(Icons.send_outlined), selectedIcon: Icon(Icons.send), label: 'Serviços'),
             NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Perfil'),
           ],
         ),

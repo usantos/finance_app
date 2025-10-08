@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class QuickActions extends StatefulWidget {
@@ -12,7 +13,7 @@ class _QuickActionsState extends State<QuickActions> {
     {'icon': Icons.send, 'label': 'PIX', 'enabled': true},
     {'icon': Icons.payment, 'label': 'Pagar', 'enabled': true},
     {'icon': Icons.credit_card, 'label': 'Cartão', 'enabled': true},
-    {'icon': Icons.phone_android, 'label': 'Recarga', 'enabled': true},
+    {'icon': Icons.phone_android, 'label': 'Recarga', 'enabled': false},
   ];
 
   @override
@@ -38,8 +39,8 @@ class _QuickActionsState extends State<QuickActions> {
   }
 
   Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
-    final color = isEnabled ? Theme.of(context).primaryColor : Colors.grey.shade300;
-    final iconColor = isEnabled ? Colors.white : Colors.grey.shade500;
+    final color = isEnabled ? AppColors.primary : AppColors.disable;
+    final iconColor = isEnabled ? Colors.white :  AppColors.iconDisable;
 
     return Column(
       children: [
@@ -50,7 +51,7 @@ class _QuickActionsState extends State<QuickActions> {
           child: Icon(icon, color: iconColor, size: 28),
         ),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black)),
       ],
     );
   }

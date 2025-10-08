@@ -1,5 +1,6 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+
     _authViewModel.addListener(_authListener);
     _cpfFocusNode.addListener(() {
       if (!_cpfFocusNode.hasFocus) {
@@ -73,17 +75,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Scaffold(
-      backgroundColor: const Color(0xFF2C2C54),
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: Form(
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(10)),
               width: MediaQuery.of(context).size.width * 0.95,
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -92,23 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.account_balance_wallet_rounded, size: 64, color: colorScheme.primary),
+                    Icon(Icons.account_balance_wallet_rounded, size: 64, color: AppColors.primary),
                     const SizedBox(height: 16),
-                    Text(
-                      'Bem-vindo',
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 20, 24, 56),
-                      ),
-                    ),
+                    Text('Bem-vindo', style: TextStyle(color: AppColors.blackText, fontSize: 25)),
                     const SizedBox(height: 8),
-                    Text(
-                      'Entre na sua conta',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: const Color.fromARGB(255, 102, 108, 153),
-                      ),
-                    ),
+                    Text('Entre na sua conta', style: TextStyle(color: AppColors.blackText)),
                     const SizedBox(height: 20),
 
                     TextFormField(
@@ -124,13 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
+                        fillColor: AppColors.greyBackground,
                         labelText: 'Cpf',
-                        labelStyle: const TextStyle(fontSize: 14),
-                        prefixIcon: const Icon(Icons.assignment_ind, size: 18),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
+                        prefixIcon: const Icon(Icons.assignment_ind, size: 18, color: AppColors.black),
                         suffixIcon: _isCpfMasked
                             ? IconButton(
-                                icon: const Icon(Icons.edit),
+                                icon: const Icon(Icons.edit, color: AppColors.black),
                                 onPressed: () {
                                   setState(() {
                                     _isCpfMasked = false;
@@ -187,12 +174,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         enabledBorder: InputBorder.none,
                         labelText: 'Senha',
-                        labelStyle: const TextStyle(fontSize: 14),
+                        labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 242, 242, 242),
-                        prefixIcon: const Icon(Icons.lock, size: 18),
+                        fillColor: AppColors.greyBackground,
+                        prefixIcon: const Icon(Icons.lock, size: 18, color: AppColors.black),
                         suffixIcon: IconButton(
-                          icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: AppColors.black,
+                          ),
                           onPressed: () {
                             setState(() {
                               _obscurePassword = !_obscurePassword;
@@ -211,6 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                         ),
                         onPressed: _isLoading
@@ -229,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text(_authViewModel.errorMessage ?? 'Erro de login'),
-                                      backgroundColor: Colors.redAccent,
+                                      backgroundColor: AppColors.redError,
                                     ),
                                   );
                                 }
@@ -238,11 +229,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? const SizedBox(
                                 height: 24,
                                 width: 24,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                                child: CircularProgressIndicator(color: AppColors.white, strokeWidth: 2.5),
                               )
                             : const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [Icon(Icons.login), SizedBox(width: 8), Text('Entrar')],
+                                children: [
+                                  Icon(Icons.login, color: AppColors.white),
+                                  SizedBox(width: 8),
+                                  Text('Entrar', style: TextStyle(color: AppColors.white)),
+                                ],
                               ),
                       ),
                     ),
@@ -252,13 +247,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Não tem uma conta?'),
+                        const Text('Não tem uma conta?', style: TextStyle(color: AppColors.blackText)),
                         TextButton(
                           onPressed: () {
                             _clearErrors();
                             Navigator.pushReplacementNamed(context, '/register');
                           },
-                          child: const Text('Cadastre-se', style: TextStyle(color: Colors.black)),
+                          child: const Text('Cadastre-se', style: TextStyle(color: AppColors.blackText)),
                         ),
                       ],
                     ),

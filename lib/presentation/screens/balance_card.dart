@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,19 +16,19 @@ class _BalanceCardState extends State<BalanceCard> {
     return Consumer<AccountViewModel>(
       builder: (context, accountViewModel, child) {
         return Card(
-          color: const Color(0xFF4A4A7A),
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          color: AppColors.secondary,
+          margin: const EdgeInsets.symmetric(vertical: 10),
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Saldo disponível', style: TextStyle(color: Colors.white70, fontSize: 16)),
+                    const Text('Saldo disponível', style: TextStyle(color: AppColors.grey, fontSize: 16)),
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -36,7 +37,7 @@ class _BalanceCardState extends State<BalanceCard> {
                       },
                       child: Icon(
                         accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     ),
                   ],
@@ -44,7 +45,7 @@ class _BalanceCardState extends State<BalanceCard> {
                 const SizedBox(height: 8),
                 Text(
                   accountViewModel.displayBalance,
-                  style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: AppColors.white, fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

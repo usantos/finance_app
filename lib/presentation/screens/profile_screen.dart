@@ -26,9 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authViewModel.checkCurrentUser();
-    });
+    _authViewModel.checkCurrentUser();
   }
 
   @override
@@ -42,48 +40,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, authVM, accountVM, _) {
           return Scaffold(
             backgroundColor: Colors.white,
-            body: CustomScrollView(
-              slivers: [
-                CustomAppbar(title: widget.title, description: widget.description),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: authVM.isLoading || accountVM.isLoading
-                        ? const LoadSkeleton(itemCount: 6)
-                        : Column(
-                            children: [
-                              _buildUserInfoCard(authVM, accountVM),
-                              const SizedBox(height: 14),
-                              _buildMenuOption(
-                                icon: Icons.edit_outlined,
-                                text: 'Editar dados pessoais',
-                                onTap: () {
-                                  CustomBottomSheet.show(
-                                    iconClose: false,
-                                    context,
-                                    height: MediaQuery.of(context).size.height * 0.7,
-                                    isDismissible: true,
-                                    enableDrag: false,
-                                    child: const BottomSheetEditProfile(),
-                                  );
-                                },
-                              ),
-                              _buildMenuOption(icon: Icons.settings_outlined, text: 'Configurações', onTap: () {}),
-                              _buildMenuOption(icon: Icons.notifications_outlined, text: 'Notificações', onTap: () {}),
-                              _buildMenuOption(icon: Icons.shield_outlined, text: 'Segurança', onTap: () {}),
-                              _buildMenuOption(icon: Icons.help_outline, text: 'Ajuda e suporte', onTap: () {}),
-                              const SizedBox(height: 16),
-                              _buildVerifiedAccountCard(),
-                              const SizedBox(height: 16),
-                              const Text('Versão do aplicativo', style: TextStyle(color: Colors.grey)),
-                              const Text('1.0.0', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 16),
-                              _buildLogoutButton(context, authVM),
-                            ],
+            appBar: CustomAppbar(title: widget.title, description: widget.description),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: authVM.isLoading || accountVM.isLoading
+                    ? const LoadSkeleton(itemCount: 8)
+                    : Column(
+                        children: [
+                          _buildUserInfoCard(authVM, accountVM),
+                          const SizedBox(height: 14),
+                          _buildMenuOption(
+                            icon: Icons.edit_outlined,
+                            text: 'Editar dados pessoais',
+                            onTap: () {
+                              CustomBottomSheet.show(
+                                iconClose: false,
+                                context,
+                                height: MediaQuery.of(context).size.height * 0.7,
+                                isDismissible: true,
+                                enableDrag: false,
+                                child: const BottomSheetEditProfile(),
+                              );
+                            },
                           ),
-                  ),
-                ),
-              ],
+                          _buildMenuOption(icon: Icons.settings_outlined, text: 'Configurações', onTap: () {}),
+                          _buildMenuOption(icon: Icons.notifications_outlined, text: 'Notificações', onTap: () {}),
+                          _buildMenuOption(icon: Icons.shield_outlined, text: 'Segurança', onTap: () {}),
+                          _buildMenuOption(icon: Icons.help_outline, text: 'Ajuda e suporte', onTap: () {}),
+                          const SizedBox(height: 16),
+                          _buildVerifiedAccountCard(),
+                          const SizedBox(height: 16),
+                          const Text('Versão do aplicativo', style: TextStyle(color: Colors.grey)),
+                          const Text('1.0.0', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          _buildLogoutButton(context, authVM),
+                        ],
+                      ),
+              ),
             ),
           );
         },

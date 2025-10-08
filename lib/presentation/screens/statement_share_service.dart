@@ -15,7 +15,6 @@ class UserTransaction {
 
 class StatementShare {
   static void captureAndSharePdf(BuildContext context) async {
-
     // --- MOCK DE DADOS ---
     final appStrings = _AppStrings();
     final transactions = _mockTransactions();

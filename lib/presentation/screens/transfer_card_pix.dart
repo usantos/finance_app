@@ -39,7 +39,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkTransferPassword();
-      FocusScope.of(context).unfocus();
+      FocusManager.instance.primaryFocus?.unfocus();
     });
   }
 

@@ -60,7 +60,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
             Center(
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
-                style: TextStyle(fontSize: 18, color: AppColors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 30),
@@ -128,7 +128,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                       alignment: Alignment.centerLeft,
                       child: const Text(
                         'Enviar PIX',
-                        style: TextStyle(fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Spacer(),

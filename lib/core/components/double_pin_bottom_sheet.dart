@@ -148,7 +148,7 @@ class DoublePinBottomSheet {
                         style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
                       ),
                       Text(
-                        "• Não inclua dígitos do seu cpf, data de \n  nascimento ou número de celular.",
+                        "• Não inclua dígitos do seu CPF, data de \n  nascimento ou número de celular.",
                         style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
                       ),
                     ],

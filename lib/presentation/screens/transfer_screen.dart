@@ -70,7 +70,7 @@ class _TransferScreenState extends State<TransferScreen> {
                           if (_selectedWidget.runtimeType == TransferCardPix) ...[
                             Text(
                               'Contatos Pix recentes',
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
                             const SizedBox(height: 16),
                             RecentContacts(),
@@ -78,7 +78,7 @@ class _TransferScreenState extends State<TransferScreen> {
                             const SizedBox.shrink(),
                           Text(
                             'Últimas transações',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                           ),
                           const SizedBox(height: 16),
                           RecentPix(),

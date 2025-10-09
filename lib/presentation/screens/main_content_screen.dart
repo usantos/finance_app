@@ -50,13 +50,13 @@ class _MainContentScreenState extends State<MainContentScreen> {
                         children: [
                           const Text(
                             'Ações rápidas',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                           ),
                           const SizedBox(height: 16),
                           const QuickActions(),
                           const Text(
                             'Últimas transações',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                           ),
                           const SizedBox(height: 16),
                           const RecentTransactions(),

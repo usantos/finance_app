@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         enabledBorder: InputBorder.none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
-                        labelText: 'Cpf',
+                        labelText: 'CPF',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         prefixIcon: const Icon(Icons.assignment_ind, size: 18, color: AppColors.black),
                         suffixIcon: _isCpfMasked

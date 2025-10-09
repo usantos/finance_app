@@ -1,3 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 class Utils {
   Utils._();
 
@@ -79,5 +83,13 @@ class Utils {
     }
 
     return null;
+  }
+
+  static void copiarTexto(BuildContext context, String text, String snackbarText) {
+    Clipboard.setData(ClipboardData(text: text));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(snackbarText), duration: const Duration(seconds: 2), behavior: SnackBarBehavior.floating),
+    );
   }
 }

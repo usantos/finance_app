@@ -1,4 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
 import 'components/transaction_card.dart';
@@ -58,7 +59,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 child: Container(
                   decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(15)),
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -86,13 +87,26 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        _showCardDetails ? '1234  5678  9012  3456' : '****  ****  ****  3456',
-                        style: const TextStyle(
-                          color: AppColors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2,
+
+                      TextButton(
+                        onPressed: _showCardDetails
+                            ? () => {Utils.copiarTexto(context, '1234 5678 9012 3456', 'Cartão copiado com sucesso')}
+                            : null,
+                        style: TextButton.styleFrom(fixedSize: const Size(300, 40), padding: EdgeInsets.zero),
+                        child: Row(
+                          children: [
+                            Text(
+                              _showCardDetails ? '1234  5678  9012  3456' : '****  ****  ****  3456',
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            _showCardDetails ? Icon(Icons.copy, size: 16, color: AppColors.white) : SizedBox.shrink(),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -158,11 +172,17 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 ],
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: const Text(
+                'Limite disponível',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.grey),
@@ -170,11 +190,6 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Limite disponível',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                    ),
-                    const SizedBox(height: 10),
                     _buildLimitRow('Limite total', 'R\$ 5.000,00', AppColors.black),
                     _buildLimitRow('Disponível', 'R\$ 4.250,00', AppColors.green),
                     _buildLimitRow('Utilizado', 'R\$ 750,00', AppColors.red),
@@ -190,7 +205,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 children: [
                   const Text(
                     'Compras recentes',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                   ),
                   SizedBox(height: 10),
                   ListView.builder(

@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     MainContentScreen(),
     StatementScreen(title: "Extrato", description: "Suas movimentações"),
     CreditCardScreen(title: "Cartão", description: "Cartão de crédito"),
-    TransferScreen(title: "Serviços", description: "Realizar transferência"),
+    TransferScreen(title: "Serviços", description: "Realizar transferência, Pix e mais"),
     ProfileScreen(title: "Perfil", description: "Suas informações pessoais"),
   ];
 

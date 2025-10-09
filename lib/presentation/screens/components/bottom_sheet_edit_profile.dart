@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:financial_app/core/components/double_pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -43,81 +44,90 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                 alignment: Alignment.topLeft,
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                  icon: const Icon(Icons.close, color: AppColors.black, size: 20),
                 ),
               ),
-              const Text("Dados bancários", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                "Dados bancários",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+              ),
               const SizedBox(height: 18),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Nome", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("${authVM.currentUser?.user.name}", style: const TextStyle(fontSize: 16)),
+                      const Text(
+                        "Nome",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      Text(
+                        "${authVM.currentUser?.user.name}",
+                        style: const TextStyle(fontSize: 16, color: AppColors.blackText),
+                      ),
                     ],
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 25),
+                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
                   ),
                 ],
               ),
-              /*Divider(color: Colors.grey[300], height: 38),
+              Divider(color: AppColors.grey, height: 38),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Numero da conta", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text(accountVM.account?.accountNumber ?? '-', style: TextStyle(fontSize: 16)),
-                    ],
-                  ),
-                ],
-              ),*/
-              Divider(color: Colors.grey[300], height: 38),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Telefone", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text(authVM.currentUser?.user.phone.maskPhoneMid() ?? '-', style: const TextStyle(fontSize: 16)),
+                      const Text(
+                        "Telefone",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      Text(
+                        authVM.currentUser?.user.phone.maskPhoneMid() ?? '-',
+                        style: const TextStyle(fontSize: 16, color: AppColors.blackText),
+                      ),
                     ],
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 25),
+                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
                   ),
                 ],
               ),
-              Divider(color: Colors.grey[300], height: 38),
+              Divider(color: AppColors.grey, height: 38),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Senha", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      const Text("****", style: TextStyle(fontSize: 16)),
+                      const Text(
+                        "Senha",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      const Text("****", style: TextStyle(fontSize: 16, color: AppColors.blackText)),
                     ],
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 25),
+                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
                   ),
                 ],
               ),
-              Divider(color: Colors.grey[300], height: 38),
+              Divider(color: AppColors.grey, height: 38),
               Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text("Senha de transferência", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("****", style: TextStyle(fontSize: 16)),
+                      Text(
+                        "Senha de transferência",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      Text("****", style: TextStyle(fontSize: 16, color: AppColors.blackText)),
                     ],
                   ),
                   const Spacer(),
@@ -138,7 +148,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                                 ? 'Senha alterada com sucesso'
                                 : (_transactionViewModel.errorMessage ?? 'Erro ao alterar senha'),
                             duration: const Duration(seconds: 3),
-                            backgroundColor: success ? Colors.green : Colors.red,
+                            backgroundColor: success ? AppColors.greenSuccess : AppColors.redError,
                             margin: const EdgeInsets.all(8),
                             borderRadius: BorderRadius.circular(8),
                             flushbarPosition: FlushbarPosition.BOTTOM,
@@ -146,33 +156,12 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                         },
                       );
                     },
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 25),
+                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
                   ),
                 ],
               ),
 
-              Divider(color: Colors.grey[300], height: 38),
-              /* const Text("Dados do aplicativo", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 18),
-
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Foto de perfil", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 10),
-                      Image(image: AssetImage('assets/avatar_placeholder.png'), height: 40),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit, color: Colors.black, size: 25),
-                  ),
-                ],
-              ),
-              Divider(color: Colors.grey[300], height: 38),*/
+              Divider(color: AppColors.grey, height: 38),
               Row(
                 children: [
                   Column(
@@ -180,7 +169,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                     children: [
                       const Text(
                         "Close Finance Pagamentos LTDA-\nInstituição de Pagamentos ",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
                       ),
                     ],
                   ),

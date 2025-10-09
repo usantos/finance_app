@@ -3,6 +3,7 @@ import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -56,10 +57,10 @@ class _TransferCardPixState extends State<TransferCardPix> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 30),
-            const Center(
+            Center(
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
-                style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, color: AppColors.black, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 30),
@@ -68,24 +69,25 @@ class _TransferCardPixState extends State<TransferCardPix> {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
-                      side: const BorderSide(color: Colors.black),
+                      side: const BorderSide(color: AppColors.black),
                     ),
                   ),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Depois", style: TextStyle(color: Colors.black)),
+                  child: const Text("Depois", style: TextStyle(color: AppColors.black)),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
-                      side: const BorderSide(color: Colors.black),
+                      side: const BorderSide(color: AppColors.black),
                     ),
                   ),
                   onPressed: () {
@@ -101,7 +103,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                       },
                     );
                   },
-                  child: const Text("Cadastrar"),
+                  child: const Text("Cadastrar", style: TextStyle(color: AppColors.white)),
                 ),
               ],
             ),
@@ -126,7 +128,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                       alignment: Alignment.centerLeft,
                       child: const Text(
                         'Enviar PIX',
-                        style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Spacer(),
@@ -138,7 +140,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                       },
                       child: Icon(
                         accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.black,
+                        color: AppColors.black,
                       ),
                     ),
                   ],
@@ -148,7 +150,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                   alignment: Alignment.centerLeft,
                   child: const Text(
                     'Chave PIX',
-                    style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -156,9 +158,10 @@ class _TransferCardPixState extends State<TransferCardPix> {
                   controller: _toAccountTextEditingController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: const Color.fromARGB(255, 242, 242, 242),
+                    fillColor: AppColors.greyBackground,
                     enabledBorder: InputBorder.none,
                     hintText: 'CPF, e-mail, telefone ou chave aleatória',
+                    hintStyle: const TextStyle(color: AppColors.blackText),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   ),
                   keyboardType: TextInputType.number,
@@ -171,7 +174,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                   alignment: Alignment.centerLeft,
                   child: const Text(
                     'Valor',
-                    style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -179,9 +182,10 @@ class _TransferCardPixState extends State<TransferCardPix> {
                   controller: _amountTextEditingController,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: const Color.fromARGB(255, 242, 242, 242),
+                    fillColor: AppColors.greyBackground,
                     enabledBorder: InputBorder.none,
                     hintText: 'R\$ 0,00',
+                    hintStyle: const TextStyle(color: AppColors.blackText),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   ),
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
@@ -195,12 +199,12 @@ class _TransferCardPixState extends State<TransferCardPix> {
                     const Spacer(),
                     const Text(
                       "Saldo:",
-                      style: TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 10),
                     Text(
                       accountViewModel.displayBalance,
-                      style: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -212,6 +216,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
                           onPressed: _transactionViewModel.hasPassword
@@ -251,7 +256,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: const Text('Transferência realizada com sucesso!'),
-                                            backgroundColor: Colors.green,
+                                            backgroundColor: AppColors.greenSuccess,
                                             behavior: SnackBarBehavior.floating,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                           ),
@@ -262,7 +267,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                                             content: Text(
                                               _transactionViewModel.errorMessage ?? 'Erro na transferência',
                                             ),
-                                            backgroundColor: Colors.red,
+                                            backgroundColor: AppColors.redError,
                                             behavior: SnackBarBehavior.floating,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                           ),
@@ -272,7 +277,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                                   );
                                 }
                               : null,
-                          child: const Text('Transferir'),
+                          child: const Text('Transferir', style: TextStyle(color: AppColors.white)),
                         ),
                       ),
               ],

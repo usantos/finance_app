@@ -40,7 +40,7 @@ class _QuickActionsState extends State<QuickActions> {
 
   Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
     final color = isEnabled ? AppColors.primary : AppColors.disable;
-    final iconColor = isEnabled ? Colors.white :  AppColors.iconDisable;
+    final iconColor = isEnabled ? Colors.white : AppColors.iconDisable;
 
     return Column(
       children: [
@@ -51,7 +51,10 @@ class _QuickActionsState extends State<QuickActions> {
           child: Icon(icon, color: iconColor, size: 28),
         ),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black)),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+        ),
       ],
     );
   }

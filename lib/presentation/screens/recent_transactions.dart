@@ -32,7 +32,9 @@ class _RecentTransactionsState extends State<RecentTransactions> {
   @override
   Widget build(BuildContext context) {
     if (_transactions.isEmpty) {
-      return const Center(child: Text('Nenhuma transação encontrada.', style: TextStyle(color: AppColors.black)));
+      return const Center(
+        child: Text('Nenhuma transação encontrada.', style: TextStyle(color: AppColors.black)),
+      );
     }
 
     return ListView.builder(

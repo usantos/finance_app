@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class RecentContacts extends StatefulWidget {
@@ -33,8 +34,8 @@ class _RecentContactsState extends State<RecentContacts> {
   }
 
   Widget _buildContactItem(BuildContext context, String name) {
-    final color = Color(0xFF2C2C54);
-    final textColor = Colors.white;
+    final color = AppColors.primary;
+    final textColor = AppColors.white;
     final initial = name.isNotEmpty ? name[0].toUpperCase() : "?";
     return Column(
       children: [
@@ -51,7 +52,7 @@ class _RecentContactsState extends State<RecentContacts> {
         const SizedBox(height: 8),
         Text(
           name,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
           overflow: TextOverflow.ellipsis,
         ),
       ],

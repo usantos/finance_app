@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/components/textfield_pin.dart';
 import 'custom_bottom_sheet.dart';
@@ -11,7 +12,7 @@ class PinBottomSheet {
     double? height,
     double spacing = 20,
     double titleFontSize = 20,
-    Color titleColor = Colors.black,
+    Color titleColor = AppColors.black,
     FontWeight titleFontWeight = FontWeight.bold,
     int pinLength = 4,
     EdgeInsetsGeometry padding = const EdgeInsets.all(16),
@@ -58,12 +59,15 @@ class PinBottomSheet {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.of(context).pop()),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: AppColors.black),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                   ValueListenableBuilder<bool>(
                     valueListenable: obscureNotifier,
                     builder: (context, isObscured, _) {
                       return IconButton(
-                        icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility),
+                        icon: Icon(isObscured ? Icons.visibility_off : Icons.visibility, color: AppColors.black),
                         onPressed: () {
                           obscureNotifier.value = !obscureNotifier.value;
                         },
@@ -98,7 +102,7 @@ class PinBottomSheet {
                   if (errorText == null) return const SizedBox.shrink();
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Text(errorText, style: const TextStyle(color: Colors.red, fontSize: 14)),
+                    child: Text(errorText, style: const TextStyle(color: AppColors.red, fontSize: 14)),
                   );
                 },
               ),
@@ -109,24 +113,25 @@ class PinBottomSheet {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
-                          side: const BorderSide(color: Colors.black),
+                          side: const BorderSide(color: AppColors.black),
                         ),
                       ),
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("Cancelar", style: TextStyle(color: Colors.black)),
+                      child: const Text("Cancelar", style: TextStyle(color: AppColors.black)),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
-                          side: const BorderSide(color: Colors.black),
+                          side: const BorderSide(color: AppColors.black),
                         ),
                       ),
                       onPressed: confirmPin,
-                      child: const Text("Confirmar"),
+                      child: const Text("Confirmar", style: TextStyle(color: AppColors.white)),
                     ),
                     if (extraActions != null) ...extraActions,
                   ],

@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: CustomAppbar(title: widget.title, description: widget.description),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,12 +52,12 @@ class _TransferScreenState extends State<TransferScreen> {
                     ),
                     if (_selectedWidget != null)
                       Card(
-                        color: Colors.white,
+                        color: AppColors.white,
                         margin: const EdgeInsets.all(8),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: Colors.grey, width: 1),
+                          side: BorderSide(color: AppColors.grey, width: 1),
                         ),
                         child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
                       ),
@@ -67,22 +68,29 @@ class _TransferScreenState extends State<TransferScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (_selectedWidget.runtimeType == TransferCardPix) ...[
-                            Text('Contatos Pix recentes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                            Text(
+                              'Contatos Pix recentes',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                            ),
                             const SizedBox(height: 16),
                             RecentContacts(),
                           ] else
                             const SizedBox.shrink(),
-                          Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          Text(
+                            'Últimas transações',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                          ),
                           const SizedBox(height: 16),
                           RecentPix(),
                           const SizedBox(height: 16),
                           Center(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                               ),
                               onPressed: () {},
-                              child: Text('Ver extrato completo', style: TextStyle(color: Colors.white)),
+                              child: Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
                             ),
                           ),
                         ],

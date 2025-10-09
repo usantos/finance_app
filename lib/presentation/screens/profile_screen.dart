@@ -1,4 +1,5 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
@@ -39,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Consumer2<AuthViewModel, AccountViewModel>(
         builder: (context, authVM, accountVM, _) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.white,
             appBar: CustomAppbar(title: widget.title, description: widget.description),
             body: SingleChildScrollView(
               child: Padding(
@@ -57,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CustomBottomSheet.show(
                                 iconClose: false,
                                 context,
-                                height: MediaQuery.of(context).size.height * 0.7,
+                                height: MediaQuery.of(context).size.height * 0.6,
                                 isDismissible: true,
                                 enableDrag: false,
                                 child: const BottomSheetEditProfile(),
@@ -71,8 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(height: 16),
                           _buildVerifiedAccountCard(),
                           const SizedBox(height: 16),
-                          const Text('Versão do aplicativo', style: TextStyle(color: Colors.grey)),
-                          const Text('1.0.0', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          const Text('Versão do aplicativo', style: TextStyle(color: AppColors.blackText)),
+                          const Text(
+                            '1.0.0',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                          ),
                           const SizedBox(height: 16),
                           _buildLogoutButton(context, authVM),
                         ],
@@ -87,12 +91,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildUserInfoCard(AuthViewModel authVM, AccountViewModel accountVM) {
     return Card(
-      color: Colors.white,
+      color: AppColors.white,
       elevation: 2,
-      shadowColor: Colors.black,
+      shadowColor: AppColors.black,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Colors.grey),
+        side: const BorderSide(color: AppColors.grey),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -102,10 +106,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 CircleAvatar(
                   radius: 28,
-                  backgroundColor: const Color(0xFF2C2C54),
+                  backgroundColor: AppColors.primary,
                   child: Text(
                     authVM.currentUser?.user.name.firstLetter ?? "",
-                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                    style: const TextStyle(color: AppColors.white, fontSize: 24),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -114,11 +118,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Text(
                       authVM.currentUser?.user.name ?? '-',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
                     ),
                     Text(
                       'Conta: ${accountVM.account?.accountNumber ?? '-'}',
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: AppColors.black),
                     ),
                   ],
                 ),
@@ -140,24 +144,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: const TextStyle(color: Colors.black)),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+        Text(label, style: const TextStyle(color: AppColors.black)),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.black),
+        ),
       ],
     );
   }
 
   Widget _buildMenuOption({required IconData icon, required String text, required VoidCallback onTap}) {
     return Card(
-      color: Colors.white,
+      color: AppColors.white,
       margin: const EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.grey),
+        side: const BorderSide(color: AppColors.grey),
       ),
       child: ListTile(
-        leading: Icon(icon, color: Colors.black),
-        title: Text(text, style: const TextStyle(fontWeight: FontWeight.w500)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
+        leading: Icon(icon, color: AppColors.black),
+        title: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.black),
         onTap: onTap,
       ),
     );
@@ -167,20 +177,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.green.shade50,
+        color: AppColors.greenShade50,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.green.shade200),
+        border: Border.all(color: AppColors.green),
       ),
       child: Row(
         children: [
-          Icon(Icons.verified_user_outlined, color: Colors.green.shade700),
+          Icon(Icons.verified_user_outlined, color: AppColors.green),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Conta verificada', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Sua conta está totalmente verificada e segura'),
+                Text(
+                  'Conta verificada',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
+                ),
+                Text('Sua conta está totalmente verificada e segura', style: TextStyle(color: AppColors.blackText)),
               ],
             ),
           ),
@@ -194,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: double.infinity,
       child: TextButton.icon(
         icon: const Icon(Icons.logout),
-        label: const Text('Sair da conta'),
+        label: const Text('Sair da conta', style: TextStyle(color: AppColors.red)),
         onPressed: () async {
           await authVM.logout();
           if (context.mounted) {
@@ -202,11 +215,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         style: TextButton.styleFrom(
-          foregroundColor: Colors.red,
+          foregroundColor: AppColors.red,
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(color: Colors.red),
+            side: const BorderSide(color: AppColors.red),
           ),
         ),
       ),

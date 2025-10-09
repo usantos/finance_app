@@ -38,12 +38,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
               toolbarSize: 168,
               title: 'Olá, ${authVM.currentUser?.user.name ?? ''}!',
               description: "Bem-vindo de volta",
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                   const BalanceCard(),
-                ],
-              ),
+              body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const BalanceCard()]),
             ),
             body: SingleChildScrollView(
               child: authVM.isLoading
@@ -53,10 +48,16 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Ações rápidas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black)),
+                          const Text(
+                            'Ações rápidas',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                          ),
                           const SizedBox(height: 16),
                           const QuickActions(),
-                          const Text('Últimas transações', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black)),
+                          const Text(
+                            'Últimas transações',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                          ),
                           const SizedBox(height: 16),
                           const RecentTransactions(),
                         ],

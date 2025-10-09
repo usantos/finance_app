@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomSheet {
@@ -18,8 +19,8 @@ class CustomBottomSheet {
       isScrollControlled: true,
       isDismissible: isDismissible,
       enableDrag: enableDrag,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.5),
+      backgroundColor: AppColors.transparent,
+      barrierColor: AppColors.black.withValues(alpha: 0.5),
       builder: (context) => Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: GestureDetector(
@@ -32,7 +33,7 @@ class CustomBottomSheet {
               width: width,
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
@@ -42,7 +43,7 @@ class CustomBottomSheet {
                     width: 40,
                     height: 5,
                     margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(2)),
+                    decoration: BoxDecoration(color: AppColors.black, borderRadius: BorderRadius.circular(2)),
                   ),
                   if (iconClose)
                     Row(
@@ -50,7 +51,7 @@ class CustomBottomSheet {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                          icon: const Icon(Icons.close, color: AppColors.black, size: 20),
                         ),
                       ],
                     ),

@@ -16,11 +16,13 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
-    statusBarBrightness: Brightness.dark,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+    ),
+  );
 
   runApp(
     MultiProvider(
@@ -48,28 +50,18 @@ class MyApp extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: overlayStyle,
       child: MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          devicePixelRatio: 1.0,
-          textScaler: const TextScaler.linear(1.0),
-        ),
+        data: MediaQuery.of(context).copyWith(devicePixelRatio: 1.0, textScaler: const TextScaler.linear(1.0)),
         child: MaterialApp(
           title: 'Financial App',
           theme: ThemeData(
-            primarySwatch: Colors.teal,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
             useMaterial3: true,
             elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:  AppColors.primary,
-                foregroundColor: AppColors.white,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.white),
             ),
             filledButtonTheme: FilledButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.white,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.white),
             ),
           ),
           localizationsDelegates: const [

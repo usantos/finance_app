@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/transfer_card.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +89,8 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
     bool isEnabled = false,
     VoidCallback? onTap,
   }) {
-    final color = isEnabled ? Theme.of(context).primaryColor : Colors.grey.shade300;
-    final iconColor = isEnabled ? Colors.white : Colors.grey.shade500;
+    final color = isEnabled ? AppColors.primary : AppColors.disable;
+    final iconColor = isEnabled ? AppColors.white : AppColors.iconDisable;
 
     return SizedBox(
       width: kItemWidth,
@@ -98,7 +99,7 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Material(
-            color: Colors.transparent,
+            color: AppColors.transparent,
             borderRadius: BorderRadius.circular(16),
             child: Ink(
               width: kIconBoxSize,
@@ -117,7 +118,7 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
           ),
         ],
       ),

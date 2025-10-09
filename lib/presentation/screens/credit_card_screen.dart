@@ -1,3 +1,4 @@
+import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
 import 'components/transaction_card.dart';
@@ -44,7 +45,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: CustomAppbar(title: widget.title, description: widget.description),
       body: SingleChildScrollView(
         child: Column(
@@ -56,10 +57,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 elevation: 4,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 child: Container(
-                  decoration: BoxDecoration(
-                   color: Color(0xFF2C2C54),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(15)),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,13 +67,16 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                         children: [
                           const Row(
                             children: [
-                              Icon(Icons.credit_card, color: Colors.white),
+                              Icon(Icons.credit_card, color: AppColors.white),
                               SizedBox(width: 8),
-                              Text('Cartão de Crédito', style: TextStyle(color: Colors.white, fontSize: 16)),
+                              Text('Cartão de Crédito', style: TextStyle(color: AppColors.white, fontSize: 16)),
                             ],
                           ),
                           IconButton(
-                            icon: Icon(_showCardDetails ? Icons.visibility_off : Icons.visibility, color: Colors.white),
+                            icon: Icon(
+                              _showCardDetails ? Icons.visibility_off : Icons.visibility,
+                              color: AppColors.white,
+                            ),
                             onPressed: () {
                               setState(() {
                                 _showCardDetails = !_showCardDetails;
@@ -88,7 +89,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                       Text(
                         _showCardDetails ? '1234  5678  9012  3456' : '****  ****  ****  3456',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 2,
@@ -101,25 +102,19 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'PORTADOR',
-                                style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 12),
-                              ),
+                              Text('PORTADOR', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                               const Text(
                                 'JOÃO SILVA',
-                                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                           Column(
                             children: [
-                              Text(
-                                'VALIDADE',
-                                style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 12),
-                              ),
+                              Text('VALIDADE', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                               const Text(
                                 '12/28',
-                                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -138,11 +133,11 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.lock_outline, color: Colors.black87),
-                      label: const Text('Bloquear', style: TextStyle(color: Colors.black87)),
+                      icon: const Icon(Icons.lock_outline, color: AppColors.black),
+                      label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: Colors.grey),
+                        side: const BorderSide(color: AppColors.grey),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -151,11 +146,11 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.settings_outlined, color: Colors.black87),
-                      label: const Text('Configurar', style: TextStyle(color: Colors.black87)),
+                      icon: const Icon(Icons.settings_outlined, color: AppColors.black),
+                      label: const Text('Configurar', style: TextStyle(color: AppColors.black)),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: Colors.grey),
+                        side: const BorderSide(color: AppColors.grey),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -170,16 +165,19 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey),
+                  border: Border.all(color: AppColors.grey),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Limite disponível', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Limite disponível',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    ),
                     const SizedBox(height: 10),
-                    _buildLimitRow('Limite total', 'R\$ 5.000,00', Colors.black87),
-                    _buildLimitRow('Disponível', 'R\$ 4.250,00', Colors.green),
-                    _buildLimitRow('Utilizado', 'R\$ 750,00', Colors.red),
+                    _buildLimitRow('Limite total', 'R\$ 5.000,00', AppColors.black),
+                    _buildLimitRow('Disponível', 'R\$ 4.250,00', AppColors.green),
+                    _buildLimitRow('Utilizado', 'R\$ 750,00', AppColors.red),
                   ],
                 ),
               ),
@@ -190,17 +188,20 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Compras recentes', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Compras recentes',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                  ),
                   SizedBox(height: 10),
                   ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _transactions.length,
-                itemBuilder: (context, index) {
-                  return TransactionCard(transaction: _transactions[index]);
-                },
-              ),
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _transactions.length,
+                    itemBuilder: (context, index) {
+                      return TransactionCard(transaction: _transactions[index]);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -216,7 +217,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 16, color: Colors.black54)),
+          Text(label, style: const TextStyle(fontSize: 16, color: AppColors.blackText)),
           Text(
             value,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: valueColor),

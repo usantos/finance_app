@@ -10,10 +10,10 @@ class QuickActions extends StatefulWidget {
 
 class _QuickActionsState extends State<QuickActions> {
   final List<Map<String, dynamic>> actions = [
-    {'icon': Icons.send, 'label': 'PIX', 'enabled': true},
-    {'icon': Icons.payment, 'label': 'Pagar', 'enabled': true},
-    {'icon': Icons.credit_card, 'label': 'Cartão', 'enabled': true},
-    {'icon': Icons.phone_android, 'label': 'Recarga', 'enabled': false},
+    {'icon': Icons.send, 'label': 'PIX'},
+    {'icon': Icons.payment, 'label': 'Pagar'},
+    {'icon': Icons.credit_card, 'label': 'Cartão'},
+    {'icon': Icons.phone_android, 'label': 'Recarga'},
   ];
 
   @override
@@ -31,24 +31,21 @@ class _QuickActionsState extends State<QuickActions> {
             context,
             action['icon'] as IconData,
             action['label'] as String,
-            isEnabled: action['enabled'] == true,
           );
         },
       ),
     );
   }
 
-  Widget _buildActionItem(BuildContext context, IconData icon, String label, {bool isEnabled = false}) {
-    final color = isEnabled ? AppColors.primary : AppColors.disable;
-    final iconColor = isEnabled ? Colors.white : AppColors.iconDisable;
+  Widget _buildActionItem(BuildContext context, IconData icon, String label) {
 
     return Column(
       children: [
         Container(
           width: 60,
           height: 60,
-          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(30)),
-          child: Icon(icon, color: iconColor, size: 28),
+          decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(30)),
+          child: Icon(icon, color: AppColors.white, size: 28),
         ),
         const SizedBox(height: 8),
         Text(

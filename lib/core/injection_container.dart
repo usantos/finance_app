@@ -47,7 +47,7 @@ void init() {
   // Data sources
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<AccountRemoteDataSource>(() => AccountRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl(), sl()));
   sl.registerLazySingleton<UserLocalDataSource>(() => UserLocalDataSourceImpl());
   sl.registerLazySingleton<AccountLocalDataSource>(() => AccountLocalDataSourceImpl());
 

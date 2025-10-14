@@ -16,33 +16,4 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<Map<String, dynamic>?> getBalance(String accountId) {
     return remoteDataSource.getBalance(accountId);
   }
-
-  @override
-  Future<Map<String, dynamic>> transferBetweenAccounts(
-    String fromAccountNumber,
-    String toAccountNumber,
-    double amount,
-    String password,
-  ) {
-    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
-  }
-
-  @override
-  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) {
-    return remoteDataSource.verifyTransferPassword(accountNumber);
-  }
-
-  @override
-  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) {
-    return remoteDataSource.setTransferPassword(accountNumber, transferPassword);
-  }
-
-  @override
-  Future<Map<String, dynamic>> changeTransferPassword(
-    String accountNumber,
-    String oldtransferPassword,
-    newTransferPassword,
-  ) {
-    return remoteDataSource.changeTransferPassword(accountNumber, oldtransferPassword, newTransferPassword);
-  }
 }

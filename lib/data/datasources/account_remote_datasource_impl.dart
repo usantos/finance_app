@@ -20,33 +20,4 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   Future<Map<String, dynamic>?> getBalance(String accountId) async {
     return await realApi.getBalance(accountId);
   }
-
-  @override
-  Future<Map<String, dynamic>> transferBetweenAccounts(
-    String fromAccountNumber,
-    String toAccountNumber,
-    double amount,
-    String password,
-  ) async {
-    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
-  }
-
-  @override
-  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) async {
-    return await realApi.verifyTransferPassword(accountNumber);
-  }
-
-  @override
-  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) async {
-    return await realApi.setTransferPassword(accountNumber, transferPassword);
-  }
-
-  @override
-  Future<Map<String, dynamic>> changeTransferPassword(
-    String accountNumber,
-    String oldTransferPassword,
-    String newTransferPassword,
-  ) async {
-    return await realApi.changeTransferPassword(accountNumber, oldTransferPassword, newTransferPassword);
-  }
 }

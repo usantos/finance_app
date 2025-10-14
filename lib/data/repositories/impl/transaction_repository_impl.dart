@@ -16,4 +16,37 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<void> addTransaction(Transaction transaction) {
     return remoteDataSource.addTransaction(transaction);
   }
+
+  @override
+  Future<Map<String, dynamic>> changeTransferPassword(
+    String accountNumber,
+    String oldtransferPassword,
+    newTransferPassword,
+  ) {
+    return remoteDataSource.changeTransferPassword(accountNumber, oldtransferPassword, newTransferPassword);
+  }
+
+  @override
+  Future<Map<String, dynamic>> transferBetweenAccounts(
+    String fromAccountNumber,
+    String toAccountNumber,
+    double amount,
+    String password,
+  ) {
+    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
+  }
+
+  @override
+  Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) {
+    return remoteDataSource.verifyTransferPassword(accountNumber);
+  }
+
+  @override
+  Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) {
+    return remoteDataSource.setTransferPassword(accountNumber, transferPassword);
+  }
+
+  Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) {
+    return remoteDataSource.createPixKey(accountId, keyType, keyValue);
+  }
 }

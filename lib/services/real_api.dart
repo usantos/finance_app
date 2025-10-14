@@ -6,7 +6,7 @@ class RealApi {
   final Dio _dio;
   String? _token;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'https://modern-finance-server-s8ua.onrender.com')) {
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000')) {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -102,7 +102,7 @@ class RealApi {
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber) async {
     try {
       final response = await _dio.post(
-        '/accounts/verify_transfer_password',
+        '/transfers/verify_transfer_password',
         options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber},
       );
@@ -118,7 +118,7 @@ class RealApi {
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) async {
     try {
       final response = await _dio.post(
-        '/accounts/set_transfer_password',
+        '/transfers/set_transfer_password',
         options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber, 'transferPassword': transferPassword},
       );
@@ -143,7 +143,7 @@ class RealApi {
   ) async {
     try {
       final response = await _dio.post(
-        '/accounts/change_transfer_password',
+        '/transfers/change_transfer_password',
         options: Options(validateStatus: (status) => true),
         data: {
           'accountNumber': accountNumber,
@@ -170,7 +170,7 @@ class RealApi {
   ) async {
     try {
       final response = await _dio.post(
-        '/accounts/transfer',
+        '/transfers/transfer',
         options: Options(validateStatus: (status) => true),
         data: {
           'fromAccountNumber': fromAccountNumber,
@@ -223,6 +223,20 @@ class RealApi {
     } catch (e) {
       debugPrint('Erro na transferência: $e');
       return {"success": false, "message": "Erro ao realizar transferência"};
+    }
+  }
+
+  Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) async {
+    try {
+      final response = await _dio.post(
+        '/pix/createPixKey',
+        data: {'accountId': accountId, 'keyType': keyType, 'keyValue': keyValue},
+      );
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro na criação de chave PIX: $e');
+      return {"success": false, "message": "Erro na criação de chave PIX"};
     }
   }
 }

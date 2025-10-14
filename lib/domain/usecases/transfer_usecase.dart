@@ -19,26 +19,31 @@ class TransferUseCase {
 
   Future<Map<String, dynamic>> call(String toAccountNumber, double amount, String password) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return accountRepository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password);
+    return transactionRepository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password);
   }
 
   Future<Map<String, dynamic>> verifyTransferPassword() async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return accountRepository.verifyTransferPassword(fromAccount!.accountNumber);
+    return transactionRepository.verifyTransferPassword(fromAccount!.accountNumber);
   }
 
   Future<Map<String, dynamic>> setTransferPassword(String transferPassword) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return accountRepository.setTransferPassword(fromAccount!.accountNumber, transferPassword);
+    return transactionRepository.setTransferPassword(fromAccount!.accountNumber, transferPassword);
   }
 
   Future<Map<String, dynamic>> changeTransferPassword(String oldTransferPassword, String newTransferPassword) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return accountRepository.changeTransferPassword(
+    return transactionRepository.changeTransferPassword(
       fromAccount!.accountNumber,
       oldTransferPassword,
       newTransferPassword,
     );
+  }
+
+  Future<Map<String, dynamic>> createPixKey(String keyType, String keyValue) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.createPixKey(fromAccount!.id, keyType, keyValue);
   }
 
   Future<void> addTransaction(Transaction transaction) {

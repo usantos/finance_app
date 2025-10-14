@@ -1,4 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/screens/create_pix_key_card.dart';
 import 'package:financial_app/presentation/screens/transfer_card.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
     super.initState();
     actions = [
       {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferCardPix()},
-      {'icon': Icons.call_received, 'label': 'Receber Pix', 'widget': null},
+      {'icon': Icons.call_received, 'label': 'Receber Pix', 'widget': const CreatePixKeyCard()},
       {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code Pix', 'widget': null},
       {'icon': Icons.compare_arrows, 'label': 'Entre contas', 'widget': const TransferCard()},
     ];

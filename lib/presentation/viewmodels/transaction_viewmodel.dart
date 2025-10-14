@@ -224,4 +224,29 @@ class TransactionViewModel extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> createPixKey(String keyType, String keyValue) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.createPixKey(keyType, keyValue);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/screens/create_pix_key_card.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,21 @@ class _TransferScreenState extends State<TransferScreen> {
                             RecentContacts(),
                           ] else
                             const SizedBox.shrink(),
+
+                          if (_selectedWidget.runtimeType == CreatePixKeyCard) ...[
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                ),
+                                onPressed: () {},
+                                child: Text('Criar chave Pix', style: TextStyle(color: AppColors.white)),
+                              ),
+                            ),
+                          ] else
+                            const SizedBox.shrink(),
+                          const SizedBox(height: 16),
                           Text(
                             'Últimas transações',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),

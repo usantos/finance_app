@@ -27,18 +27,13 @@ class _QuickActionsState extends State<QuickActions> {
         separatorBuilder: (_, __) => const SizedBox(width: 18),
         itemBuilder: (context, index) {
           final action = actions[index];
-          return _buildActionItem(
-            context,
-            action['icon'] as IconData,
-            action['label'] as String,
-          );
+          return _buildActionItem(context, action['icon'] as IconData, action['label'] as String);
         },
       ),
     );
   }
 
   Widget _buildActionItem(BuildContext context, IconData icon, String label) {
-
     return Column(
       children: [
         Container(

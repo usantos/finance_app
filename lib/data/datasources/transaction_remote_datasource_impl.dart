@@ -53,4 +53,9 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) async {
     return await realApi.createPixKey(accountId, keyType, keyValue);
   }
+
+  @override
+  Future<Map<String, dynamic>> getPixKey(String accountId) async {
+    return await realApi.getPixKey(accountId);
+  }
 }

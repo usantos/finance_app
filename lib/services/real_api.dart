@@ -229,7 +229,7 @@ class RealApi {
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) async {
     try {
       final response = await _dio.post(
-        '/pix/createPixKey',
+        '/pix/PixKey',
         data: {'accountId': accountId, 'keyType': keyType, 'keyValue': keyValue},
       );
 
@@ -237,6 +237,17 @@ class RealApi {
     } catch (e) {
       debugPrint('Erro na criação de chave PIX: $e');
       return {"success": false, "message": "Erro na criação de chave PIX"};
+    }
+  }
+
+  Future<Map<String, dynamic>> getPixKey(String accountId) async {
+    try {
+      final response = await _dio.get('/pix/getPixKey', data: {'accountId': accountId});
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro ao resgatar chave PIX: $e');
+      return {"success": false, "message": "Erro ao resgatar chave PIX"};
     }
   }
 }

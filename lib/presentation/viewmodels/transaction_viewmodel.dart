@@ -33,6 +33,8 @@ class TransactionViewModel extends ChangeNotifier {
   String? get errorCode => _errorCode;
   bool get hasPassword => _hasPassword;
   Account? get account => _account;
+  List<Map<String, dynamic>> _pixKeys = [];
+  List<Map<String, dynamic>> get pixKeys => _pixKeys;
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -240,6 +242,32 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> getPixKey() async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.getPixKey();
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      _pixKeys = List<Map<String, dynamic>>.from(result['data']);
       notifyListeners();
       return true;
     } catch (e) {

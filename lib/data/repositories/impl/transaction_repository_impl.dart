@@ -46,7 +46,13 @@ class TransactionRepositoryImpl implements TransactionRepository {
     return remoteDataSource.setTransferPassword(accountNumber, transferPassword);
   }
 
+  @override
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) {
     return remoteDataSource.createPixKey(accountId, keyType, keyValue);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getPixKey(String accountId) {
+    return remoteDataSource.getPixKey(accountId);
   }
 }

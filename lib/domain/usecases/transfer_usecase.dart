@@ -46,6 +46,11 @@ class TransferUseCase {
     return transactionRepository.createPixKey(fromAccount!.id, keyType, keyValue);
   }
 
+  Future<Map<String, dynamic>> getPixKey() async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.getPixKey(fromAccount!.id);
+  }
+
   Future<void> addTransaction(Transaction transaction) {
     return transactionRepository.addTransaction(transaction);
   }

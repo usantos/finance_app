@@ -1,5 +1,6 @@
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
+import 'package:financial_app/services/real_api.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
@@ -33,8 +34,7 @@ class TransactionViewModel extends ChangeNotifier {
   String? get errorCode => _errorCode;
   bool get hasPassword => _hasPassword;
   Account? get account => _account;
-  List<Map<String, dynamic>> _pixKeys = [];
-  List<Map<String, dynamic>> get pixKeys => _pixKeys;
+
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -252,22 +252,21 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> getPixKey() async {
+  Future<bool> getPixKey(String pixKeyValue) async {
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.getPixKey();
+      final result = await _transferUseCase.getPixKey(pixKeyValue);
 
       _isLoading = false;
 
-      if (!result['success']) {
-        _errorMessage = result['message'];
-        _errorCode = result['code'];
+      if (!result?['success']) {
+        _errorMessage = result?['message'];
+        _errorCode = result?['code'];
         notifyListeners();
         return false;
       }
-      _pixKeys = List<Map<String, dynamic>>.from(result['data']);
       notifyListeners();
       return true;
     } catch (e) {

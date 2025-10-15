@@ -240,14 +240,22 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> getPixKey(String accountId) async {
+  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) async {
     try {
-      final response = await _dio.get('/pix/getPixKey', data: {'accountId': accountId});
+      final response = await _dio.get(
+        '/pix/$pixKeyValue/PixKey',
+        options: Options(validateStatus: (status) => true),
+      );
 
-      return response.data;
+      if (response.statusCode == 200) {
+        return {"success": true, "balance": response.data['balance']};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar saldo'};
+      }
     } catch (e) {
-      debugPrint('Erro ao resgatar chave PIX: $e');
-      return {"success": false, "message": "Erro ao resgatar chave PIX"};
+      debugPrint('Erro ao buscar saldo: $e');
+      return {"success": false, "message": 'Erro inesperado: $e'};
     }
   }
+
 }

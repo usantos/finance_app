@@ -3,6 +3,7 @@ import "package:financial_app/data/datasources/user_local_data_source.dart";
 import "package:financial_app/domain/entities/transaction.dart";
 import "package:financial_app/domain/repositories/account_repository.dart";
 import "package:financial_app/domain/repositories/transaction_repository.dart";
+import "package:financial_app/services/real_api.dart";
 
 class TransferUseCase {
   final AccountRepository accountRepository;
@@ -46,9 +47,8 @@ class TransferUseCase {
     return transactionRepository.createPixKey(fromAccount!.id, keyType, keyValue);
   }
 
-  Future<Map<String, dynamic>> getPixKey() async {
-    final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.getPixKey(fromAccount!.id);
+  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) async {
+    return transactionRepository.getPixKey(pixKeyValue);
   }
 
   Future<void> addTransaction(Transaction transaction) {

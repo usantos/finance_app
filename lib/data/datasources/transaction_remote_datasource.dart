@@ -24,5 +24,6 @@ abstract class TransactionRemoteDataSource {
 
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue);
 
-  Future<Map<String, dynamic>> getPixKey(String accountId);
+  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue);
+
 }

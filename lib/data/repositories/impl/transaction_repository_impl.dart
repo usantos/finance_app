@@ -52,7 +52,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> getPixKey(String accountId) {
-    return remoteDataSource.getPixKey(accountId);
+  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) {
+    return remoteDataSource.getPixKey(pixKeyValue);
   }
+
 }

@@ -1,4 +1,4 @@
-import 'package:financial_app/core/components/custom_bottom_sheet.dart';
+/*import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -21,17 +21,16 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _transactionViewModel.getPixKey();
     });
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, viewModel, child) {
-        final pixKeys = viewModel.pixKeys;
+        final pixKeys = viewModel;
 
-        if (viewModel.isLoading) {
+       if (viewModel.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -65,9 +64,9 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
                 itemBuilder: (context, index) {
                   final pix = pixKeys[index];
                   return _pixKeys(
-                    icon: _getIconByType(pix['type']),
-                    text: pix['type'] ?? 'Chave PIX',
-                    subText: pix['key'] ?? '',
+                    icon: _getIconByType(pix?.keyType),
+                    text: pix?.keyType ?? 'Chave PIX',
+                    subText: pix?.keyValue ?? '',
                   );
                 },
               ),
@@ -128,3 +127,4 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
     }
   }
 }
+*/

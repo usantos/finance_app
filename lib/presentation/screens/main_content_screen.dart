@@ -1,5 +1,6 @@
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/screens/balance_card.dart';
@@ -19,6 +20,7 @@ class MainContentScreen extends StatefulWidget {
 
 class _MainContentScreenState extends State<MainContentScreen> {
   final _authViewModel = sl.get<AuthViewModel>();
+  final _accountViewModel = sl.get<AccountViewModel>();
 
   @override
   void initState() {

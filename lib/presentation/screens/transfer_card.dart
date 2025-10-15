@@ -40,6 +40,7 @@ class _TransferCardState extends State<TransferCard> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkTransferPassword();
+      _transactionViewModel.getPixKey('15406198696');
       FocusManager.instance.primaryFocus?.unfocus();
     });
   }

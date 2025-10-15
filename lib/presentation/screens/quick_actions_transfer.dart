@@ -27,7 +27,7 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
     super.initState();
     actions = [
       {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferCardPix()},
-      {'icon': Icons.call_received, 'label': 'Receber Pix', 'widget': null},
+      {'icon': Icons.call_received, 'label': 'Receber Pix', 'widget': const CreatePixKeyCard()},
       {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code Pix', 'widget': null},
       {'icon': Icons.compare_arrows, 'label': 'Entre contas', 'widget': const TransferCard()},
     ];

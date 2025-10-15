@@ -1,4 +1,4 @@
-/*import 'package:financial_app/core/components/custom_bottom_sheet.dart';
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -15,12 +15,13 @@ class CreatePixKeyCard extends StatefulWidget {
 }
 
 class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
-  final _transactionViewModel = sl.get<TransactionViewModel>();
+final _transactionViewModel = sl.get<TransactionViewModel>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _transactionViewModel.getPixKey("15406198696");
     });
   }
 
@@ -28,7 +29,6 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, viewModel, child) {
-        final pixKeys = viewModel;
 
        if (viewModel.isLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -54,24 +54,20 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
             ),
             const SizedBox(height: 10),
 
-            if (pixKeys.isEmpty)
-              Text('Nenhuma chave Pix cadastrada.', style: TextStyle(color: AppColors.black))
-            else
-              ListView.builder(
+              Text('Nenhuma chave Pix cadastrada.', style: TextStyle(color: AppColors.black)),
+             /* ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: pixKeys.length,
                 itemBuilder: (context, index) {
-                  final pix = pixKeys[index];
+                  final pix = pixKeys;
                   return _pixKeys(
                     icon: _getIconByType(pix?.keyType),
                     text: pix?.keyType ?? 'Chave PIX',
                     subText: pix?.keyValue ?? '',
                   );
                 },
-              ),
+              ),*/
 
-            const SizedBox(height: 18),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -127,4 +123,3 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
     }
   }
 }
-*/

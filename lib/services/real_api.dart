@@ -248,7 +248,7 @@ class RealApi {
       );
 
       if (response.statusCode == 200) {
-        return {"success": true, "balance": response.data['balance']};
+        return {"success": true, "keyValue": response.data['keyValue'], "keyType": response.data['keyType'] };
       } else {
         return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar saldo'};
       }

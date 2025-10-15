@@ -23,6 +23,6 @@ abstract class TransactionRepository {
 
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue);
 
-  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue);
+  Future<List<Map<String, dynamic>?>> getPixKeys(String accountId);
 
 }

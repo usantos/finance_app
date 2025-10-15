@@ -240,7 +240,7 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) async {
+  /*Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) async {
     try {
       final response = await _dio.get(
         '/pix/$pixKeyValue/PixKey',
@@ -255,6 +255,26 @@ class RealApi {
     } catch (e) {
       debugPrint('Erro ao buscar saldo: $e');
       return {"success": false, "message": 'Erro inesperado: $e'};
+    }
+  }*/
+
+  Future<List<Map<String, dynamic>>> getPixKeys(String accountId) async {
+    try {
+      final response = await _dio.get('/pix/getPixKeys/$accountId');
+
+      if (response.statusCode == 200 && response.data is List) {
+        final data = (response.data as List)
+            .whereType<Map<String, dynamic>>()
+            .toList();
+
+        return data;
+      } else {
+        debugPrint('Erro ao buscar chaves PIX: ${response.data}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar chaves PIX: $e');
+      return [];
     }
   }
 

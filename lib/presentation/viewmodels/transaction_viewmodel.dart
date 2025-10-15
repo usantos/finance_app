@@ -1,6 +1,5 @@
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
-import 'package:financial_app/services/real_api.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
@@ -13,6 +12,8 @@ class TransactionViewModel extends ChangeNotifier {
   final AccountViewModel _accountViewModel;
 
   List<Transaction> _transactions = [];
+  List<Map<String, dynamic>?> _pixKeys = [];
+
   bool _isLoading = false;
   String? _errorMessage;
   String? _errorCode;
@@ -24,17 +25,17 @@ class TransactionViewModel extends ChangeNotifier {
     required TransferUseCase transferUseCase,
     required AccountUseCase accountUseCase,
     required AccountViewModel accountViewModel,
-  }) : _transferUseCase = transferUseCase,
-       _accountUseCase = accountUseCase,
-       _accountViewModel = accountViewModel;
+  })  : _transferUseCase = transferUseCase,
+        _accountUseCase = accountUseCase,
+        _accountViewModel = accountViewModel;
 
   List<Transaction> get transactions => _transactions;
+  List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
   bool get hasPassword => _hasPassword;
   Account? get account => _account;
-
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -252,28 +253,18 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> getPixKey(String pixKeyValue) async {
-    _errorCode = null;
+  Future<void> getPixKeys() async {
+    _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
-
     try {
-      final result = await _transferUseCase.getPixKey(pixKeyValue);
-
-      _isLoading = false;
-
-      if (!result?['success']) {
-        _errorMessage = result?['message'];
-        _errorCode = result?['code'];
-        notifyListeners();
-        return false;
-      }
-      notifyListeners();
-      return true;
+      _pixKeys = await _transferUseCase.getPixKeys();
     } catch (e) {
-      _isLoading = false;
       _errorMessage = e.toString();
+      _pixKeys = [];
+    } finally {
+      _isLoading = false;
       notifyListeners();
-      return false;
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
-import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -15,24 +14,24 @@ class CreatePixKeyCard extends StatefulWidget {
 }
 
 class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
-final _transactionViewModel = sl.get<TransactionViewModel>();
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _transactionViewModel.getPixKey("15406198696");
+      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+      viewModel.getPixKeys();
     });
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, viewModel, child) {
-
-       if (viewModel.isLoading) {
+        if (viewModel.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+
+        final pixKeys = viewModel.pixKeys;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,38 +40,53 @@ final _transactionViewModel = sl.get<TransactionViewModel>();
               children: [
                 const Text(
                   'Suas chaves PIX',
-                  style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: AppColors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const Spacer(),
-                InkWell(
+                // Exemplo de botão para recarregar (opcional)
+                /* InkWell(
                   onTap: () {
-                    setState(() {});
+                    viewModel.getPixKeys();
                   },
-                  child: const Icon(Icons.visibility_off, color: AppColors.black),
-                ),
+                  child: const Icon(Icons.refresh, color: AppColors.black),
+                ), */
               ],
             ),
             const SizedBox(height: 10),
 
-              Text('Nenhuma chave Pix cadastrada.', style: TextStyle(color: AppColors.black)),
-             /* ListView.builder(
+            if (pixKeys.isEmpty)
+              const Text(
+                'Nenhuma chave Pix cadastrada.',
+                style: TextStyle(color: AppColors.black),
+              )
+            else
+              ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                itemCount: pixKeys.length,
                 itemBuilder: (context, index) {
-                  final pix = pixKeys;
+                  final pix = pixKeys[index];
                   return _pixKeys(
-                    icon: _getIconByType(pix?.keyType),
-                    text: pix?.keyType ?? 'Chave PIX',
-                    subText: pix?.keyValue ?? '',
+                    icon: _getIconByType(pix?['keyType']),
+                    text: pix?['keyType'] ?? 'Chave PIX',
+                    subText: pix?['keyValue'] ?? '',
                   );
                 },
-              ),*/
+              ),
+
+            const SizedBox(height: 20),
 
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(7),
+                  ),
                 ),
                 onPressed: () {
                   CustomBottomSheet.show(
@@ -85,7 +99,10 @@ final _transactionViewModel = sl.get<TransactionViewModel>();
                     child: const BottomSheetCreatePixKey(),
                   );
                 },
-                child: const Text('Cadastrar chave Pix', style: TextStyle(color: AppColors.white)),
+                child: const Text(
+                  'Cadastrar chave Pix',
+                  style: TextStyle(color: AppColors.white),
+                ),
               ),
             ),
           ],
@@ -94,7 +111,11 @@ final _transactionViewModel = sl.get<TransactionViewModel>();
     );
   }
 
-  Widget _pixKeys({required IconData icon, required String text, required String subText}) {
+  Widget _pixKeys({
+    required IconData icon,
+    required String text,
+    required String subText,
+  }) {
     return Card(
       elevation: 0,
       color: AppColors.greyBackground,

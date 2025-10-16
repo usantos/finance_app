@@ -1,7 +1,4 @@
-import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/presentation/screens/components/bottom_sheet_create_pix_key.dart';
-import 'package:financial_app/presentation/screens/create_pix_key_card.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
 import 'package:flutter/material.dart';

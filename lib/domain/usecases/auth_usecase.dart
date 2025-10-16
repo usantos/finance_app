@@ -28,7 +28,6 @@ class AuthUseCase {
       final token = user.token;
       final logoutResponse = await authRepository.logout(token);
       if (logoutResponse?.status == true) {
-        //TODO Deixar a limpeza em um local generico
         await userLocalDataSource.clearUser();
         await accountLocalDataSource.clearAccount();
       }

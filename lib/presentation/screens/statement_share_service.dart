@@ -15,7 +15,6 @@ class UserTransaction {
 
 class StatementShare {
   static void captureAndSharePdf(BuildContext context) async {
-    // --- MOCK DE DADOS ---
     final appStrings = _AppStrings();
     final transactions = _mockTransactions();
 
@@ -69,7 +68,6 @@ class StatementShare {
     );
   }
 
-  // --- MOCK DE TRANSACOES ---
   static List<UserTransaction> _mockTransactions() {
     return [
       UserTransaction(hour: '08:30', description: 'Compra Supermercado', balance: 500.00),
@@ -81,7 +79,6 @@ class StatementShare {
   }
 }
 
-// --- MOCK DE APP STRINGS ---
 class _AppStrings {
   String get statement => 'Extrato';
 }

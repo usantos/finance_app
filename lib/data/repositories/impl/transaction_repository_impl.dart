@@ -52,8 +52,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<Map<String, dynamic>?>> getPixKeys(String accountId) {
-    return remoteDataSource.getPixKeys(accountId);
+  Future<List<Map<String, dynamic>?>> getPixKeysByAccountId(String accountId) {
+    return remoteDataSource.getPixKeysByAccountId(accountId);
   }
 
+  @override
+  Future<Map<String, dynamic>> deletePixKey(String keyType) {
+    return remoteDataSource.deletePixKey(keyType);
+  }
 }

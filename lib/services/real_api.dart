@@ -240,32 +240,12 @@ class RealApi {
     }
   }
 
-  /*Future<Map<String, dynamic>?> getPixKey(String pixKeyValue) async {
+  Future<List<Map<String, dynamic>>> getPixKeysByAccountId(String accountId) async {
     try {
-      final response = await _dio.get(
-        '/pix/$pixKeyValue/PixKey',
-        options: Options(validateStatus: (status) => true),
-      );
-
-      if (response.statusCode == 200) {
-        return {"success": true, "keyValue": response.data['keyValue'], "keyType": response.data['keyType'] };
-      } else {
-        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar saldo'};
-      }
-    } catch (e) {
-      debugPrint('Erro ao buscar saldo: $e');
-      return {"success": false, "message": 'Erro inesperado: $e'};
-    }
-  }*/
-
-  Future<List<Map<String, dynamic>>> getPixKeys(String accountId) async {
-    try {
-      final response = await _dio.get('/pix/getPixKeys/$accountId');
+      final response = await _dio.get('/pix/getPixKeysByAccountId/$accountId');
 
       if (response.statusCode == 200 && response.data is List) {
-        final data = (response.data as List)
-            .whereType<Map<String, dynamic>>()
-            .toList();
+        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
 
         return data;
       } else {
@@ -278,4 +258,14 @@ class RealApi {
     }
   }
 
+  Future<Map<String, dynamic>> deletePixKey(String keyType) async {
+    try {
+      final response = await _dio.delete('/pix/deletePixKey/$keyType');
+
+      return Map<String, dynamic>.from(response.data);
+    } catch (e) {
+      debugPrint('Erro ao deletar chave PIX: $e');
+      return {"success": false, "message": "Erro ao deletar chave PIX"};
+    }
+  }
 }

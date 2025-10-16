@@ -25,9 +25,9 @@ class TransactionViewModel extends ChangeNotifier {
     required TransferUseCase transferUseCase,
     required AccountUseCase accountUseCase,
     required AccountViewModel accountViewModel,
-  })  : _transferUseCase = transferUseCase,
-        _accountUseCase = accountUseCase,
-        _accountViewModel = accountViewModel;
+  }) : _transferUseCase = transferUseCase,
+       _accountUseCase = accountUseCase,
+       _accountViewModel = accountViewModel;
 
   List<Transaction> get transactions => _transactions;
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
@@ -253,18 +253,44 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getPixKeys() async {
+  Future<void> getPixKeysByAccountId() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      _pixKeys = await _transferUseCase.getPixKeys();
+      _pixKeys = await _transferUseCase.getPixKeysByAccountId();
     } catch (e) {
       _errorMessage = e.toString();
       _pixKeys = [];
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<bool> deletePixKey(String keyType) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.deletePixKey(keyType);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      _transferUseCase.getPixKeysByAccountId();
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
     }
   }
 }

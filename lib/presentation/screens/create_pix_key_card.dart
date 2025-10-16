@@ -1,4 +1,5 @@
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,14 @@ class CreatePixKeyCard extends StatefulWidget {
 }
 
 class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
+  final _viewModel = sl.get<TransactionViewModel>();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-      viewModel.getPixKeys();
+      viewModel.getPixKeysByAccountId();
     });
   }
 
@@ -40,14 +43,9 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
               children: [
                 const Text(
                   'Suas chaves PIX',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
-                // Exemplo de botão para recarregar (opcional)
                 /* InkWell(
                   onTap: () {
                     viewModel.getPixKeys();
@@ -59,10 +57,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
             const SizedBox(height: 10),
 
             if (pixKeys.isEmpty)
-              const Text(
-                'Nenhuma chave Pix cadastrada.',
-                style: TextStyle(color: AppColors.black),
-              )
+              const Text('Nenhuma chave Pix cadastrada.', style: TextStyle(color: AppColors.black))
             else
               ListView.builder(
                 shrinkWrap: true,
@@ -70,10 +65,12 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
                 itemCount: pixKeys.length,
                 itemBuilder: (context, index) {
                   final pix = pixKeys[index];
+                  final keyType = pix?['keyType'];
                   return _pixKeys(
                     icon: _getIconByType(pix?['keyType']),
                     text: pix?['keyType'] ?? 'Chave PIX',
                     subText: pix?['keyValue'] ?? '',
+                    keyType: keyType,
                   );
                 },
               ),
@@ -84,9 +81,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                 ),
                 onPressed: () {
                   CustomBottomSheet.show(
@@ -99,10 +94,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
                     child: const BottomSheetCreatePixKey(),
                   );
                 },
-                child: const Text(
-                  'Cadastrar chave Pix',
-                  style: TextStyle(color: AppColors.white),
-                ),
+                child: const Text('Cadastrar chave Pix', style: TextStyle(color: AppColors.white)),
               ),
             ),
           ],
@@ -111,11 +103,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
     );
   }
 
-  Widget _pixKeys({
-    required IconData icon,
-    required String text,
-    required String subText,
-  }) {
+  Widget _pixKeys({required IconData icon, required String text, required String subText, required String? keyType}) {
     return Card(
       elevation: 0,
       color: AppColors.greyBackground,
@@ -124,7 +112,21 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
         leading: Icon(icon, color: AppColors.black, size: 20),
         title: Text(text, style: const TextStyle(color: AppColors.black)),
         subtitle: Text(subText, style: const TextStyle(color: AppColors.black)),
-        trailing: const Icon(Icons.copy, size: 16, color: AppColors.black),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.copy, size: 16, color: AppColors.black),
+            const SizedBox(width: 16),
+            IconButton(
+              onPressed: () {
+                if (keyType != null) {
+                  _viewModel.deletePixKey(keyType);
+                }
+              },
+              icon: const Icon(Icons.delete, color: AppColors.red),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -132,12 +134,12 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
   IconData _getIconByType(String? type) {
     switch (type?.toUpperCase()) {
       case 'EMAIL':
-        return Icons.email;
-      case 'PHONE':
-        return Icons.phone;
+        return Icons.email_outlined;
+      case 'TELEFONE':
+        return Icons.phone_outlined;
       case 'CPF':
-        return Icons.badge;
-      case 'RANDOM':
+        return Icons.credit_card;
+      case 'ALEATORIA':
         return Icons.shield_outlined;
       default:
         return Icons.vpn_key;

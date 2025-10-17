@@ -26,6 +26,25 @@ extension StringExtension on String {
     }
   }
 
+  String toShort() {
+    if (isEmpty) return this;
+
+    if (contains('@')) {
+      final parts = split('@');
+      final username = parts.first;
+      final domain = parts.last;
+
+      final shortUsername = username.length > 5 ? '${username.substring(0, 5)}...' : username;
+
+      return '$shortUsername@$domain';
+    }
+
+    if (length == 36) {
+      return '${substring(0, 16)}...';
+    }
+    return this;
+  }
+
   String maskCPFMid() {
     final digits = replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';

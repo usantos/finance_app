@@ -31,7 +31,6 @@ class TemplateScreen extends StatefulWidget {
 class _TemplateScreenState extends State<TemplateScreen> {
   final _transactionViewModel = sl.get<TransactionViewModel>();
 
-
   final _formKey = GlobalKey<FormState>();
 
   @override

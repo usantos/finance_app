@@ -272,12 +272,8 @@ class TransactionViewModel extends ChangeNotifier {
           value = value.toPhone();
         }
 
-        return {
-          ...?pixKey,
-          'keyValue': value,
-        };
+        return {...?pixKey, 'keyValue': value};
       }).toList();
-
     } catch (e) {
       _errorMessage = e.toString();
       _pixKeys = [];
@@ -286,7 +282,6 @@ class TransactionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   Future<bool> deletePixKey(String keyType) async {
     _errorCode = null;

@@ -1,7 +1,10 @@
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'components/custom_appbar.dart';
 import 'components/skeleton.dart';
 import 'quick_actions_transfer.dart';
@@ -22,6 +25,8 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   void initState() {
     super.initState();
+    final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+    viewModel.getPixKeysByAccountId();
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         _isLoad = false;

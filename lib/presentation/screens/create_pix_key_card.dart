@@ -21,8 +21,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-      viewModel.getPixKeysByAccountId();
+
     });
   }
 
@@ -76,7 +75,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
               ),
 
             const SizedBox(height: 20),
-
+            pixKeys.length == 4 ? SizedBox.shrink() :
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -111,16 +110,18 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
       child: ListTile(
         leading: Icon(icon, color: AppColors.black, size: 20),
         title: Text(text, style: const TextStyle(color: AppColors.black)),
-        subtitle: Text(subText, style: const TextStyle(color: AppColors.black)),
+        subtitle: Text( subText,  style: const TextStyle(color: AppColors.black)),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.copy, size: 16, color: AppColors.black),
             const SizedBox(width: 16),
             IconButton(
-              onPressed: () {
+              onPressed: () async{
                 if (keyType != null) {
-                  _viewModel.deletePixKey(keyType);
+                 await _viewModel.deletePixKey(keyType);
+                 final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+                 viewModel.getPixKeysByAccountId();
                 }
               },
               icon: const Icon(Icons.delete, color: AppColors.red),

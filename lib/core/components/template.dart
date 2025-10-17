@@ -1,8 +1,8 @@
-import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TemplateScreen extends StatefulWidget {
   final String title;
@@ -30,6 +30,8 @@ class TemplateScreen extends StatefulWidget {
 
 class _TemplateScreenState extends State<TemplateScreen> {
   final _transactionViewModel = sl.get<TransactionViewModel>();
+
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -90,6 +92,8 @@ class _TemplateScreenState extends State<TemplateScreen> {
                       }
 
                       await _transactionViewModel.createPixKey(keyType, keyValue);
+                      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+                      viewModel.getPixKeysByAccountId();
                       Navigator.of(context).pop();
                     },
 

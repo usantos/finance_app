@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -257,8 +258,26 @@ class TransactionViewModel extends ChangeNotifier {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
+
     try {
       _pixKeys = await _transferUseCase.getPixKeysByAccountId();
+
+      _pixKeys = _pixKeys.map((pixKey) {
+        final type = pixKey?["keyType"];
+        String value = pixKey?["keyValue"] ?? '';
+
+        if (type == 'CPF') {
+          value = value.toCPFProgressive();
+        } else if (type == 'Telefone') {
+          value = value.toPhone();
+        }
+
+        return {
+          ...?pixKey,
+          'keyValue': value,
+        };
+      }).toList();
+
     } catch (e) {
       _errorMessage = e.toString();
       _pixKeys = [];
@@ -267,6 +286,7 @@ class TransactionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
 
   Future<bool> deletePixKey(String keyType) async {
     _errorCode = null;
@@ -283,7 +303,6 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
-      _transferUseCase.getPixKeysByAccountId();
       notifyListeners();
       return true;
     } catch (e) {

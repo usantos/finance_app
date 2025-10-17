@@ -1,6 +1,7 @@
 import 'package:financial_app/core/components/template.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetCreatePixKey extends StatefulWidget {
@@ -102,10 +103,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   body: TextFormField(
                     controller: _telefoneController,
                     keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return 'Digite um telefone válido';
-                      return null;
-                    },
+                    validator: Utils.validatePhone,
                   ),
                 );
               },
@@ -135,10 +133,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   body: TextFormField(
                     controller: _cpfController,
                     keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return 'Digite um CPF válido';
-                      return null;
-                    },
+                    validator: Utils.validateCpf,
                   ),
                 );
               },
@@ -168,10 +163,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   body: TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return 'Digite um email válido';
-                      return null;
-                    },
+                    validator: Utils.validateEmail,
                   ),
                 );
               },

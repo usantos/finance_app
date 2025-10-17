@@ -1,4 +1,3 @@
-import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_card_pix.dart';

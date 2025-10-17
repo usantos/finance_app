@@ -14,8 +14,6 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
   final _telefoneController = TextEditingController();
   final _cpfController = TextEditingController();
   final _emailController = TextEditingController();
-  String _rawPhone = '';
-  String _rawCpf = '';
 
   @override
   void initState() {
@@ -29,7 +27,6 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
           selection: TextSelection.collapsed(offset: raw.toPhone().length),
         );
       }
-      _rawPhone = raw;
     });
 
     _cpfController.addListener(() {
@@ -40,7 +37,6 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
           selection: TextSelection.collapsed(offset: raw.toCPFProgressive().length),
         );
       }
-      _rawCpf = raw;
     });
   }
 

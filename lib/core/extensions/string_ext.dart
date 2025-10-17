@@ -32,7 +32,6 @@ extension StringExtension on String {
     final d = digits.length > 11 ? digits.substring(0, 11) : digits;
 
     final chars = d.split('');
-
     for (int i = 3; i <= 8 && i < chars.length; i++) {
       chars[i] = '•';
     }

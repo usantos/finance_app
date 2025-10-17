@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -81,13 +82,17 @@ class _TemplateScreenState extends State<TemplateScreen> {
                       final isValid = widget.textController == null || _formKey.currentState?.validate() == true;
                       if (!isValid) return;
 
+                      String keyValue = widget.textController?.text.trim() ?? '';
+
                       final keyType = widget.typeTitle;
-                      final keyValue = widget.textController?.text.trim() ?? '';
+                      if (keyType == 'CPF' || keyType == 'Telefone') {
+                        keyValue = keyValue.replaceAll(RegExp(r'\D'), '');
+                      }
 
                       await _transactionViewModel.createPixKey(keyType, keyValue);
-
                       Navigator.of(context).pop();
                     },
+
                     child: Text(widget.buttonText, style: const TextStyle(color: AppColors.white)),
                   ),
                 ),

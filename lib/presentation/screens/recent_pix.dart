@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'components/transaction_card.dart';
 
 class RecentPix extends StatefulWidget {
@@ -11,20 +12,20 @@ class RecentPix extends StatefulWidget {
 class _RecentPixState extends State<RecentPix> {
   final List<Transaction> _transactions = [
     Transaction(
-      description: 'Transferência PIX - João Silva',
+      name: 'João Silva',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
       amount: 150.00,
       type: TransactionType.debit,
-      category: 'Transferência',
+      category: 'Pix',
     ),
     Transaction(
-      description: 'Transferência PIX - Felipe',
+      name: 'Maria Santos',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),
       amount: 185.50,
       type: TransactionType.credit,
-      category: 'Transferência',
+      category: 'Pix',
     ),
   ];
 

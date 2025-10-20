@@ -87,7 +87,6 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
                           iconClose: true,
                           context,
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.5,
                           isDismissible: true,
                           enableDrag: false,
                           child: const BottomSheetCreatePixKey(),

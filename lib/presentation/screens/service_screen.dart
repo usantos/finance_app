@@ -9,16 +9,16 @@ import 'components/skeleton.dart';
 import 'quick_actions_transfer.dart';
 import 'recent_pix.dart';
 
-class TransferScreen extends StatefulWidget {
-  const TransferScreen({super.key, required this.title, required this.description});
+class ServiceScreen extends StatefulWidget {
+  const ServiceScreen({super.key, required this.title, required this.description});
   final String title;
   final String description;
 
   @override
-  State<TransferScreen> createState() => _TransferScreenState();
+  State<ServiceScreen> createState() => _ServiceScreenState();
 }
 
-class _TransferScreenState extends State<TransferScreen> {
+class _ServiceScreenState extends State<ServiceScreen> {
   late bool _isLoad = true;
 
   @override

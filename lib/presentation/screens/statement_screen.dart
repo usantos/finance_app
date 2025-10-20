@@ -20,6 +20,7 @@ class _StatementScreenState extends State<StatementScreen> {
 
   final List<Transaction> _transactions = [
     Transaction(
+      name: '',
       description: 'Transferência PIX - João Silva',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
@@ -28,6 +29,7 @@ class _StatementScreenState extends State<StatementScreen> {
       category: 'Transferência',
     ),
     Transaction(
+      name: '',
       description: 'Depósito - Salário',
       date: DateTime(2025, 10, 1),
       time: const TimeOfDay(hour: 8, minute: 0),
@@ -36,6 +38,7 @@ class _StatementScreenState extends State<StatementScreen> {
       category: 'Depósito',
     ),
     Transaction(
+      name: '',
       description: 'Compra - Supermercado Extra',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),
@@ -44,6 +47,7 @@ class _StatementScreenState extends State<StatementScreen> {
       category: 'Compras',
     ),
     Transaction(
+      name: '',
       description: 'PIX Recebido - Maria Santos',
       date: DateTime(2025, 08, 9),
       time: const TimeOfDay(hour: 16, minute: 20),

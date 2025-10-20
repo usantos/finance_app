@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 enum TransactionType { credit, debit }
 
 class Transaction {
-  final String description;
+  final String name;
+  final String? description;
   final DateTime date;
   final TimeOfDay time;
   final double amount;
@@ -14,7 +15,8 @@ class Transaction {
   final String category;
 
   Transaction({
-    required this.description,
+    required this.name,
+    this.description,
     required this.date,
     required this.time,
     required this.amount,
@@ -49,10 +51,20 @@ class TransactionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              transaction.description,
+              transaction.name,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.black),
               overflow: TextOverflow.ellipsis,
             ),
+
+            if (transaction.description?.isNotEmpty ?? false) ...[
+              const SizedBox(height: 5),
+              Text(
+                transaction.description ?? '',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.black),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+
             const SizedBox(height: 5),
             Text(
               '${transaction.date.formatDate()} • ${transaction.time.formatHour()}',

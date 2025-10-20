@@ -55,7 +55,12 @@ class CustomBottomSheet {
                         ),
                       ],
                     ),
-                  Expanded(child: SingleChildScrollView(child: child)),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: SingleChildScrollView(
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [child]),
+                    ),
+                  ),
                 ],
               ),
             ),

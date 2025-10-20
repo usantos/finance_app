@@ -12,6 +12,7 @@ class RecentTransactions extends StatefulWidget {
 class _RecentTransactionsState extends State<RecentTransactions> {
   final List<Transaction> _transactions = [
     Transaction(
+      name: '',
       description: 'Transferência PIX - João Silva',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
@@ -20,6 +21,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
       category: 'Transferência',
     ),
     Transaction(
+      name: '',
       description: 'Compra - Supermercado Extra',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),

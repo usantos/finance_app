@@ -1,5 +1,8 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'extensions/brl_currency_input_formatter_ext.dart';
 
 class Utils {
   Utils._();
@@ -8,6 +11,69 @@ class Utils {
     if (value == null || value.isEmpty) {
       return "Campo obrigatório";
     }
+    return null;
+  }
+
+  static String? validateToAccount(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.length < 6) {
+      return "A conta deve ter 6 dígitos";
+    }
+
+    return null;
+  }
+
+  static String? validateToPixKeyValue(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    value = value.trim();
+    final type = value.detectPixKeyType();
+
+    switch (type) {
+      case 'CPF':
+        final digits = value.replaceAll(RegExp(r'\D'), '');
+        if (digits.length != 11) return 'CPF deve conter 11 dígitos';
+        if (validateCpf(value) == null) return 'CPF inválido';
+        break;
+
+      case 'Telefone':
+        final digits = value.replaceAll(RegExp(r'\D'), '');
+        if (digits.length != 11) return 'Telefone deve conter 11 dígitos (DDD + número)';
+        break;
+
+      case 'Email':
+        final emailRegex = RegExp(r'^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,4}$');
+        if (!emailRegex.hasMatch(value)) return 'E-mail inválido';
+        break;
+
+      case 'Aleatoria':
+        final uuidRegex = RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+        if (!uuidRegex.hasMatch(value)) return 'Chave aleatória inválida';
+        break;
+
+      default:
+        return 'Tipo de chave não reconhecido';
+    }
+
+    return null;
+  }
+
+  static String? validateAmount(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+
+    final double parsed = BRLCurrencyInputFormatterExt.parse(value);
+    if (parsed <= 0) {
+      return "O valor deve ser maior que R\$ 0,00";
+    }
+
     return null;
   }
 

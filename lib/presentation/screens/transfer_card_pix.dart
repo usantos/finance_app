@@ -1,9 +1,9 @@
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
-import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -19,18 +19,17 @@ class TransferCardPix extends StatefulWidget {
 
 class _TransferCardPixState extends State<TransferCardPix> {
   final _formKey = GlobalKey<FormState>();
-  final _accountViewModel = sl.get<AccountViewModel>();
   final _transactionViewModel = sl.get<TransactionViewModel>();
-  final TextEditingController _toAccountTextEditingController = TextEditingController();
+  final TextEditingController _toKeyPixTextEditingController = TextEditingController();
   final TextEditingController _amountTextEditingController = TextEditingController();
-  final FocusNode _toAccountFocusNode = FocusNode();
+  final FocusNode _toKeyPixFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
 
   @override
   void dispose() {
-    _toAccountTextEditingController.dispose();
+    _toKeyPixTextEditingController.dispose();
     _amountTextEditingController.dispose();
-    _toAccountFocusNode.dispose();
+    _toKeyPixFocusNode.dispose();
     _amountFocusNode.dispose();
     super.dispose();
   }
@@ -155,7 +154,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  controller: _toAccountTextEditingController,
+                  controller: _toKeyPixTextEditingController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.greyBackground,
@@ -165,9 +164,8 @@ class _TransferCardPixState extends State<TransferCardPix> {
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [AccountInputFormatterExt()],
-                  validator: _transactionViewModel.validateToAccount,
-                  focusNode: _toAccountFocusNode,
+                  validator: Utils.validateToPixKeyValue,
+                  focusNode: _toKeyPixFocusNode,
                 ),
                 const SizedBox(height: 20),
                 Align(
@@ -190,7 +188,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                   ),
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
-                  validator: _transactionViewModel.validateAmount,
+                  validator: Utils.validateAmount,
                   focusNode: _amountFocusNode,
                 ),
                 const SizedBox(height: 10),
@@ -219,10 +217,9 @@ class _TransferCardPixState extends State<TransferCardPix> {
                             backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
-                          onPressed: _transactionViewModel.hasPassword
+                          onPressed: _transactionViewModel.hasPassword && _formKey.currentState!.validate() == true
                               ? () async {
                                   _transactionViewModel.showErrors = true;
-                                  if (!_formKey.currentState!.validate()) return;
                                   FocusScope.of(context).unfocus();
 
                                   PinBottomSheet.show(
@@ -230,32 +227,24 @@ class _TransferCardPixState extends State<TransferCardPix> {
                                     autoSubmitOnComplete: false,
                                     height: MediaQuery.of(context).size.height * 0.35,
                                     title: 'Insira sua senha de 4 dígitos',
-                                    onCompleted: (pin) async {
-                                      if (await _accountViewModel.getUser() == null ||
-                                          _accountViewModel.account == null) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Usuário ou conta não encontrados.')),
-                                        );
-                                        return;
-                                      }
-
+                                    onCompleted: (transferPassword) async {
                                       final double amount = BRLCurrencyInputFormatterExt.parse(
                                         _amountTextEditingController.text,
                                       );
-                                      final String toAccount = _toAccountTextEditingController.text;
+                                      final String toPixKeyValue = _toKeyPixTextEditingController.text;
 
-                                      final bool success = await _transactionViewModel.transferBetweenAccounts(
-                                        toAccount,
+                                      final bool success = await _transactionViewModel.transferPix(
+                                        toPixKeyValue,
                                         amount,
-                                        pin,
+                                        transferPassword,
                                       );
 
                                       if (success) {
                                         _amountTextEditingController.clear();
-                                        _toAccountTextEditingController.clear();
+                                        _toKeyPixTextEditingController.clear();
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
-                                            content: const Text('Transferência realizada com sucesso!'),
+                                            content: const Text('Pix realizada com sucesso!'),
                                             backgroundColor: AppColors.greenSuccess,
                                             behavior: SnackBarBehavior.floating,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -265,7 +254,7 @@ class _TransferCardPixState extends State<TransferCardPix> {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                              _transactionViewModel.errorMessage ?? 'Erro na transferência',
+                                              _transactionViewModel.errorMessage ?? 'Erro ao realizar o Pix',
                                             ),
                                             backgroundColor: AppColors.redError,
                                             behavior: SnackBarBehavior.floating,

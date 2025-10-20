@@ -4,6 +4,7 @@ import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +166,7 @@ class _TransferCardState extends State<TransferCard> {
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [AccountInputFormatterExt()],
-                  validator: _transactionViewModel.validateToAccount,
+                  validator: Utils.validateToAccount,
                   focusNode: _toAccountFocusNode,
                 ),
                 const SizedBox(height: 20),
@@ -189,7 +190,7 @@ class _TransferCardState extends State<TransferCard> {
                   ),
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
-                  validator: _transactionViewModel.validateAmount,
+                  validator: Utils.validateAmount,
                   focusNode: _amountFocusNode,
                 ),
                 const SizedBox(height: 10),

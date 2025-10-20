@@ -1,3 +1,5 @@
+import 'package:financial_app/core/utils.dart';
+
 extension StringExtension on String {
   String get firstLetter {
     String trimmed = trim();
@@ -117,5 +119,24 @@ extension StringExtension on String {
       final number2 = rebuilt.length > 7 ? rebuilt.substring(7) : '';
       return '($ddd) $number1${number2.isNotEmpty ? '-$number2' : ''}';
     }
+  }
+
+  String detectPixKeyType() {
+    final value = trim();
+    if (value.contains('@')) {
+      return 'E-mail';
+    }
+    if (RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$').hasMatch(value)) {
+      return 'Chave Aleatória';
+    }
+    final digits = value.replaceAll(RegExp(r'\D'), '');
+    if (digits.length == 11 && Utils.validateCpf(value) != null) {
+      return 'CPF';
+    }
+    if (digits.length == 10 || digits.length == 11) {
+      return 'Telefone';
+    }
+
+    return 'Desconhecido';
   }
 }

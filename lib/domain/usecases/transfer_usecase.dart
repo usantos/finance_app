@@ -63,4 +63,15 @@ class TransferUseCase {
   Future<Map<String, dynamic>> deletePixKey(String keyType) async {
     return transactionRepository.deletePixKey(keyType);
   }
+
+  Future<Map<String, dynamic>> transferPix(String toPixKeyValue, double amount, String transferPassword) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.transferPix(
+      fromAccount!.id,
+      toPixKeyValue,
+      amount,
+      transferPassword,
+      fromAccount.userId,
+    );
+  }
 }

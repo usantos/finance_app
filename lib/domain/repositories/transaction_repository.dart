@@ -26,4 +26,12 @@ abstract class TransactionRepository {
   Future<List<Map<String, dynamic>?>> getPixKeysByAccountId(String accountId);
 
   Future<Map<String, dynamic>> deletePixKey(String keyType);
+
+  Future<Map<String, dynamic>> transferPix(
+    String fromAccountId,
+    String toPixKeyValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  );
 }

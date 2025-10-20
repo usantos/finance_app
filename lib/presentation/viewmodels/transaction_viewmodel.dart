@@ -2,7 +2,6 @@ import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/domain/entities/account.dart';
 import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/usecases/transfer_usecase.dart';
@@ -41,36 +40,6 @@ class TransactionViewModel extends ChangeNotifier {
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;
-  }
-
-  String? validateToAccount(String? value) {
-    if (!showErrors) return null;
-
-    if (value == null || value.isEmpty) {
-      return "Campo obrigatório";
-    }
-
-    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digitsOnly.length < 6) {
-      return "A conta deve ter 6 dígitos";
-    }
-
-    return null;
-  }
-
-  String? validateAmount(String? value) {
-    if (!showErrors) return null;
-
-    if (value == null || value.isEmpty) {
-      return "Campo obrigatório";
-    }
-
-    final double parsed = BRLCurrencyInputFormatterExt.parse(value);
-    if (parsed <= 0) {
-      return "O valor deve ser maior que R\$ 0,00";
-    }
-
-    return null;
   }
 
   Future<void> fetchTransactions(String accountId) async {
@@ -298,6 +267,36 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> transferPix(String toPixKeyValue, double amount, String transferPassword) async {
+    _isLoading = true;
+    _errorMessage = null;
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.transferPix(toPixKeyValue, amount, transferPassword);
+
+      _isLoading = false;
+
+      if (!(result['success'] ?? false)) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        await refreshAccountBalance();
+        notifyListeners();
+        return false;
+      }
+
+      await refreshAccountBalance();
       notifyListeners();
       return true;
     } catch (e) {

@@ -63,4 +63,15 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   Future<Map<String, dynamic>> deletePixKey(String keyType) async {
     return await realApi.deletePixKey(keyType);
   }
+
+  @override
+  Future<Map<String, dynamic>> transferPix(
+    String fromAccountId,
+    String toPixKeyValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  ) async {
+    return await realApi.transferPix(fromAccountId, toPixKeyValue, amount, transferPassword, userId);
+  }
 }

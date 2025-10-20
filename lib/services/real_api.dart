@@ -268,4 +268,29 @@ class RealApi {
       return {"success": false, "message": "Erro ao deletar chave PIX"};
     }
   }
+
+  Future<Map<String, dynamic>> transferPix(
+    String fromAccountId,
+    String toPixKeyValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  ) async {
+    try {
+      final response = await _dio.post(
+        '/pix/transferPix',
+        data: {
+          'fromAccountId': fromAccountId,
+          'toPixKeyValue': toPixKeyValue,
+          'amount': amount,
+          'transferPassword': transferPassword,
+        },
+      );
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro na transferência PIX: $e');
+      return {"success": false, "message": "Erro na transferência PIX"};
+    }
+  }
 }

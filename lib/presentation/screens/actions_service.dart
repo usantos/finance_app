@@ -1,19 +1,20 @@
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/create_pix_key_card.dart';
+import 'package:financial_app/presentation/screens/qr_code_card_pix.dart';
 import 'package:financial_app/presentation/screens/transfer_card.dart';
-import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
+import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:flutter/material.dart';
 
-class QuickActionsTransfer extends StatefulWidget {
-  const QuickActionsTransfer({super.key, required this.onSelect});
+class ActionsService extends StatefulWidget {
+  const ActionsService({super.key, required this.onSelect});
 
   final ValueChanged<Widget> onSelect;
 
   @override
-  State<QuickActionsTransfer> createState() => _QuickActionsTransferState();
+  State<ActionsService> createState() => _ActionsServiceState();
 }
 
-class _QuickActionsTransferState extends State<QuickActionsTransfer> {
+class _ActionsServiceState extends State<ActionsService> {
   final ScrollController _scrollController = ScrollController();
   late List<Map<String, dynamic>> actions;
   int selectedIndex = 0;
@@ -26,9 +27,9 @@ class _QuickActionsTransferState extends State<QuickActionsTransfer> {
   void initState() {
     super.initState();
     actions = [
-      {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferCardPix()},
+      {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferPixCard()},
       {'icon': Icons.call_received, 'label': 'Chaves Pix', 'widget': const CreatePixKeyCard()},
-      {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code', 'widget': null},
+      {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code', 'widget': const QrCodePixCard()},
       {'icon': Icons.compare_arrows, 'label': 'Entre contas', 'widget': const TransferCard()},
     ];
 

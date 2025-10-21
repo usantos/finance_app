@@ -34,4 +34,6 @@ abstract class TransactionRepository {
     String transferPassword,
     String userId,
   );
+
+  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId);
 }

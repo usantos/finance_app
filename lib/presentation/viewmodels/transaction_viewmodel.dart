@@ -36,6 +36,7 @@ class TransactionViewModel extends ChangeNotifier {
   String? get errorCode => _errorCode;
   bool get hasPassword => _hasPassword;
   Account? get account => _account;
+  Map<String, dynamic>? qrCode;
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -297,6 +298,32 @@ class TransactionViewModel extends ChangeNotifier {
       }
 
       await refreshAccountBalance();
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> qrCodePix(double amount) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final response = await _transferUseCase.qrCodePix(amount);
+
+      _isLoading = false;
+
+      if (!(response['success'] ?? false)) {
+        _errorMessage = response['message'];
+        _errorCode = response['code'];
+        notifyListeners();
+        return false;
+      }
+      qrCode = response['message'];
       notifyListeners();
       return true;
     } catch (e) {

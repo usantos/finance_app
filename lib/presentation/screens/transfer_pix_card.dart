@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class TransferCardPix extends StatefulWidget {
-  const TransferCardPix({super.key});
+class TransferPixCard extends StatefulWidget {
+  const TransferPixCard({super.key});
 
   @override
-  State<TransferCardPix> createState() => _TransferCardPixState();
+  State<TransferPixCard> createState() => _TransferPixCardState();
 }
 
-class _TransferCardPixState extends State<TransferCardPix> {
+class _TransferPixCardState extends State<TransferPixCard> {
   final _formKey = GlobalKey<FormState>();
   final _transactionViewModel = sl.get<TransactionViewModel>();
   final TextEditingController _toKeyPixTextEditingController = TextEditingController();

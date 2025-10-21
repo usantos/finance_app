@@ -17,7 +17,7 @@ class CreatePixKeyCard extends StatefulWidget {
 }
 
 class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
-  final _viewModel = sl.get<TransactionViewModel>();
+  final _transactionViewModel = sl.get<TransactionViewModel>();
 
   @override
   void initState() {
@@ -123,7 +123,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
             IconButton(
               onPressed: () async {
                 if (keyType != null) {
-                  await _viewModel.deletePixKey(keyType);
+                  await _transactionViewModel.deletePixKey(keyType);
                   final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
                   viewModel.getPixKeysByAccountId();
                 }

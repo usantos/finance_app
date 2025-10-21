@@ -293,4 +293,25 @@ class RealApi {
       return {"success": false, "message": "Erro na transferência PIX"};
     }
   }
+
+  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) async {
+    try {
+      final response = await _dio.post(
+        '/pix/createPixQr',
+        data: {'accountId': accountId, 'amount': amount, 'userId': userId, 'expiresInMinutes': 60},
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido na criaçao do QR Code',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao criar QR Code: $e'};
+    }
+  }
 }

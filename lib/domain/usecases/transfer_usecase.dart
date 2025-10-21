@@ -74,4 +74,9 @@ class TransferUseCase {
       fromAccount.userId,
     );
   }
+
+  Future<Map<String, dynamic>> qrCodePix(double amount) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.qrCodePix(fromAccount!.id, amount, fromAccount.userId);
+  }
 }

@@ -71,4 +71,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
   ) {
     return remoteDataSource.transferPix(fromAccountId, toPixKeyValue, amount, transferPassword, userId);
   }
+
+  @override
+  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) {
+    return remoteDataSource.qrCodePix(accountId, amount, userId);
+  }
 }

@@ -1,12 +1,12 @@
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
-import 'package:financial_app/presentation/screens/transfer_card_pix.dart';
+import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'components/custom_appbar.dart';
 import 'components/skeleton.dart';
-import 'quick_actions_transfer.dart';
+import 'actions_service.dart';
 import 'recent_pix.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ? const LoadSkeleton(itemCount: 8)
               : Column(
                   children: [
-                    QuickActionsTransfer(
+                    ActionsService(
                       onSelect: (widget) {
                         setState(() {
                           _selectedWidget = widget;
@@ -71,7 +71,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (_selectedWidget.runtimeType == TransferCardPix) ...[
+                          if (_selectedWidget.runtimeType == TransferPixCard) ...[
                             Text(
                               'Contatos Pix recentes',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),

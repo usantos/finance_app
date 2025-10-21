@@ -74,4 +74,9 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   ) async {
     return await realApi.transferPix(fromAccountId, toPixKeyValue, amount, transferPassword, userId);
   }
+
+  @override
+  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) async {
+    return await realApi.qrCodePix(accountId, amount, userId);
+  }
 }

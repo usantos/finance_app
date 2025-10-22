@@ -338,7 +338,7 @@ class TransactionViewModel extends ChangeNotifier {
 
     try {
       final response = await _transferUseCase.createQrCodePix(amount);
-      final date = response['message'];
+      final data = response['message'];
 
       _isLoading = false;
 
@@ -348,8 +348,8 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
-      expiresAt = DateTime.parse(date['expiresAt']).toLocal();
-      qrCode = response['message'];
+      expiresAt = DateTime.parse(data['expiresAt']).toLocal();
+      qrCode = data;
       final txid = qrCode?['txid'];
       startQrCodeExpirationTimer(txid, expiresAt!);
       notifyListeners();

@@ -72,7 +72,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                         if (_selectedWidget.runtimeType == TransferPixCard) ...[
+                          if (_selectedWidget.runtimeType == TransferPixCard) ...[
                             Text(
                               'Contatos Pix recentes',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
@@ -81,27 +81,27 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             RecentContacts(),
                           ] else
                             const SizedBox.shrink(),
-                          if (_selectedWidget.runtimeType == QrCodePixCard)...[
-                            SizedBox.shrink()
-                          ]
-                          else...[
+                          if (_selectedWidget.runtimeType == QrCodePixCard) ...[
+                            SizedBox.shrink(),
+                          ] else ...[
                             Text(
-                            'Últimas transações',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
-                          ),
-                          const SizedBox(height: 16),
-                          RecentPix(),
-                          const SizedBox(height: 16),
-                          Center(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                              ),
-                              onPressed: () {},
-                              child: Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
+                              'Últimas transações',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
-                          ),]
+                            const SizedBox(height: 16),
+                            RecentPix(),
+                            const SizedBox(height: 16),
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                ),
+                                onPressed: () {},
+                                child: Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),

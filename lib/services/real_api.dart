@@ -262,10 +262,17 @@ class RealApi {
     try {
       final response = await _dio.delete('/pix/deletePixKey/$keyType');
 
-      return Map<String, dynamic>.from(response.data);
+      if (response.statusCode == 200) {
+        return {"success": true, "message": Map<String, dynamic>.from(response.data)};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao deletar chave PIX',
+        };
+      }
     } catch (e) {
-      debugPrint('Erro ao deletar chave PIX: $e');
-      return {"success": false, "message": "Erro ao deletar chave PIX"};
+      return {"success": false, "message": 'Erro inesperado ao deletar chave PIX: $e'};
     }
   }
 
@@ -332,6 +339,4 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao deletar QR Code: $e'};
     }
   }
-
-
 }

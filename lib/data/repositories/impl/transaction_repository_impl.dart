@@ -78,8 +78,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> deleteQrCode(String txid){
+  Future<Map<String, dynamic>> deleteQrCode(String txid) {
     return remoteDataSource.deleteQrCode(txid);
-
   }
 }

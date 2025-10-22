@@ -83,5 +83,4 @@ class TransferUseCase {
   Future<Map<String, dynamic>> deleteQrCode(String txid) async {
     return transactionRepository.deleteQrCode(txid);
   }
-
 }

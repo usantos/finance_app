@@ -73,7 +73,13 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) {
-    return remoteDataSource.qrCodePix(accountId, amount, userId);
+  Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId) {
+    return remoteDataSource.createQrCodePix(accountId, amount, userId);
+  }
+
+  @override
+  Future<Map<String, dynamic>> deleteQrCode(String txid){
+    return remoteDataSource.deleteQrCode(txid);
+
   }
 }

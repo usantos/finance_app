@@ -1,4 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/screens/qr_code_card_pix.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -71,7 +72,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (_selectedWidget.runtimeType == TransferPixCard) ...[
+                         if (_selectedWidget.runtimeType == TransferPixCard) ...[
                             Text(
                               'Contatos Pix recentes',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
@@ -80,8 +81,11 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             RecentContacts(),
                           ] else
                             const SizedBox.shrink(),
-
-                          Text(
+                          if (_selectedWidget.runtimeType == QrCodePixCard)...[
+                            SizedBox.shrink()
+                          ]
+                          else...[
+                            Text(
                             'Últimas transações',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                           ),
@@ -97,7 +101,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               onPressed: () {},
                               child: Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
                             ),
-                          ),
+                          ),]
                         ],
                       ),
                     ),

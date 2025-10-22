@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -37,6 +39,8 @@ class TransactionViewModel extends ChangeNotifier {
   bool get hasPassword => _hasPassword;
   Account? get account => _account;
   Map<String, dynamic>? qrCode;
+  DateTime? expiresAt;
+  Timer? _qrCodeTimer;
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -308,12 +312,33 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> qrCodePix(double amount) async {
+  void startQrCodeExpirationTimer(String txid, DateTime expiresAt) {
+    _qrCodeTimer?.cancel();
+    final duration = expiresAt.difference(DateTime.now());
+
+    if (duration.isNegative) {
+      deleteQrCode(txid);
+      return;
+    }
+
+    _qrCodeTimer = Timer(duration, () async {
+      await deleteQrCode(txid);
+      notifyListeners();
+    });
+  }
+
+  void cancelQrCodeTimer() {
+    _qrCodeTimer?.cancel();
+    _qrCodeTimer = null;
+  }
+
+  Future<bool> createQrCodePix(double amount) async {
     _errorCode = null;
     notifyListeners();
 
     try {
-      final response = await _transferUseCase.qrCodePix(amount);
+      final response = await _transferUseCase.createQrCodePix(amount);
+      final date = response['message'];
 
       _isLoading = false;
 
@@ -323,7 +348,37 @@ class TransactionViewModel extends ChangeNotifier {
         notifyListeners();
         return false;
       }
+      expiresAt = DateTime.parse(date['expiresAt']).toLocal();
       qrCode = response['message'];
+      final txid = qrCode?['txid'];
+      startQrCodeExpirationTimer(txid, expiresAt!);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> deleteQrCode(String txid) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.deleteQrCode(txid);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      cancelQrCodeTimer();
+      qrCode = null;
       notifyListeners();
       return true;
     } catch (e) {

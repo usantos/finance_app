@@ -76,7 +76,14 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) async {
-    return await realApi.qrCodePix(accountId, amount, userId);
+  Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId) async {
+    return await realApi.createQrCodePix(accountId, amount, userId);
   }
+
+  @override
+  Future<Map<String, dynamic>> deleteQrCode(String txid) async {
+    return await realApi.deleteQrCode(txid);
+
+  }
+
 }

@@ -35,5 +35,7 @@ abstract class TransactionRepository {
     String userId,
   );
 
-  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId);
+  Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId);
+
+  Future<Map<String, dynamic>> deleteQrCode(String txid);
 }

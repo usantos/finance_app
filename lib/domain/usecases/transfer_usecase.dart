@@ -75,8 +75,13 @@ class TransferUseCase {
     );
   }
 
-  Future<Map<String, dynamic>> qrCodePix(double amount) async {
+  Future<Map<String, dynamic>> createQrCodePix(double amount) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.qrCodePix(fromAccount!.id, amount, fromAccount.userId);
+    return transactionRepository.createQrCodePix(fromAccount!.id, amount, fromAccount.userId);
   }
+
+  Future<Map<String, dynamic>> deleteQrCode(String txid) async {
+    return transactionRepository.deleteQrCode(txid);
+  }
+
 }

@@ -294,11 +294,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> qrCodePix(String accountId, double amount, String userId) async {
+  Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId) async {
     try {
       final response = await _dio.post(
         '/pix/createPixQr',
-        data: {'accountId': accountId, 'amount': amount, 'userId': userId, 'expiresInMinutes': 60},
+        data: {'accountId': accountId, 'amount': amount, 'userId': userId, 'expiresInMinutes': 15},
       );
 
       if (response.statusCode == 200) {
@@ -314,4 +314,24 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao criar QR Code: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> deleteQrCode(String txid) async {
+    try {
+      final response = await _dio.delete('/pix/deleteQrCode/$txid');
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao deletar QR Code',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao deletar QR Code: $e'};
+    }
+  }
+
+
 }

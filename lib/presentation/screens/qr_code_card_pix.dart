@@ -17,13 +17,20 @@ class QrCodePixCard extends StatefulWidget {
 
 class _QrCodePixCardState extends State<QrCodePixCard> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _amountTextEditingController = TextEditingController();
-  final FocusNode _amountFocusNode = FocusNode();
+  final _amountController = TextEditingController();
+  final _amountfocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _amountfocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, viewModel, child) {
+      builder: (context, viewModel, _) {
         if (viewModel.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -38,48 +45,116 @@ class _QrCodePixCardState extends State<QrCodePixCard> {
             children: [
               const Text(
                 'Receba com QR Code',
-                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 10),
 
               if (qrCode == null)
                 TextFormField(
-                  controller: _amountTextEditingController,
+                  controller: _amountController,
+                  focusNode: _amountfocusNode,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.greyBackground,
-                    enabledBorder: InputBorder.none,
                     labelText: 'Digite o valor que deseja receber',
                     hintText: 'R\$ 0,00',
-                    hintStyle: const TextStyle(color: AppColors.blackText),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    BRLCurrencyInputFormatterExt(),
+                  ],
                   validator: Utils.validateAmount,
-                  focusNode: _amountFocusNode,
                 ),
 
               if (qrCode != null)
                 Center(
-                  child: qr.QrImageView(data: qrString!, version: qr.QrVersions.auto, size: 250.0),
+                  child: Column(
+                    children: [
+                      qr.QrImageView(
+                        data: qrString!,
+                        version: qr.QrVersions.auto,
+                        size: 250.0,
+                      ),
+                      const SizedBox(height: 8),
+                      StreamBuilder<Duration>(
+                        stream: Stream.periodic(
+                          const Duration(seconds: 1),
+                              (_) => viewModel.expiresAt!.difference(DateTime.now()),
+                        ),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const SizedBox();
+                          final remaining = snapshot.data!;
+                          if (remaining.isNegative) {
+                            final txid = qrCode['txid'];
+                            viewModel.deleteQrCode(txid);
+                            return const SizedBox();
+                          }
+
+                          final m = remaining.inMinutes.toString().padLeft(2, '0');
+                          final s = (remaining.inSeconds % 60).toString().padLeft(2, '0');
+                          return Text(
+                            "Expira em $m:$s",
+                            style: const TextStyle(fontSize: 16, color: AppColors.black),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
 
               const SizedBox(height: 12),
 
               Center(
-                child: ElevatedButton(
+                child: qrCode == null
+                    ? ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      final double amount = BRLCurrencyInputFormatterExt.parse(_amountTextEditingController.text);
-                      await viewModel.qrCodePix(amount);
+                      final amount = BRLCurrencyInputFormatterExt.parse(_amountController.text);
+                      await viewModel.createQrCodePix(amount);
                     }
                   },
                   child: const Text('Gerar QR Code', style: TextStyle(color: AppColors.white)),
+                )
+                    : Row(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                      ),
+                      onPressed: () {
+                        final payload = qrCode['payload'] ?? '';
+                        Utils.copiarTexto(context, payload, "Chave copiada com sucesso");
+                      },
+                      child: const Text('Copia e cola', style: TextStyle(color: AppColors.white)),
+                    ),
+                    const Spacer(),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                      ),
+                      onPressed: () async {
+                        final txid = qrCode['txid'] ?? '';
+                        await viewModel.deleteQrCode(txid);
+                        _amountController.clear();
+                      },
+                      child: const Text('Excluir QR Code', style: TextStyle(color: AppColors.white)),
+                    ),
+                  ],
                 ),
               ),
             ],

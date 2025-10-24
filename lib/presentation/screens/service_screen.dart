@@ -1,5 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/presentation/screens/qr_code_card_pix.dart';
+import 'package:financial_app/presentation/screens/qr_code_card.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -81,7 +81,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             RecentContacts(),
                           ] else
                             const SizedBox.shrink(),
-                          if (_selectedWidget.runtimeType == QrCodePixCard) ...[
+                          if (_selectedWidget.runtimeType == QrCodeCard) ...[
                             SizedBox.shrink(),
                           ] else ...[
                             Text(

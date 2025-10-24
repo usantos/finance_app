@@ -258,9 +258,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> deletePixKey(String keyType) async {
+  Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue) async {
     try {
-      final response = await _dio.delete('/pix/deletePixKey/$keyType');
+      final response = await _dio.delete('/pix/deletePixKey/$keyType/$keyValue');
 
       if (response.statusCode == 200) {
         return {"success": true, "message": Map<String, dynamic>.from(response.data)};

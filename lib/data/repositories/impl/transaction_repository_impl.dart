@@ -57,8 +57,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> deletePixKey(String keyType) {
-    return remoteDataSource.deletePixKey(keyType);
+  Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue) {
+    return remoteDataSource.deletePixKey(keyType, keyValue);
   }
 
   @override

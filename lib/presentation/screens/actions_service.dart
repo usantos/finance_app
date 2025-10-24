@@ -1,6 +1,6 @@
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/presentation/screens/create_pix_key_card.dart';
-import 'package:financial_app/presentation/screens/qr_code_card_pix.dart';
+import 'package:financial_app/presentation/screens/pix_key_card.dart';
+import 'package:financial_app/presentation/screens/qr_code_card.dart';
 import 'package:financial_app/presentation/screens/transfer_card.dart';
 import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +28,8 @@ class _ActionsServiceState extends State<ActionsService> {
     super.initState();
     actions = [
       {'icon': Icons.send, 'label': 'Enviar Pix', 'widget': const TransferPixCard()},
-      {'icon': Icons.call_received, 'label': 'Chaves Pix', 'widget': const CreatePixKeyCard()},
-      {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code', 'widget': const QrCodePixCard()},
+      {'icon': Icons.call_received, 'label': 'Chaves Pix', 'widget': const PixKeyCard()},
+      {'icon': Icons.qr_code_2_sharp, 'label': 'QR Code', 'widget': const QrCodeCard()},
       {'icon': Icons.compare_arrows, 'label': 'Entre contas', 'widget': const TransferCard()},
     ];
 

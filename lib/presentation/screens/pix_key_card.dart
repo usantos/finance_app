@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 
 import 'components/bottom_sheet_create_pix_key.dart';
 
-class CreatePixKeyCard extends StatefulWidget {
-  const CreatePixKeyCard({super.key});
+class PixKeyCard extends StatefulWidget {
+  const PixKeyCard({super.key});
 
   @override
-  State<CreatePixKeyCard> createState() => _CreatePixKeyCardState();
+  State<PixKeyCard> createState() => _PixKeyCardState();
 }
 
-class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
+class _PixKeyCardState extends State<PixKeyCard> {
   final _transactionViewModel = sl.get<TransactionViewModel>();
 
   @override
@@ -69,6 +69,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
                     text: pix?['keyType'] ?? 'Chave PIX',
                     subText: pix?['keyValue'] ?? '',
                     keyType: keyType,
+                    keyValue: pix?['keyValue'] ?? '',
                   );
                 },
               ),
@@ -101,7 +102,7 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
     );
   }
 
-  Widget _pixKeys({required String text, required String subText, required String? keyType}) {
+  Widget _pixKeys({required String text, required String subText, required String? keyType, required String keyValue}) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
       elevation: 0,
@@ -122,11 +123,59 @@ class _CreatePixKeyCardState extends State<CreatePixKeyCard> {
             ),
             IconButton(
               onPressed: () async {
-                if (keyType != null) {
-                  await _transactionViewModel.deletePixKey(keyType);
-                  final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-                  viewModel.getPixKeysByAccountId();
-                }
+                CustomBottomSheet.show(
+                  iconClose: false,
+                  context,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Deseja realmente excluir a chave PIX $text?",
+                          style: const TextStyle(fontSize: 18, color: AppColors.black),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  side: const BorderSide(color: AppColors.black),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancelar', style: TextStyle(color: AppColors.black)),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                              ),
+                              onPressed: () async {
+                                if (keyType != null) {
+                                  keyValue = keyValue.replaceAll(RegExp(r'\D'), '');
+                                  await _transactionViewModel.deletePixKey(keyType, keyValue);
+                                  final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+                                  viewModel.getPixKeysByAccountId();
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('Confirmar', style: TextStyle(color: AppColors.white)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               },
               icon: const Icon(Icons.delete, color: AppColors.red),
             ),

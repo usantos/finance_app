@@ -60,8 +60,8 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> deletePixKey(String keyType) async {
-    return await realApi.deletePixKey(keyType);
+  Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue) async {
+    return await realApi.deletePixKey(keyType, keyValue);
   }
 
   @override

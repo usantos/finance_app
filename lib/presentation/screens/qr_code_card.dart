@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
@@ -8,14 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart' as qr;
 
-class QrCodePixCard extends StatefulWidget {
-  const QrCodePixCard({super.key});
+class QrCodeCard extends StatefulWidget {
+  const QrCodeCard({super.key});
 
   @override
-  State<QrCodePixCard> createState() => _QrCodePixCardState();
+  State<QrCodeCard> createState() => _QrCodeCardState();
 }
 
-class _QrCodePixCardState extends State<QrCodePixCard> {
+class _QrCodeCardState extends State<QrCodeCard> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
   final _amountfocusNode = FocusNode();
@@ -85,8 +86,9 @@ class _QrCodePixCardState extends State<QrCodePixCard> {
                             return const SizedBox();
                           }
 
-                          final m = remaining.inMinutes.toString().padLeft(2, '0');
-                          final s = (remaining.inSeconds % 60).toString().padLeft(2, '0');
+                          final adjusted = remaining - const Duration(seconds: 1);
+                          final m = adjusted.inMinutes.toString().padLeft(2, '0');
+                          final s = (adjusted.inSeconds % 60).toString().padLeft(2, '0');
                           return Text("Expira em $m:$s", style: const TextStyle(fontSize: 16, color: AppColors.black));
                         },
                       ),
@@ -131,9 +133,56 @@ class _QrCodePixCardState extends State<QrCodePixCard> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                             ),
                             onPressed: () async {
-                              final txid = qrCode['txid'] ?? '';
-                              await viewModel.deleteQrCode(txid);
-                              _amountController.clear();
+                              CustomBottomSheet.show(
+                                iconClose: false,
+                                context,
+                                height: MediaQuery.of(context).size.height * 0.2,
+                                child: Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Deseja realmente excluir o QR Code?",
+                                        style: const TextStyle(fontSize: 18, color: AppColors.black),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: AppColors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(7),
+                                                side: const BorderSide(color: AppColors.black),
+                                              ),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Cancelar', style: TextStyle(color: AppColors.black)),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: AppColors.primary,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                            ),
+                                            onPressed: () async {
+                                              final txid = qrCode['txid'] ?? '';
+                                              await viewModel.deleteQrCode(txid);
+                                              _amountController.clear();
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Confirmar', style: TextStyle(color: AppColors.white)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
                             },
                             child: const Text('Excluir QR Code', style: TextStyle(color: AppColors.white)),
                           ),

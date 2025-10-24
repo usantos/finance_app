@@ -26,7 +26,7 @@ abstract class TransactionRemoteDataSource {
 
   Future<List<Map<String, dynamic>?>> getPixKeysByAccountId(String accountId);
 
-  Future<Map<String, dynamic>> deletePixKey(String keyType);
+  Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue);
 
   Future<Map<String, dynamic>> transferPix(
     String fromAccountId,

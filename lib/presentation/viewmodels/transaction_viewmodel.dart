@@ -257,12 +257,12 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> deletePixKey(String keyType) async {
+  Future<bool> deletePixKey(String keyType, String keyValue) async {
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.deletePixKey(keyType);
+      final result = await _transferUseCase.deletePixKey(keyType, keyValue);
 
       _isLoading = false;
 

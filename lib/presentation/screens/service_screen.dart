@@ -1,4 +1,5 @@
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/screens/payload_card.dart';
 import 'package:financial_app/presentation/screens/qr_code_card.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
 import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
@@ -82,7 +83,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           ] else
                             const SizedBox.shrink(),
                           if (_selectedWidget.runtimeType == QrCodeCard) ...[
-                            SizedBox.shrink(),
+                            PayloadCard(),
                           ] else ...[
                             Text(
                               'Últimas transações',

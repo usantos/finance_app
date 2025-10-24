@@ -15,6 +15,7 @@ class TransactionViewModel extends ChangeNotifier {
 
   List<Transaction> _transactions = [];
   List<Map<String, dynamic>?> _pixKeys = [];
+  List<Map<String, dynamic>?> _toQrCode = [];
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -33,6 +34,7 @@ class TransactionViewModel extends ChangeNotifier {
 
   List<Transaction> get transactions => _transactions;
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
+  List<Map<String, dynamic>?> get toQrCode => _toQrCode;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -386,6 +388,22 @@ class TransactionViewModel extends ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<void> getQrCode(String payload) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _toQrCode = await _transferUseCase.getQrCode(payload);
+    } catch (e) {
+      _errorMessage = e.toString();
+      _toQrCode = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

@@ -339,4 +339,22 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao deletar QR Code: $e'};
     }
   }
+
+  Future<List<Map<String, dynamic>>> getQrCode(String payload) async {
+    try {
+      final response = await _dio.get('/pix/getQrCode/$payload');
+
+      if (response.statusCode == 200 && response.data is List) {
+        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
+
+        return data;
+      } else {
+        debugPrint('Erro ao buscar QR Code: ${response.data}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar QR Code: $e');
+      return [];
+    }
+  }
 }

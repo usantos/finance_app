@@ -150,6 +150,13 @@ class Utils {
     return null;
   }
 
+  static String? validateEmpty(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Campo obrigatório";
+    }
+    return null;
+  }
+
   static void copiarTexto(BuildContext context, String text, String snackbarText) {
     Clipboard.setData(ClipboardData(text: text));
 

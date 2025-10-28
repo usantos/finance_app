@@ -1,6 +1,7 @@
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
@@ -60,6 +61,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
                 style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 30),
@@ -92,7 +94,6 @@ class _TransferPixCardState extends State<TransferPixCard> {
                   onPressed: () {
                     PinBottomSheet.show(
                       context,
-
                       height: MediaQuery.of(context).size.height * 0.4,
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
@@ -112,6 +113,17 @@ class _TransferPixCardState extends State<TransferPixCard> {
     }
   }
 
+  void _resetForm() {
+    _formKey.currentState?.reset();
+    _toKeyPixTextEditingController.clear();
+    _amountTextEditingController.clear();
+    _toKeyPixFocusNode.unfocus();
+    _amountFocusNode.unfocus();
+    setState(() {
+      _transactionViewModel.showErrors = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<AccountViewModel, TransactionViewModel>(
@@ -123,14 +135,14 @@ class _TransferPixCardState extends State<TransferPixCard> {
               children: [
                 Row(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
-                      child: const Text(
+                      child: Text(
                         'Enviar PIX',
                         style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -145,9 +157,9 @@ class _TransferPixCardState extends State<TransferPixCard> {
                   ],
                 ),
                 const SizedBox(height: 35),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'Chave PIX',
                     style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
@@ -163,14 +175,22 @@ class _TransferPixCardState extends State<TransferPixCard> {
                     hintStyle: const TextStyle(color: AppColors.blackText),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                   validator: Utils.validateToPixKeyValue,
                   focusNode: _toKeyPixFocusNode,
+                  onChanged: (value) {
+                    final formatted = value.detectPixKeyTypeMask();
+                    if (formatted != value) {
+                      _toKeyPixTextEditingController
+                        ..text = formatted
+                        ..selection = TextSelection.collapsed(offset: formatted.length);
+                    }
+                  },
                 ),
                 const SizedBox(height: 20),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'Valor',
                     style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
@@ -217,55 +237,68 @@ class _TransferPixCardState extends State<TransferPixCard> {
                             backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
-                          onPressed: _transactionViewModel.hasPassword && _formKey.currentState!.validate() == true
+                          onPressed: _transactionViewModel.hasPassword
                               ? () async {
-                                  _transactionViewModel.showErrors = true;
+                                  FocusScope.of(context).unfocus();
 
-                                  PinBottomSheet.show(
-                                    context,
-                                    autoSubmitOnComplete: false,
-                                    height: MediaQuery.of(context).size.height * 0.42,
-                                    title: 'Insira sua senha de 4 dígitos',
-                                    onCompleted: (transferPassword) async {
-                                      final double amount = BRLCurrencyInputFormatterExt.parse(
-                                        _amountTextEditingController.text,
-                                      );
-                                      final String toPixKeyValue = _toKeyPixTextEditingController.text;
+                                  if (_formKey.currentState?.validate() ?? false) {
+                                    setState(() {
+                                      _transactionViewModel.showErrors = true;
+                                    });
 
-                                      final bool success = await _transactionViewModel.transferPix(
-                                        toPixKeyValue,
-                                        amount,
-                                        transferPassword,
-                                      );
-
-                                      if (success) {
-                                        _amountTextEditingController.clear();
-                                        _toKeyPixTextEditingController.clear();
-                                        _toKeyPixFocusNode.unfocus();
-                                        _amountFocusNode.unfocus();
-
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: const Text('Pix realizada com sucesso!'),
-                                            backgroundColor: AppColors.greenSuccess,
-                                            behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          ),
+                                    PinBottomSheet.show(
+                                      context,
+                                      autoSubmitOnComplete: false,
+                                      height: MediaQuery.of(context).size.height * 0.42,
+                                      title: 'Insira sua senha de 4 dígitos',
+                                      onCompleted: (transferPassword) async {
+                                        final double amount = BRLCurrencyInputFormatterExt.parse(
+                                          _amountTextEditingController.text,
                                         );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              _transactionViewModel.errorMessage ?? 'Erro ao realizar o Pix',
+                                        final String toPixKeyValue = _toKeyPixTextEditingController.text.replaceAll(
+                                          RegExp(r'\D'),
+                                          '',
+                                        );
+
+                                        final bool success = await _transactionViewModel.transferPix(
+                                          toPixKeyValue,
+                                          amount,
+                                          transferPassword,
+                                        );
+
+                                        if (mounted) {
+                                          _resetForm();
+                                        }
+
+                                        if (success) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: const Text('Pix realizada com sucesso!'),
+                                              backgroundColor: AppColors.greenSuccess,
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                             ),
-                                            backgroundColor: AppColors.redError,
-                                            behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                _transactionViewModel.errorMessage ?? 'Erro ao realizar o Pix',
+                                              ),
+                                              backgroundColor: AppColors.redError,
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      _transactionViewModel.showErrors = true;
+                                    });
+                                  }
                                 }
                               : null,
                           child: const Text('Transferir', style: TextStyle(color: AppColors.white)),

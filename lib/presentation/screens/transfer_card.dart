@@ -57,11 +57,12 @@ class _TransferCardState extends State<TransferCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             const Center(
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
                 style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 30),
@@ -93,7 +94,6 @@ class _TransferCardState extends State<TransferCard> {
                   onPressed: () {
                     PinBottomSheet.show(
                       context,
-
                       height: MediaQuery.of(context).size.height * 0.4,
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
@@ -113,6 +113,16 @@ class _TransferCardState extends State<TransferCard> {
     }
   }
 
+  void _resetForm() {
+    _formKey.currentState?.reset();
+    _toAccountTextEditingController.clear();
+    _amountTextEditingController.clear();
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _transactionViewModel.showErrors = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<AccountViewModel, TransactionViewModel>(
@@ -124,14 +134,14 @@ class _TransferCardState extends State<TransferCard> {
               children: [
                 Row(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
-                      child: const Text(
+                      child: Text(
                         'Fazer transferência',
                         style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -146,9 +156,9 @@ class _TransferCardState extends State<TransferCard> {
                   ],
                 ),
                 const SizedBox(height: 35),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'Conta',
                     style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
@@ -170,9 +180,9 @@ class _TransferCardState extends State<TransferCard> {
                   focusNode: _toAccountFocusNode,
                 ),
                 const SizedBox(height: 20),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'Valor',
                     style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                   ),
@@ -253,10 +263,9 @@ class _TransferCardState extends State<TransferCard> {
                                         pin,
                                       );
 
+                                      _resetForm();
+
                                       if (success) {
-                                        _amountTextEditingController.clear();
-                                        _toAccountTextEditingController.clear();
-                                        _transactionViewModel.showErrors = false;
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: const Text('Transferência realizada com sucesso!'),

@@ -39,7 +39,9 @@ class Utils {
       case 'CPF':
         final digits = value.replaceAll(RegExp(r'\D'), '');
         if (digits.length != 11) return 'CPF deve conter 11 dígitos';
-        if (validateCpf(value) == null) return 'CPF inválido';
+        if (validateCpf(value) != null) {
+          return 'CPF inválido';
+        }
         break;
 
       case 'Telefone':

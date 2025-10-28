@@ -131,7 +131,7 @@ extension StringExtension on String {
       return 'Chave Aleatória';
     }
     final digits = value.replaceAll(RegExp(r'\D'), '');
-    if (digits.length == 11 && Utils.validateCpf(value) != null) {
+    if (digits.length == 11 && Utils.validateCpf(value) == null) {
       return 'CPF';
     }
     if (digits.length == 10 || digits.length == 11) {
@@ -146,5 +146,19 @@ extension StringExtension on String {
     final doubleValue = double.tryParse(value) ?? 0;
     final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     return formatter.format(doubleValue / 100);
+  }
+
+  String detectPixKeyTypeMask() {
+    final value = trim();
+    final digits = value.replaceAll(RegExp(r'\D'), '');
+
+    if (digits.length == 11 && Utils.validateCpf(value) == null) {
+      return toCPFProgressive();
+    }
+    if (digits.length == 10 || digits.length == 11) {
+      return toPhone();
+    }
+
+    return value;
   }
 }

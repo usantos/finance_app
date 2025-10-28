@@ -335,6 +335,7 @@ class TransactionViewModel extends ChangeNotifier {
   }
 
   Future<bool> createQrCodePix(double amount) async {
+    _isLoading = true;
     _errorCode = null;
     notifyListeners();
 
@@ -343,13 +344,13 @@ class TransactionViewModel extends ChangeNotifier {
       final data = response['message'];
 
       _isLoading = false;
-
       if (!(response['success'] ?? false)) {
         _errorMessage = response['message'];
         _errorCode = response['code'];
         notifyListeners();
         return false;
       }
+
       expiresAt = DateTime.parse(data['expiresAt']).toLocal();
       qrCode = data;
       final txid = qrCode?['txid'];
@@ -389,6 +390,11 @@ class TransactionViewModel extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  void clearQrCodeData() {
+    _toQrCode = [];
+    notifyListeners();
   }
 
   Future<void> getQrCode(String payload) async {

@@ -1,4 +1,5 @@
 import 'package:financial_app/core/utils.dart';
+import 'package:intl/intl.dart';
 
 extension StringExtension on String {
   String get firstLetter {
@@ -138,5 +139,12 @@ extension StringExtension on String {
     }
 
     return 'Desconhecido';
+  }
+
+  String toRealString() {
+    final value = replaceAll(RegExp(r'\D'), '');
+    final doubleValue = double.tryParse(value) ?? 0;
+    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+    return formatter.format(doubleValue / 100);
   }
 }

@@ -74,7 +74,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                       const SizedBox(height: 8),
                       StreamBuilder<Duration>(
                         stream: Stream.periodic(
-                          const Duration(microseconds: 2000),
+                          const Duration(seconds: 1),
                           (_) => viewModel.expiresAt!.difference(DateTime.now()),
                         ),
                         builder: (context, snapshot) {

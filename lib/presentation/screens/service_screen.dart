@@ -13,6 +13,7 @@ import 'recent_pix.dart';
 
 class ServiceScreen extends StatefulWidget {
   const ServiceScreen({super.key, required this.title, required this.description});
+
   final String title;
   final String description;
 
@@ -22,40 +23,43 @@ class ServiceScreen extends StatefulWidget {
 
 class _ServiceScreenState extends State<ServiceScreen> {
   late bool _isLoad = true;
+  Widget? _selectedWidget;
 
   @override
   void initState() {
     super.initState();
     final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-    viewModel.getPixKeysByAccountId();
-    Future.delayed(const Duration(milliseconds: 300), () {
-      setState(() {
-        _isLoad = false;
-      });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await viewModel.getPixKeysByAccountId();
+      setState(() => _isLoad = false);
     });
   }
 
-  Widget? _selectedWidget;
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppbar(title: widget.title, description: widget.description),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _isLoad == true
+          child: _isLoad
               ? const LoadSkeleton(itemCount: 8)
               : Column(
                   children: [
                     ActionsService(
                       onSelect: (widget) {
+                        viewModel.clearQrCodeData();
+
                         setState(() {
                           _selectedWidget = widget;
                         });
                       },
                     ),
+
                     if (_selectedWidget != null)
                       Card(
                         color: AppColors.white,
@@ -67,10 +71,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ),
                         child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
                       ),
+
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 11, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (_selectedWidget.runtimeType == TransferPixCard) ...[
@@ -79,18 +83,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
                             const SizedBox(height: 16),
-                            RecentContacts(),
-                          ] else
-                            const SizedBox.shrink(),
-                          if (_selectedWidget.runtimeType == QrCodeCard) ...[
-                            PayloadCard(),
+                            const RecentContacts(),
+                          ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[
+                            if (!_isLoad) const PayloadCard(),
                           ] else ...[
                             Text(
                               'Últimas transações',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
                             const SizedBox(height: 16),
-                            RecentPix(),
+                            const RecentPix(),
                             const SizedBox(height: 16),
                             Center(
                               child: ElevatedButton(
@@ -99,7 +101,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                                 ),
                                 onPressed: () {},
-                                child: Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
+                                child: const Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
                               ),
                             ),
                           ],

@@ -80,6 +80,9 @@ class _PayloadCardState extends State<PayloadCard> {
                           final firstItem = viewModel.toQrCode.first!;
                           final nome = firstItem['name'] ?? '';
                           final amount = firstItem['amount']?.toString().toRealString() ?? '0';
+                          final amountValue = firstItem['amount'] ?? 0;
+                          final toPayloadValue = firstItem['payload'] ?? '';
+
 
                           PinBottomSheet.show(
                             context,
@@ -87,7 +90,7 @@ class _PayloadCardState extends State<PayloadCard> {
                             height: MediaQuery.of(context).size.height * 0.4,
                             title: 'Deseja transferir $amount para $nome?',
                             onCompleted: (transferPassword) async {
-                              // await viewModel.trasferPayload(transferPassword);
+                              await viewModel.transferQrCode(toPayloadValue, amountValue, transferPassword);
                             },
                           );
                         }

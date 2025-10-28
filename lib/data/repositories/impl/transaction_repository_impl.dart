@@ -86,4 +86,15 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<Map<String, dynamic>>> getQrCode(String payload) {
     return remoteDataSource.getQrCode(payload);
   }
+
+  @override
+  Future<Map<String, dynamic>> transferQrCode(
+    String fromAccountId,
+    String toPayloadValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  ) {
+    return remoteDataSource.transferQrCode(fromAccountId, toPayloadValue, amount, transferPassword, userId);
+  }
 }

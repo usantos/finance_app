@@ -130,6 +130,7 @@ class _PixKeyCardState extends State<PixKeyCard> {
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

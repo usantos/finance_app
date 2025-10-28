@@ -412,4 +412,35 @@ class TransactionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> transferQrCode(String toPayloadValue, double amount, String transferPassword) async {
+    _isLoading = true;
+    _errorMessage = null;
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.transferQrCode(toPayloadValue, amount, transferPassword);
+
+      _isLoading = false;
+
+      if (!(result['success'] ?? false)) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        await refreshAccountBalance();
+        notifyListeners();
+        return false;
+      }
+
+      await refreshAccountBalance();
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
 }

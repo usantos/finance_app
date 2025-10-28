@@ -41,4 +41,11 @@ abstract class TransactionRemoteDataSource {
   Future<Map<String, dynamic>> deleteQrCode(String txid);
 
   Future<List<Map<String, dynamic>>> getQrCode(String payload);
+  Future<Map<String, dynamic>> transferQrCode(
+    String fromAccountId,
+    String toPayloadValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  );
 }

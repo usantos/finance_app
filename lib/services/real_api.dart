@@ -294,10 +294,17 @@ class RealApi {
         },
       );
 
-      return response.data;
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao realizar transferência PIX',
+        };
+      }
     } catch (e) {
-      debugPrint('Erro na transferência PIX: $e');
-      return {"success": false, "message": "Erro na transferência PIX"};
+      return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
     }
   }
 
@@ -357,4 +364,37 @@ class RealApi {
       return [];
     }
   }
+
+  Future<Map<String, dynamic>> transferQrCode(
+      String fromAccountId,
+      String toPayloadValue,
+      double amount,
+      String transferPassword,
+      String userId,
+      ) async {
+    try {
+      final response = await _dio.post(
+        '/pix/transferQrCode',
+        data: {
+          'fromAccountId': fromAccountId,
+          'toPayloadValue': toPayloadValue,
+          'amount': amount,
+          'transferPassword': transferPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao realizar transferência PIX',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
+    }
+  }
+
 }

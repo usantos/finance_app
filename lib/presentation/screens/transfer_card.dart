@@ -48,7 +48,9 @@ class _TransferCardState extends State<TransferCard> {
   Future<void> _checkTransferPassword() async {
     await _transactionViewModel.verifyTransferPassword();
 
-    if (!_transactionViewModel.hasPassword && context.mounted) {
+    if (!mounted) return;
+
+    if (!_transactionViewModel.hasPassword) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -100,6 +102,7 @@ class _TransferCardState extends State<TransferCard> {
                       onCompleted: (transferPassword) {
                         _transactionViewModel.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
+                        setState(() {});
                       },
                     );
                   },
@@ -110,8 +113,11 @@ class _TransferCardState extends State<TransferCard> {
           ],
         ),
       );
+    } else {
+      setState(() {});
     }
   }
+
 
   void _resetForm() {
     _formKey.currentState?.reset();

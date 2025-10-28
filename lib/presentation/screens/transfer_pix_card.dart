@@ -47,7 +47,9 @@ class _TransferPixCardState extends State<TransferPixCard> {
   Future<void> _checkTransferPassword() async {
     await _transactionViewModel.verifyTransferPassword();
 
-    if (!_transactionViewModel.hasPassword && context.mounted) {
+    if (!mounted) return;
+
+    if (!_transactionViewModel.hasPassword) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -56,8 +58,8 @@ class _TransferPixCardState extends State<TransferPixCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 30),
-            Center(
+            const SizedBox(height: 30),
+            const Center(
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
                 style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
@@ -85,7 +87,6 @@ class _TransferPixCardState extends State<TransferPixCard> {
                 const SizedBox(width: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                       side: const BorderSide(color: AppColors.black),
@@ -100,6 +101,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
                       onCompleted: (transferPassword) {
                         _transactionViewModel.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
+                        setState(() {});
                       },
                     );
                   },
@@ -110,8 +112,11 @@ class _TransferPixCardState extends State<TransferPixCard> {
           ],
         ),
       );
+    } else {
+      setState(() {});
     }
   }
+
 
   void _resetForm() {
     _formKey.currentState?.reset();

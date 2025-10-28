@@ -442,5 +442,4 @@ class TransactionViewModel extends ChangeNotifier {
       return false;
     }
   }
-
 }

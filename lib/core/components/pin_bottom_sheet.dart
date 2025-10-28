@@ -45,7 +45,7 @@ class PinBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       iconClose: false,
-      height: autoSubmitOnComplete == false ? MediaQuery.of(context).size.height * 0.4 : height,
+      height: height ?? MediaQuery.of(context).size.height * 0.4,
       width: width ?? MediaQuery.of(context).size.width,
       child: AnimatedSize(
         duration: const Duration(milliseconds: 200),
@@ -53,7 +53,6 @@ class PinBottomSheet {
         child: Padding(
           padding: padding,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(

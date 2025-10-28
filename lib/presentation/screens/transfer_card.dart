@@ -256,6 +256,7 @@ class _TransferCardState extends State<TransferCard> {
                                       if (success) {
                                         _amountTextEditingController.clear();
                                         _toAccountTextEditingController.clear();
+                                        _transactionViewModel.showErrors = false;
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: const Text('Transferência realizada com sucesso!'),

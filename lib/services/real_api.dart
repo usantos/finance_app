@@ -366,12 +366,12 @@ class RealApi {
   }
 
   Future<Map<String, dynamic>> transferQrCode(
-      String fromAccountId,
-      String toPayloadValue,
-      double amount,
-      String transferPassword,
-      String userId,
-      ) async {
+    String fromAccountId,
+    String toPayloadValue,
+    double amount,
+    String transferPassword,
+    String userId,
+  ) async {
     try {
       final response = await _dio.post(
         '/pix/transferQrCode',
@@ -396,5 +396,4 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
     }
   }
-
 }

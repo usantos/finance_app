@@ -220,12 +220,11 @@ class _TransferPixCardState extends State<TransferPixCard> {
                           onPressed: _transactionViewModel.hasPassword && _formKey.currentState!.validate() == true
                               ? () async {
                                   _transactionViewModel.showErrors = true;
-                                  FocusScope.of(context).unfocus();
 
                                   PinBottomSheet.show(
                                     context,
                                     autoSubmitOnComplete: false,
-                                    height: MediaQuery.of(context).size.height * 0.35,
+                                    height: MediaQuery.of(context).size.height * 0.42,
                                     title: 'Insira sua senha de 4 dígitos',
                                     onCompleted: (transferPassword) async {
                                       final double amount = BRLCurrencyInputFormatterExt.parse(
@@ -242,6 +241,9 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                       if (success) {
                                         _amountTextEditingController.clear();
                                         _toKeyPixTextEditingController.clear();
+                                        _toKeyPixFocusNode.unfocus();
+                                        _amountFocusNode.unfocus();
+
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             content: const Text('Pix realizada com sucesso!'),

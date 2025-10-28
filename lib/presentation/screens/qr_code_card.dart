@@ -86,9 +86,8 @@ class _QrCodeCardState extends State<QrCodeCard> {
                             return const SizedBox();
                           }
 
-                          final adjusted = remaining - const Duration(seconds: 1);
-                          final m = adjusted.inMinutes.toString().padLeft(2, '0');
-                          final s = (adjusted.inSeconds % 60).toString().padLeft(2, '0');
+                          final m = remaining.inMinutes.toString().padLeft(2, '0');
+                          final s = (remaining.inSeconds % 60).toString().padLeft(2, '0');
                           return Text("Expira em $m:$s", style: const TextStyle(fontSize: 16, color: AppColors.black));
                         },
                       ),
@@ -136,7 +135,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                               CustomBottomSheet.show(
                                 iconClose: false,
                                 context,
-                                height: MediaQuery.of(context).size.height * 0.2,
+                                height: MediaQuery.of(context).size.height * 0.26,
                                 child: Padding(
                                   padding: EdgeInsets.all(16),
                                   child: Column(

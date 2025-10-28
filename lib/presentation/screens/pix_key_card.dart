@@ -126,7 +126,7 @@ class _PixKeyCardState extends State<PixKeyCard> {
                 CustomBottomSheet.show(
                   iconClose: false,
                   context,
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.26,
                   child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Column(

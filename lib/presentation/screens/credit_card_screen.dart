@@ -18,8 +18,8 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
 
   final List<Transaction> _transactions = [
     Transaction(
-      name: '',
-      description: 'Pagamento Automatico - Vivo',
+      name: 'Vivo',
+      description: 'Pagamento Automatico',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
       amount: 50.00,
@@ -27,8 +27,8 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
       category: 'Serviço',
     ),
     Transaction(
-      name: '',
-      description: 'Spotify',
+      name: 'Spotify',
+      description: 'Pagamento Automatico',
       date: DateTime(2025, 10, 1),
       time: const TimeOfDay(hour: 8, minute: 0),
       amount: 35.00,
@@ -36,13 +36,12 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
       category: 'Serviço',
     ),
     Transaction(
-      name: '',
-      description: 'Amazon',
+      name: 'Amazon',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),
       amount: 185.50,
       type: TransactionType.debit,
-      category: 'Compras',
+      category: 'Compra',
     ),
   ];
 

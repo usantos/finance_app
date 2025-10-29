@@ -12,22 +12,20 @@ class RecentTransactions extends StatefulWidget {
 class _RecentTransactionsState extends State<RecentTransactions> {
   final List<Transaction> _transactions = [
     Transaction(
-      name: '',
-      description: 'Transferência PIX - João Silva',
+      name: 'João Silva',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
       amount: 150.00,
       type: TransactionType.debit,
-      category: 'Transferência',
+      category: 'PIX',
     ),
     Transaction(
-      name: '',
-      description: 'Compra - Supermercado Extra',
+      name: 'Supermercado Extra',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),
       amount: 185.50,
       type: TransactionType.debit,
-      category: 'Compras',
+      category: 'Compra',
     ),
   ];
 

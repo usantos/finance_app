@@ -20,17 +20,15 @@ class _StatementScreenState extends State<StatementScreen> {
 
   final List<Transaction> _transactions = [
     Transaction(
-      name: '',
-      description: 'Transferência PIX - João Silva',
+      name: 'João Silva',
       date: DateTime(2025, 10, 6),
       time: const TimeOfDay(hour: 14, minute: 30),
       amount: 150.00,
       type: TransactionType.debit,
-      category: 'Transferência',
+      category: 'PIX',
     ),
     Transaction(
-      name: '',
-      description: 'Depósito - Salário',
+      name: 'Salário',
       date: DateTime(2025, 10, 1),
       time: const TimeOfDay(hour: 8, minute: 0),
       amount: 3500.00,
@@ -38,17 +36,15 @@ class _StatementScreenState extends State<StatementScreen> {
       category: 'Depósito',
     ),
     Transaction(
-      name: '',
-      description: 'Compra - Supermercado Extra',
+      name: 'Supermercado Extra',
       date: DateTime(2025, 10, 5),
       time: const TimeOfDay(hour: 19, minute: 45),
       amount: 185.50,
       type: TransactionType.debit,
-      category: 'Compras',
+      category: 'Compra',
     ),
     Transaction(
-      name: '',
-      description: 'PIX Recebido - Maria Santos',
+      name: 'Maria Santos',
       date: DateTime(2025, 08, 9),
       time: const TimeOfDay(hour: 16, minute: 20),
       amount: 75.00,

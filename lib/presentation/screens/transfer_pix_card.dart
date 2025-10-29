@@ -117,7 +117,6 @@ class _TransferPixCardState extends State<TransferPixCard> {
     }
   }
 
-
   void _resetForm() {
     _formKey.currentState?.reset();
     _toKeyPixTextEditingController.clear();

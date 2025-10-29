@@ -2,6 +2,7 @@ import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/payload_card.dart';
 import 'package:financial_app/presentation/screens/qr_code_card.dart';
 import 'package:financial_app/presentation/screens/recent_contacts.dart';
+import 'package:financial_app/presentation/screens/transfer_card.dart';
 import 'package:financial_app/presentation/screens/transfer_pix_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -76,24 +77,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 16,
                         children: [
                           if (_selectedWidget.runtimeType == TransferPixCard) ...[
                             Text(
                               'Contatos Pix recentes',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
-                            const SizedBox(height: 16),
                             const RecentContacts(),
-                          ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[
-                            if (!_isLoad) const PayloadCard(),
-                          ] else ...[
                             Text(
-                              'Últimas transações',
+                              'Últimas transações PIX',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
-                            const SizedBox(height: 16),
                             const RecentPix(),
-                            const SizedBox(height: 16),
                             Center(
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -104,7 +100,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                 child: const Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
                               ),
                             ),
-                          ],
+                          ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[
+                            if (!_isLoad) const PayloadCard(),
+                          ] else if (_selectedWidget.runtimeType == TransferCard) ...[
+                            Text(
+                              'Últimas transações',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                            ),
+                            const RecentPix(),
+                          ] else
+                            ...[],
                         ],
                       ),
                     ),

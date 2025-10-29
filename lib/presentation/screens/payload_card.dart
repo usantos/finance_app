@@ -29,10 +29,6 @@ class _PayloadCardState extends State<PayloadCard> {
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, viewModel, _) {
-        if (viewModel.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         return Card(
           color: AppColors.white,
           margin: EdgeInsets.zero,

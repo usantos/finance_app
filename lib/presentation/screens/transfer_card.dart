@@ -118,7 +118,6 @@ class _TransferCardState extends State<TransferCard> {
     }
   }
 
-
   void _resetForm() {
     _formKey.currentState?.reset();
     _toAccountTextEditingController.clear();

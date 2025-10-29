@@ -98,4 +98,14 @@ class TransferUseCase {
       fromAccount.userId,
     );
   }
+
+  Future<Map<String, dynamic>> createCreditCard(String name, String password, double limit) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.createCreditCard(fromAccount!.id, name, password, limit);
+  }
+
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId() async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.getCreditCardByAccountId(fromAccount!.id);
+  }
 }

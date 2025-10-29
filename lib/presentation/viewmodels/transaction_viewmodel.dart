@@ -16,6 +16,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Transaction> _transactions = [];
   List<Map<String, dynamic>?> _pixKeys = [];
   List<Map<String, dynamic>?> _toQrCode = [];
+  List<Map<String, dynamic>?> _creditCard = [];
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -35,6 +36,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Transaction> get transactions => _transactions;
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
+  List<Map<String, dynamic>?> get creditCard => _creditCard;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -440,6 +442,47 @@ class TransactionViewModel extends ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<bool> createCreditCard(String name, String password, double limit) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.createCreditCard(name, password, limit);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> getCreditCardByAccountId() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _creditCard = await _transferUseCase.getCreditCardByAccountId();
+    } catch (e) {
+      _errorMessage = e.toString();
+      _creditCard = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

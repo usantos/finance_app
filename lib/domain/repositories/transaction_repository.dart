@@ -48,4 +48,8 @@ abstract class TransactionRepository {
     String transferPassword,
     String userId,
   );
+
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit);
+
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId);
 }

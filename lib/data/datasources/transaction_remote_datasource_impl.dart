@@ -100,4 +100,16 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   ) async {
     return await realApi.transferQrCode(fromAccountId, toPayloadValue, amount, transferPassword, userId);
   }
+
+  @override
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) async {
+    return await realApi.createCreditCard(accountId, name, password, limit);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) async{
+    return await realApi.getCreditCardByAccountId(accountId);
+
+  }
+
 }

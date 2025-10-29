@@ -97,4 +97,15 @@ class TransactionRepositoryImpl implements TransactionRepository {
   ) {
     return remoteDataSource.transferQrCode(fromAccountId, toPayloadValue, amount, transferPassword, userId);
   }
+
+  @override
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) {
+    return remoteDataSource.createCreditCard(accountId, name, password, limit);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId){
+    return remoteDataSource.getCreditCardByAccountId(accountId);
+  }
+
 }

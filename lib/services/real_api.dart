@@ -194,38 +194,6 @@ class RealApi {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTransactions(String accountId) async {
-    try {
-      final response = await _dio.get('/accounts/$accountId/transactions');
-      return List<Map<String, dynamic>>.from(response.data);
-    } catch (e) {
-      debugPrint('Erro ao buscar transações: $e');
-      return [];
-    }
-  }
-
-  Future<void> addTransaction(Map<String, dynamic> transaction) async {
-    try {
-      await _dio.post('/transactions', data: transaction);
-    } catch (e) {
-      debugPrint('Erro ao adicionar transação: $e');
-    }
-  }
-
-  Future<Map<String, dynamic>> transferFunds(String fromAccountId, String toAccountId, double amount) async {
-    try {
-      final response = await _dio.post(
-        '/transfer',
-        data: {'fromAccountId': fromAccountId, 'toAccountId': toAccountId, 'amount': amount},
-      );
-
-      return response.data;
-    } catch (e) {
-      debugPrint('Erro na transferência: $e');
-      return {"success": false, "message": "Erro ao realizar transferência"};
-    }
-  }
-
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) async {
     try {
       final response = await _dio.post(
@@ -396,4 +364,37 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) async {
+    try {
+      final response = await _dio.post(
+        '/creditCard/createCreditCard',
+        data: {'accountId': accountId, 'name': name, 'password': password, 'limit': limit},
+      );
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro na criação do cartão de crédito: $e');
+      return {"success": false, "message": "Erro na criação do cartão de crédito"};
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) async {
+    try {
+      final response = await _dio.get('/creditCard/getCreditCardByAccountId/$accountId');
+
+      if (response.statusCode == 200 && response.data is List) {
+        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
+
+        return data;
+      } else {
+        debugPrint('Erro ao buscar cartão de crédito: ${response.data}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar cartão de crédito: $e');
+      return [];
+    }
+  }
+
 }

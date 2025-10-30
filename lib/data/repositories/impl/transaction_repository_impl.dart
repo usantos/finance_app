@@ -107,4 +107,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) {
     return remoteDataSource.getCreditCardByAccountId(accountId);
   }
+
+  @override
+  Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) {
+    return remoteDataSource.updateBlockType(cardId, blockType);
+  }
 }

@@ -45,8 +45,13 @@ class TransactionViewModel extends ChangeNotifier {
   DateTime? expiresAt;
   Timer? _qrCodeTimer;
 
-  CreditCardModel? get creditCardModels =>
-      _creditCard.whereType<Map<String, dynamic>>().map((map) => CreditCardModel.fromMap(map)).toList()[0];
+  CreditCardModel? get creditCardModels {
+    if (_creditCard.isEmpty) return null;
+
+    final list = _creditCard.whereType<Map<String, dynamic>>().map((map) => CreditCardModel.fromMap(map)).toList();
+
+    return list.isNotEmpty ? list[0] : null;
+  }
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -485,6 +490,32 @@ class TransactionViewModel extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<bool> updateBlockType(String blockType) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final cardId = creditCardModels?.id ?? '';
+      final result = await _transferUseCase.updateBlockType(cardId, blockType);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
     }
   }
 }

@@ -185,18 +185,35 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           children: [
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(Icons.lock_outline, color: AppColors.black),
-                                label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  side: const BorderSide(color: AppColors.grey),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                ),
-                              ),
-                            ),
+                            transactionViewModel.creditCardModels!.blockType == "ACTIVE"
+                                ? Expanded(
+                                    child: OutlinedButton.icon(
+                                      onPressed: () {
+                                        transactionViewModel.updateBlockType("BLOCKED");
+                                      },
+                                      icon: const Icon(Icons.lock_outline, color: AppColors.black),
+                                      label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                        side: const BorderSide(color: AppColors.grey),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                      ),
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: OutlinedButton.icon(
+                                      onPressed: () {
+                                        transactionViewModel.updateBlockType("ACTIVE");
+                                      },
+                                      icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
+                                      label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                        side: const BorderSide(color: AppColors.grey),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                      ),
+                                    ),
+                                  ),
                             const SizedBox(width: 16),
                             Expanded(
                               child: OutlinedButton.icon(
@@ -294,10 +311,21 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                             context,
                             title: "Escolha uma senha de 4 dígitos",
                             onCompleted: (password) async {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (_) => const Center(child: CircularProgressIndicator()),
+                              );
+
                               await transactionViewModel.createCreditCard(password);
+                              await Future.delayed(const Duration(seconds: 2));
+                              await transactionViewModel.getCreditCardByAccountId();
+
+                              if (context.mounted) Navigator.pop(context);
                             },
                           );
                         },
+
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

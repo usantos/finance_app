@@ -396,4 +396,15 @@ class RealApi {
       return [];
     }
   }
+
+  Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
+    try {
+      final response = await _dio.post('/creditCard/updateBlockType$cardId', data: {'blockType': blockType});
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro ao bloquear/desbloquear cartão de crédito: $e');
+      return {"success": false, "message": "Erro ao bloquear/desbloquear cartão de crédito"};
+    }
+  }
 }

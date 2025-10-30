@@ -52,4 +52,6 @@ abstract class TransactionRepository {
   Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password);
 
   Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId);
+
+  Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType);
 }

@@ -1,4 +1,5 @@
 class CreditCardModel {
+  final String id;
   final String accountId;
   final String creditCardName;
   final String creditCardNumber;
@@ -7,8 +8,10 @@ class CreditCardModel {
   final double creditCardLimit;
   final double creditCardAvailable;
   final double creditCardUsed;
+  final String blockType;
 
   CreditCardModel({
+    required this.id,
     required this.accountId,
     required this.creditCardName,
     required this.creditCardNumber,
@@ -17,10 +20,12 @@ class CreditCardModel {
     required this.creditCardLimit,
     required this.creditCardAvailable,
     required this.creditCardUsed,
+    required this.blockType,
   });
 
   factory CreditCardModel.fromMap(Map<String, dynamic> map) {
     return CreditCardModel(
+      id: map['id'] ?? '',
       accountId: map['accountId'] ?? '',
       creditCardName: map['creditCardName'] ?? '',
       creditCardNumber: map['creditCardNumber'] ?? '',
@@ -29,11 +34,13 @@ class CreditCardModel {
       creditCardLimit: (map['creditCardLimit'] ?? 0).toDouble(),
       creditCardAvailable: (map['creditCardAvailable'] ?? 0).toDouble(),
       creditCardUsed: (map['creditCardUsed'] ?? 0).toDouble(),
+      blockType: map['blockType'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'accountId': accountId,
       'creditCardName': creditCardName,
       'creditCardNumber': creditCardNumber,
@@ -42,6 +49,7 @@ class CreditCardModel {
       'creditCardLimit': creditCardLimit,
       'creditCardAvailable': creditCardAvailable,
       'creditCardUsed': creditCardUsed,
+      'blockType': blockType,
     };
   }
 }

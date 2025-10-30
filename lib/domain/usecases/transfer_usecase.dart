@@ -109,4 +109,8 @@ class TransferUseCase {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.getCreditCardByAccountId(fromAccount!.id);
   }
+
+  Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
+    return transactionRepository.updateBlockType(cardId, blockType);
+  }
 }

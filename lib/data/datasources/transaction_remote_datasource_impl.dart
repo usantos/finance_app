@@ -102,14 +102,12 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) async {
-    return await realApi.createCreditCard(accountId, name, password, limit);
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password) async {
+    return await realApi.createCreditCard(accountId, name, password);
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) async{
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) async {
     return await realApi.getCreditCardByAccountId(accountId);
-
   }
-
 }

@@ -49,8 +49,7 @@ abstract class TransactionRemoteDataSource {
     String userId,
   );
 
-  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit);
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password);
 
   Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId);
-
 }

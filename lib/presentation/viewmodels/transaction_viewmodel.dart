@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:financial_app/core/extensions/string_ext.dart';
+import 'package:financial_app/domain/model/credit_card_model.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,6 @@ class TransactionViewModel extends ChangeNotifier {
   List<Transaction> get transactions => _transactions;
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
-  List<Map<String, dynamic>?> get creditCard => _creditCard;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -45,6 +44,9 @@ class TransactionViewModel extends ChangeNotifier {
   Map<String, dynamic>? qrCode;
   DateTime? expiresAt;
   Timer? _qrCodeTimer;
+
+  CreditCardModel? get creditCardModels =>
+      _creditCard.whereType<Map<String, dynamic>>().map((map) => CreditCardModel.fromMap(map)).toList()[0];
 
   @visibleForTesting
   void setAccount(Account? account) {
@@ -445,12 +447,12 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> createCreditCard(String name, String password, double limit) async {
+  Future<bool> createCreditCard(String password) async {
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.createCreditCard(name, password, limit);
+      final result = await _transferUseCase.createCreditCard(password);
 
       _isLoading = false;
 

@@ -99,13 +99,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) {
-    return remoteDataSource.createCreditCard(accountId, name, password, limit);
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password) {
+    return remoteDataSource.createCreditCard(accountId, name, password);
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId){
+  Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) {
     return remoteDataSource.getCreditCardByAccountId(accountId);
   }
-
 }

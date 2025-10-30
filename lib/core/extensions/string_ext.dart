@@ -161,4 +161,19 @@ extension StringExtension on String {
 
     return value;
   }
+
+  String toCreditCardFull() {
+    final digits = replaceAll(RegExp(r'\D'), '');
+    if (digits.length != 16) return this;
+    return '${digits.substring(0, 4)} '
+        '${digits.substring(4, 8)} '
+        '${digits.substring(8, 12)} '
+        '${digits.substring(12, 16)}';
+  }
+
+  String toCreditCardMasked() {
+    final digits = replaceAll(RegExp(r'\D'), '');
+    if (digits.length != 16) return this;
+    return '${digits.substring(0, 4)} **** **** ${digits.substring(12, 16)}';
+  }
 }

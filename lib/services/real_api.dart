@@ -365,11 +365,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password, double limit) async {
+  Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password) async {
     try {
       final response = await _dio.post(
         '/creditCard/createCreditCard',
-        data: {'accountId': accountId, 'name': name, 'password': password, 'limit': limit},
+        data: {'accountId': accountId, 'name': name, 'password': password},
       );
 
       return response.data;
@@ -396,5 +396,4 @@ class RealApi {
       return [];
     }
   }
-
 }

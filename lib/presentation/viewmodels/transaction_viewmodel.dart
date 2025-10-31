@@ -495,6 +495,7 @@ class TransactionViewModel extends ChangeNotifier {
 
   Future<bool> updateBlockType(String blockType) async {
     _errorCode = null;
+    _isLoading = true;
     notifyListeners();
 
     try {
@@ -506,15 +507,24 @@ class TransactionViewModel extends ChangeNotifier {
       if (!result['success']) {
         _errorMessage = result['message'];
         _errorCode = result['code'];
-        notifyListeners();
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          notifyListeners();
+        });
         return false;
       }
-      notifyListeners();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
       return true;
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
-      notifyListeners();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
       return false;
     }
   }

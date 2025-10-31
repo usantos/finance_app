@@ -1,8 +1,8 @@
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
-import 'package:financial_app/core/extensions/money_ext.dart';
-import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/core/utils.dart';
+import 'package:financial_app/presentation/screens/components/skeleton.dart';
+import 'package:financial_app/presentation/screens/credit_card_.dart';
+import 'package:financial_app/presentation/screens/credit_limit_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class CreditCardScreen extends StatefulWidget {
 }
 
 class _CreditCardScreenState extends State<CreditCardScreen> {
-  bool _showCardDetails = true;
+  bool _showSkeleton = true;
 
   final List<Transaction> _transactions = [
     Transaction(
@@ -31,32 +31,22 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
       type: TransactionType.debit,
       category: 'Serviço',
     ),
-    Transaction(
-      name: 'Spotify',
-      description: 'Pagamento Automático',
-      date: DateTime(2025, 10, 1),
-      time: const TimeOfDay(hour: 8, minute: 0),
-      amount: 35.00,
-      type: TransactionType.debit,
-      category: 'Serviço',
-    ),
-    Transaction(
-      name: 'Amazon',
-      date: DateTime(2025, 10, 5),
-      time: const TimeOfDay(hour: 19, minute: 45),
-      amount: 185.50,
-      type: TransactionType.debit,
-      category: 'Compra',
-    ),
   ];
 
   @override
   void initState() {
     super.initState();
-    final transactionViewModel = Provider.of<TransactionViewModel>(context, listen: false);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await transactionViewModel.getCreditCardByAccountId();
+    _showSkeleton = true;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _showSkeleton = false;
+        });
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final transactionViewModel = Provider.of<TransactionViewModel>(context, listen: false);
+      transactionViewModel.getCreditCardByAccountId();
     });
   }
 
@@ -64,6 +54,19 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, transactionViewModel, child) {
+        if (_showSkeleton) {
+          return Scaffold(
+            backgroundColor: AppColors.white,
+            appBar: CustomAppbar(title: widget.title, description: widget.description),
+            body: const Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
+            ),
+          );
+        }
+        final creditCard = transactionViewModel.creditCardModels;
+        final blockType = creditCard?.blockType;
+
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: CustomAppbar(title: widget.title, description: widget.description),
@@ -83,101 +86,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Row(
-                                      children: [
-                                        Icon(Icons.credit_card, color: AppColors.white),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Cartão de Crédito',
-                                          style: TextStyle(color: AppColors.white, fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        _showCardDetails ? Icons.visibility_off : Icons.visibility,
-                                        color: AppColors.white,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _showCardDetails = !_showCardDetails;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                TextButton(
-                                  onPressed: _showCardDetails
-                                      ? () {
-                                          Utils.copiarTexto(
-                                            context,
-                                            transactionViewModel.creditCardModels!.creditCardNumber.toCreditCardFull(),
-                                            'Cartão copiado com sucesso',
-                                          );
-                                        }
-                                      : null,
-                                  style: TextButton.styleFrom(fixedSize: const Size(300, 40), padding: EdgeInsets.zero),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        _showCardDetails
-                                            ? transactionViewModel.creditCardModels!.creditCardNumber.toCreditCardFull()
-                                            : transactionViewModel.creditCardModels!.creditCardNumber
-                                                  .toCreditCardMasked(),
-                                        style: const TextStyle(
-                                          color: AppColors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 2,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      if (_showCardDetails) const Icon(Icons.copy, size: 16, color: AppColors.white),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('PORTADOR', style: TextStyle(color: AppColors.grey, fontSize: 12)),
-                                        Text(
-                                          transactionViewModel.creditCardModels!.creditCardName,
-                                          style: const TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text('VALIDADE', style: TextStyle(color: AppColors.grey, fontSize: 12)),
-                                        Text(
-                                          transactionViewModel.creditCardModels!.validate,
-                                          style: TextStyle(
-                                            color: AppColors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                            child: CreditCard(),
                           ),
                         ),
                       ),
@@ -185,11 +94,21 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           children: [
-                            transactionViewModel.creditCardModels!.blockType == "ACTIVE"
+                            blockType == "ACTIVE"
                                 ? Expanded(
                                     child: OutlinedButton.icon(
-                                      onPressed: () {
-                                        transactionViewModel.updateBlockType("BLOCKED");
+                                      onPressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) => const Center(child: CircularProgressIndicator()),
+                                        );
+
+                                        await transactionViewModel.updateBlockType("BLOCKED");
+                                        await Future.delayed(const Duration(seconds: 2));
+                                        await transactionViewModel.getCreditCardByAccountId();
+
+                                        if (context.mounted) Navigator.pop(context);
                                       },
                                       icon: const Icon(Icons.lock_outline, color: AppColors.black),
                                       label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
@@ -202,8 +121,18 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                   )
                                 : Expanded(
                                     child: OutlinedButton.icon(
-                                      onPressed: () {
-                                        transactionViewModel.updateBlockType("ACTIVE");
+                                      onPressed: () async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) => const Center(child: CircularProgressIndicator()),
+                                        );
+
+                                        await transactionViewModel.updateBlockType("ACTIVE");
+                                        await Future.delayed(const Duration(seconds: 2));
+                                        await transactionViewModel.getCreditCardByAccountId();
+
+                                        if (context.mounted) Navigator.pop(context);
                                       },
                                       icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
                                       label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
@@ -230,6 +159,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                           ],
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: const Text(
@@ -237,36 +167,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.grey),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildLimitRow(
-                                'Limite total',
-                                transactionViewModel.creditCardModels!.creditCardLimit.toReal(),
-                                AppColors.black,
-                              ),
-                              _buildLimitRow(
-                                'Disponível',
-                                transactionViewModel.creditCardModels!.creditCardAvailable.toReal(),
-                                AppColors.green,
-                              ),
-                              _buildLimitRow(
-                                'Utilizado',
-                                transactionViewModel.creditCardModels!.creditCardUsed.toReal(),
-                                AppColors.red,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      CreditLimitCard(),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -341,22 +242,6 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 ),
         );
       },
-    );
-  }
-
-  Widget _buildLimitRow(String label, String value, Color valueColor) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 16, color: AppColors.blackText)),
-          Text(
-            value,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: valueColor),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:financial_app/presentation/screens/statement_share_service.dart'
 import 'package:flutter/material.dart';
 import 'components/custom_appbar.dart';
 import 'package:intl/intl.dart';
+import 'components/skeleton.dart';
 import 'components/transaction_card.dart';
 
 class StatementScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class StatementScreen extends StatefulWidget {
 
 class _StatementScreenState extends State<StatementScreen> {
   DateTime? _selectedDate;
+  bool _showSkeleton = true;
 
   final List<Transaction> _transactions = [
     Transaction(
@@ -52,13 +54,31 @@ class _StatementScreenState extends State<StatementScreen> {
       category: 'PIX',
     ),
   ];
+  @override
+  void initState() {
+    super.initState();
+    _showSkeleton = true;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _showSkeleton = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final String dateLabel = _selectedDate == null
         ? 'Data do extrato'
         : DateFormat('dd/MM/yyyy').format(_selectedDate!);
-
+    if (_showSkeleton) {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: CustomAppbar(title: widget.title, description: widget.description),
+        body: Padding(padding: const EdgeInsets.only(top: 30), child: LoadSkeleton(itemCount: 7)),
+      );
+    }
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppbar(title: widget.title, description: widget.description),

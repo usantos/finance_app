@@ -23,11 +23,21 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _authViewModel = sl.get<AuthViewModel>();
   final _accountViewModel = sl.get<AccountViewModel>();
+  bool _showSkeleton = true;
 
   @override
   void initState() {
     super.initState();
     _authViewModel.checkCurrentUser();
+
+    _showSkeleton = true;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _showSkeleton = false;
+        });
+      }
+    });
   }
 
   @override
@@ -39,48 +49,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
       child: Consumer2<AuthViewModel, AccountViewModel>(
         builder: (context, authVM, accountVM, _) {
+          if (_showSkeleton) {
+            return Scaffold(
+              backgroundColor: AppColors.white,
+              appBar: CustomAppbar(title: widget.title, description: widget.description),
+              body: const Padding(padding: EdgeInsets.only(top: 30), child: LoadSkeleton(itemCount: 7)),
+            );
+          }
           return Scaffold(
             backgroundColor: AppColors.white,
             appBar: CustomAppbar(title: widget.title, description: widget.description),
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: authVM.isLoading || accountVM.isLoading
-                    ? const LoadSkeleton(itemCount: 8)
-                    : Column(
-                        children: [
-                          _buildUserInfoCard(authVM, accountVM),
-                          const SizedBox(height: 14),
-                          _buildMenuOption(
-                            icon: Icons.edit_outlined,
-                            text: 'Editar dados pessoais',
-                            onTap: () {
-                              CustomBottomSheet.show(
-                                iconClose: false,
-                                context,
-                                height: MediaQuery.of(context).size.height * 0.7,
-                                isDismissible: true,
-                                enableDrag: false,
-                                child: const BottomSheetEditProfile(),
-                              );
-                            },
-                          ),
-                          _buildMenuOption(icon: Icons.settings_outlined, text: 'Configurações', onTap: () {}),
-                          _buildMenuOption(icon: Icons.notifications_outlined, text: 'Notificações', onTap: () {}),
-                          _buildMenuOption(icon: Icons.shield_outlined, text: 'Segurança', onTap: () {}),
-                          _buildMenuOption(icon: Icons.help_outline, text: 'Ajuda e suporte', onTap: () {}),
-                          const SizedBox(height: 16),
-                          _buildVerifiedAccountCard(),
-                          const SizedBox(height: 16),
-                          const Text('Versão do aplicativo', style: TextStyle(color: AppColors.blackText)),
-                          const Text(
-                            '1.0.0',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
-                          ),
-                          const SizedBox(height: 16),
-                          _buildLogoutButton(context, authVM),
-                        ],
-                      ),
+                child: Column(
+                  children: [
+                    _buildUserInfoCard(authVM, accountVM),
+                    const SizedBox(height: 14),
+                    _buildMenuOption(
+                      icon: Icons.edit_outlined,
+                      text: 'Editar dados pessoais',
+                      onTap: () {
+                        CustomBottomSheet.show(
+                          iconClose: false,
+                          context,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          isDismissible: true,
+                          enableDrag: false,
+                          child: const BottomSheetEditProfile(),
+                        );
+                      },
+                    ),
+                    _buildMenuOption(icon: Icons.settings_outlined, text: 'Configurações', onTap: () {}),
+                    _buildMenuOption(icon: Icons.notifications_outlined, text: 'Notificações', onTap: () {}),
+                    _buildMenuOption(icon: Icons.shield_outlined, text: 'Segurança', onTap: () {}),
+                    _buildMenuOption(icon: Icons.help_outline, text: 'Ajuda e suporte', onTap: () {}),
+                    const SizedBox(height: 16),
+                    _buildVerifiedAccountCard(),
+                    const SizedBox(height: 16),
+                    const Text('Versão do aplicativo', style: TextStyle(color: AppColors.blackText)),
+                    const Text(
+                      '1.0.0',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildLogoutButton(context, authVM),
+                  ],
+                ),
               ),
             ),
           );

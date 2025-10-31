@@ -2,9 +2,9 @@ import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppbar({super.key, required this.title, this.description, this.body, this.toolbarSize = 32});
+  const CustomAppbar({super.key, this.title, this.description, this.body, this.toolbarSize = 32});
 
-  final String title;
+  final String? title;
   final String? description;
   final Widget? body;
   final double toolbarSize;
@@ -22,10 +22,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+            title != null
+                ? Text(
+                    title!,
+                    style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                  )
+                : const SizedBox.shrink(),
+
             if (description != null) ...[
               const SizedBox(height: 4),
               Text(description!, style: TextStyle(color: AppColors.grey, fontSize: 16)),

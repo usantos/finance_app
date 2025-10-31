@@ -25,13 +25,21 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   late bool _isLoad = true;
   Widget? _selectedWidget;
+  bool _showSkeleton = true;
 
   @override
   void initState() {
     super.initState();
-    final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-
+    _showSkeleton = true;
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _showSkeleton = false;
+        });
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
       await viewModel.getPixKeysByAccountId();
       setState(() => _isLoad = false);
     });
@@ -40,81 +48,85 @@ class _ServiceScreenState extends State<ServiceScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-
+    if (_showSkeleton) {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: CustomAppbar(title: widget.title, description: widget.description),
+        body: const Padding(padding: EdgeInsets.only(top: 30), child: LoadSkeleton(itemCount: 7)),
+      );
+    }
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppbar(title: widget.title, description: widget.description),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _isLoad
-              ? const LoadSkeleton(itemCount: 8)
-              : Column(
+          child: Column(
+            children: [
+              ActionsService(
+                onSelect: (widget) {
+                  viewModel.clearQrCodeData();
+
+                  setState(() {
+                    _selectedWidget = widget;
+                  });
+                },
+              ),
+
+              if (_selectedWidget != null)
+                Card(
+                  color: AppColors.white,
+                  margin: const EdgeInsets.all(8),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: AppColors.grey, width: 1),
+                  ),
+                  child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
+                ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 16,
                   children: [
-                    ActionsService(
-                      onSelect: (widget) {
-                        viewModel.clearQrCodeData();
-
-                        setState(() {
-                          _selectedWidget = widget;
-                        });
-                      },
-                    ),
-
-                    if (_selectedWidget != null)
-                      Card(
-                        color: AppColors.white,
-                        margin: const EdgeInsets.all(8),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: AppColors.grey, width: 1),
+                    if (_selectedWidget.runtimeType == TransferPixCard) ...[
+                      Text(
+                        'Contatos Pix recentes',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      const RecentContacts(),
+                      Text(
+                        'Últimas transações PIX',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                      ),
+                      const RecentPix(),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                          ),
+                          onPressed: () {},
+                          child: const Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
                         ),
-                        child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
                       ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 16,
-                        children: [
-                          if (_selectedWidget.runtimeType == TransferPixCard) ...[
-                            Text(
-                              'Contatos Pix recentes',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
-                            ),
-                            const RecentContacts(),
-                            Text(
-                              'Últimas transações PIX',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
-                            ),
-                            const RecentPix(),
-                            Center(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primary,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                                ),
-                                onPressed: () {},
-                                child: const Text('Ver extrato completo', style: TextStyle(color: AppColors.white)),
-                              ),
-                            ),
-                          ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[
-                            if (!_isLoad) const PayloadCard(),
-                          ] else if (_selectedWidget.runtimeType == TransferCard) ...[
-                            Text(
-                              'Últimas transações',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
-                            ),
-                            const RecentPix(),
-                          ] else
-                            ...[],
-                        ],
+                    ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[
+                      if (!_isLoad) const PayloadCard(),
+                    ] else if (_selectedWidget.runtimeType == TransferCard) ...[
+                      Text(
+                        'Últimas transações',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                       ),
-                    ),
+                      const RecentPix(),
+                    ] else
+                      ...[],
                   ],
                 ),
+              ),
+            ],
+          ),
         ),
       ),
     );

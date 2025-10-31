@@ -47,7 +47,10 @@ class _MainContentScreenState extends State<MainContentScreen> {
                   children: const [LoadSkeleton(itemCount: 1, height: 30), LoadSkeleton(itemCount: 1, height: 70)],
                 ),
               ),
-              body: LoadSkeleton(itemCount: 6),
+              body: const Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
+              ),
             );
           }
 

@@ -76,7 +76,10 @@ class _StatementScreenState extends State<StatementScreen> {
       return Scaffold(
         backgroundColor: AppColors.white,
         appBar: CustomAppbar(title: widget.title, description: widget.description),
-        body: Padding(padding: const EdgeInsets.only(top: 30), child: LoadSkeleton(itemCount: 7)),
+        body: const Padding(
+          padding: EdgeInsets.only(top: 30),
+          child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
+        ),
       );
     }
     return Scaffold(

@@ -20,7 +20,6 @@ import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
-import 'package:financial_app/services/mock_api.dart';
 import 'package:financial_app/services/real_api.dart';
 import 'package:get_it/get_it.dart';
 
@@ -47,12 +46,9 @@ void init() {
   // Data sources
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<AccountRemoteDataSource>(() => AccountRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl(), sl()));
+  sl.registerLazySingleton<TransactionRemoteDataSource>(() => TransactionRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<UserLocalDataSource>(() => UserLocalDataSourceImpl());
   sl.registerLazySingleton<AccountLocalDataSource>(() => AccountLocalDataSourceImpl());
-
-  // Internal
-  sl.registerLazySingleton(() => MockApi());
 
   // External
   sl.registerLazySingleton(() => RealApi());

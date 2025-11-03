@@ -52,14 +52,6 @@ class TransferUseCase {
     return response;
   }
 
-  Future<void> addTransaction(Transaction transaction) {
-    return transactionRepository.addTransaction(transaction);
-  }
-
-  Future<List<Transaction>> getTransactions(String accountId) {
-    return transactionRepository.getTransactions(accountId);
-  }
-
   Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue) async {
     return transactionRepository.deletePixKey(keyType, keyValue);
   }

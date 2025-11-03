@@ -1,24 +1,10 @@
 import "package:financial_app/data/datasources/transaction_remote_datasource.dart";
-import "package:financial_app/domain/entities/transaction.dart";
-import "package:financial_app/services/mock_api.dart";
 import "package:financial_app/services/real_api.dart";
 
 class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
-  final MockApi mockApi;
   final RealApi realApi;
 
-  TransactionRemoteDataSourceImpl(this.mockApi, this.realApi);
-
-  @override
-  Future<List<Transaction>> getTransactions(String accountId) async {
-    final transactionsJson = await mockApi.getTransactions(accountId);
-    return transactionsJson.map((json) => Transaction.fromJson(json)).toList();
-  }
-
-  @override
-  Future<void> addTransaction(Transaction transaction) async {
-    await mockApi.addTransaction(transaction.toJson());
-  }
+  TransactionRemoteDataSourceImpl(this.realApi);
 
   @override
   Future<Map<String, dynamic>> transferBetweenAccounts(

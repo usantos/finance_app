@@ -5,7 +5,6 @@ import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/domain/entities/account.dart';
-import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/usecases/transfer_usecase.dart';
 
 class TransactionViewModel extends ChangeNotifier {
@@ -13,7 +12,6 @@ class TransactionViewModel extends ChangeNotifier {
   final AccountUseCase _accountUseCase;
   final AccountViewModel _accountViewModel;
 
-  List<Transaction> _transactions = [];
   List<Map<String, dynamic>?> _pixKeys = [];
   List<Map<String, dynamic>?> _toQrCode = [];
   List<Map<String, dynamic>?> _creditCard = [];
@@ -33,7 +31,6 @@ class TransactionViewModel extends ChangeNotifier {
        _accountUseCase = accountUseCase,
        _accountViewModel = accountViewModel;
 
-  List<Transaction> get transactions => _transactions;
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
   bool get isLoading => _isLoading;
@@ -56,37 +53,6 @@ class TransactionViewModel extends ChangeNotifier {
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;
-  }
-
-  Future<void> fetchTransactions(String accountId) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-    try {
-      _transactions = await _transferUseCase.getTransactions(accountId);
-    } catch (e) {
-      _errorMessage = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<bool> addTransaction(Transaction transaction) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-    try {
-      await _transferUseCase.addTransaction(transaction);
-      _transactions.add(transaction);
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 
   Future<bool> transferBetweenAccounts(String accountId, double amount, String password) async {
@@ -508,23 +474,17 @@ class TransactionViewModel extends ChangeNotifier {
         _errorMessage = result['message'];
         _errorCode = result['code'];
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
           notifyListeners();
-        });
         return false;
       }
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
-      });
       return true;
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
-      });
       return false;
     }
   }

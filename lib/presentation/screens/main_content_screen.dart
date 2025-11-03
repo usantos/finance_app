@@ -1,6 +1,8 @@
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/screens/balance_card.dart';
 import 'package:financial_app/presentation/screens/quick_actions.dart';
@@ -19,6 +21,7 @@ class MainContentScreen extends StatefulWidget {
 
 class _MainContentScreenState extends State<MainContentScreen> {
   final _authViewModel = sl.get<AuthViewModel>();
+  final _transactionViewModel = sl.get<TransactionViewModel>();
   bool _showSkeleton = true;
 
   @override
@@ -30,6 +33,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
     });
 
     _authViewModel.checkCurrentUser();
+    _transactionViewModel.getTransactions();
   }
 
   @override

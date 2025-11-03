@@ -1,4 +1,5 @@
 import "package:financial_app/data/datasources/transaction_remote_datasource.dart";
+import "package:financial_app/domain/entities/transaction.dart";
 import "package:financial_app/domain/repositories/transaction_repository.dart";
 
 class TransactionRepositoryImpl implements TransactionRepository {
@@ -100,5 +101,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) {
     return remoteDataSource.updateBlockType(cardId, blockType);
+  }
+
+  @override
+  Future<Transaction?> getTransactions(String accountId){
+    return remoteDataSource.getTransactions(accountId);
+
   }
 }

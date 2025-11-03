@@ -20,40 +20,7 @@ class _StatementScreenState extends State<StatementScreen> {
   DateTime? _selectedDate;
   bool _showSkeleton = true;
 
-  final List<Transaction> _transactions = [
-    Transaction(
-      name: 'João Silva',
-      date: DateTime(2025, 10, 6),
-      time: const TimeOfDay(hour: 14, minute: 30),
-      amount: 150.00,
-      type: TransactionType.debit,
-      category: 'PIX',
-    ),
-    Transaction(
-      name: 'Salário',
-      date: DateTime(2025, 10, 1),
-      time: const TimeOfDay(hour: 8, minute: 0),
-      amount: 3500.00,
-      type: TransactionType.credit,
-      category: 'Depósito',
-    ),
-    Transaction(
-      name: 'Supermercado Extra',
-      date: DateTime(2025, 10, 5),
-      time: const TimeOfDay(hour: 19, minute: 45),
-      amount: 185.50,
-      type: TransactionType.debit,
-      category: 'Compra',
-    ),
-    Transaction(
-      name: 'Maria Santos',
-      date: DateTime(2025, 08, 9),
-      time: const TimeOfDay(hour: 16, minute: 20),
-      amount: 75.00,
-      type: TransactionType.credit,
-      category: 'PIX',
-    ),
-  ];
+  final List<Transaction> transaction = [];
   @override
   void initState() {
     super.initState();
@@ -180,8 +147,8 @@ class _StatementScreenState extends State<StatementScreen> {
   }
 
   List<Transaction> get _filteredTransactions {
-    if (_selectedDate == null) return _transactions;
-    return _transactions.where((t) {
+    if (_selectedDate == null) return transaction;
+    return transaction.where((t) {
       return t.date.year == _selectedDate!.year &&
           t.date.month == _selectedDate!.month &&
           t.date.day == _selectedDate!.day;

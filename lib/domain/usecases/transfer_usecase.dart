@@ -105,4 +105,9 @@ class TransferUseCase {
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
     return transactionRepository.updateBlockType(cardId, blockType);
   }
+
+  Future<Transaction?> getTransactions() async{
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.getTransactions(fromAccount!.id);
+  }
 }

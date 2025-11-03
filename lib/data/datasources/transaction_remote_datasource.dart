@@ -1,3 +1,5 @@
+import 'package:financial_app/domain/entities/transaction.dart';
+
 abstract class TransactionRemoteDataSource {
 
   Future<Map<String, dynamic>> transferBetweenAccounts(
@@ -49,4 +51,6 @@ abstract class TransactionRemoteDataSource {
   Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId);
 
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType);
+
+  Future<Transaction?> getTransactions(String accountId);
 }

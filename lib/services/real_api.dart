@@ -175,7 +175,7 @@ class RealApi {
         data: {
           'fromAccountNumber': fromAccountNumber,
           'toAccountNumber': toAccountNumber,
-          'transfer_password': password,
+          'transferPassword': password,
           'amount': amount,
         },
       );
@@ -407,4 +407,23 @@ class RealApi {
       return {"success": false, "message": "Erro ao bloquear/desbloquear cartão de crédito"};
     }
   }
+
+  Future<Map<String, dynamic>?> getTransactions(String accountId) async {
+    try {
+      final response = await _dio.get(
+        '/transfers/getTransactions/$accountId',
+        options: Options(validateStatus: (status) => true),
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "transactions": response.data};
+      } else {
+        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar transações'};
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar transações: $e');
+      return {"success": false, "message": 'Erro inesperado: $e'};
+    }
+  }
+
 }

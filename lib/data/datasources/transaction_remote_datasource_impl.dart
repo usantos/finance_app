@@ -1,4 +1,5 @@
 import "package:financial_app/data/datasources/transaction_remote_datasource.dart";
+import "package:financial_app/domain/entities/transaction.dart";
 import "package:financial_app/services/real_api.dart";
 
 class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
@@ -101,4 +102,15 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
     return await realApi.updateBlockType(cardId, blockType);
   }
+
+  @override
+  Future<Transaction?> getTransactions(String accountId) async {
+    final result = await realApi.getTransactions(accountId);
+    final transactionJson = result?['transactions'];
+    if (transactionJson != null) {
+      return Transaction.fromJson(transactionJson);
+    }
+    return null;
+  }
+
 }

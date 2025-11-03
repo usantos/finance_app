@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:financial_app/core/extensions/string_ext.dart';
+import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/model/credit_card_model.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -15,6 +16,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Map<String, dynamic>?> _pixKeys = [];
   List<Map<String, dynamic>?> _toQrCode = [];
   List<Map<String, dynamic>?> _creditCard = [];
+  Transaction? _transaction;
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -33,6 +35,7 @@ class TransactionViewModel extends ChangeNotifier {
 
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
+  Transaction? get transaction => _transaction;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -488,4 +491,9 @@ class TransactionViewModel extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<Transaction?> getTransactions() async {
+      return _transaction = await _transferUseCase.getTransactions();
+  }
+
 }

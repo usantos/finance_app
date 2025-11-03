@@ -6,23 +6,17 @@
 import 'dart:async' as _i7;
 import 'dart:ui' as _i14;
 
-import 'package:financial_app/data/datasources/account_local_data_source.dart'
-    as _i3;
-import 'package:financial_app/data/datasources/user_local_data_source.dart'
-    as _i4;
+import 'package:financial_app/data/datasources/account_local_data_source.dart' as _i3;
+import 'package:financial_app/data/datasources/user_local_data_source.dart' as _i4;
 import 'package:financial_app/data/models/user_response.dart' as _i13;
 import 'package:financial_app/domain/entities/account.dart' as _i10;
 import 'package:financial_app/domain/entities/transaction.dart' as _i8;
-import 'package:financial_app/domain/repositories/account_repository.dart'
-    as _i2;
-import 'package:financial_app/domain/repositories/transaction_repository.dart'
-    as _i5;
+import 'package:financial_app/domain/repositories/account_repository.dart' as _i2;
+import 'package:financial_app/domain/repositories/transaction_repository.dart' as _i5;
 import 'package:financial_app/domain/usecases/account_usecase.dart' as _i9;
 import 'package:financial_app/domain/usecases/transfer_usecase.dart' as _i6;
-import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart'
-    as _i11;
-import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart'
-    as _i15;
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart' as _i11;
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart' as _i15;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i12;
 
@@ -41,28 +35,20 @@ import 'package:mockito/src/dummies.dart' as _i12;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeAccountRepository_0 extends _i1.SmartFake
-    implements _i2.AccountRepository {
-  _FakeAccountRepository_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeAccountRepository_0 extends _i1.SmartFake implements _i2.AccountRepository {
+  _FakeAccountRepository_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeAccountLocalDataSource_1 extends _i1.SmartFake
-    implements _i3.AccountLocalDataSource {
-  _FakeAccountLocalDataSource_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeAccountLocalDataSource_1 extends _i1.SmartFake implements _i3.AccountLocalDataSource {
+  _FakeAccountLocalDataSource_1(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeUserLocalDataSource_2 extends _i1.SmartFake
-    implements _i4.UserLocalDataSource {
-  _FakeUserLocalDataSource_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeUserLocalDataSource_2 extends _i1.SmartFake implements _i4.UserLocalDataSource {
+  _FakeUserLocalDataSource_2(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeTransactionRepository_3 extends _i1.SmartFake
-    implements _i5.TransactionRepository {
-  _FakeTransactionRepository_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeTransactionRepository_3 extends _i1.SmartFake implements _i5.TransactionRepository {
+  _FakeTransactionRepository_3(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 /// A class which mocks [TransferUseCase].
@@ -77,10 +63,7 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i2.AccountRepository get accountRepository =>
       (super.noSuchMethod(
             Invocation.getter(#accountRepository),
-            returnValue: _FakeAccountRepository_0(
-              this,
-              Invocation.getter(#accountRepository),
-            ),
+            returnValue: _FakeAccountRepository_0(this, Invocation.getter(#accountRepository)),
           )
           as _i2.AccountRepository);
 
@@ -88,10 +71,7 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i3.AccountLocalDataSource get accountLocalDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#accountLocalDataSource),
-            returnValue: _FakeAccountLocalDataSource_1(
-              this,
-              Invocation.getter(#accountLocalDataSource),
-            ),
+            returnValue: _FakeAccountLocalDataSource_1(this, Invocation.getter(#accountLocalDataSource)),
           )
           as _i3.AccountLocalDataSource);
 
@@ -99,10 +79,7 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i4.UserLocalDataSource get userLocalDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#userLocalDataSource),
-            returnValue: _FakeUserLocalDataSource_2(
-              this,
-              Invocation.getter(#userLocalDataSource),
-            ),
+            returnValue: _FakeUserLocalDataSource_2(this, Invocation.getter(#userLocalDataSource)),
           )
           as _i4.UserLocalDataSource);
 
@@ -110,24 +87,15 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i5.TransactionRepository get transactionRepository =>
       (super.noSuchMethod(
             Invocation.getter(#transactionRepository),
-            returnValue: _FakeTransactionRepository_3(
-              this,
-              Invocation.getter(#transactionRepository),
-            ),
+            returnValue: _FakeTransactionRepository_3(this, Invocation.getter(#transactionRepository)),
           )
           as _i5.TransactionRepository);
 
   @override
-  _i7.Future<Map<String, dynamic>> call(
-    String? toAccountNumber,
-    double? amount,
-    String? password,
-  ) =>
+  _i7.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount, String? password) =>
       (super.noSuchMethod(
             Invocation.method(#call, [toAccountNumber, amount, password]),
-            returnValue: _i7.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
           )
           as _i7.Future<Map<String, dynamic>>);
 
@@ -135,37 +103,23 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i7.Future<Map<String, dynamic>> verifyTransferPassword() =>
       (super.noSuchMethod(
             Invocation.method(#verifyTransferPassword, []),
-            returnValue: _i7.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
           )
           as _i7.Future<Map<String, dynamic>>);
 
   @override
-  _i7.Future<Map<String, dynamic>> setTransferPassword(
-    String? transferPassword,
-  ) =>
+  _i7.Future<Map<String, dynamic>> setTransferPassword(String? transferPassword) =>
       (super.noSuchMethod(
             Invocation.method(#setTransferPassword, [transferPassword]),
-            returnValue: _i7.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
           )
           as _i7.Future<Map<String, dynamic>>);
 
   @override
-  _i7.Future<Map<String, dynamic>> changeTransferPassword(
-    String? oldTransferPassword,
-    String? newTransferPassword,
-  ) =>
+  _i7.Future<Map<String, dynamic>> changeTransferPassword(String? oldTransferPassword, String? newTransferPassword) =>
       (super.noSuchMethod(
-            Invocation.method(#changeTransferPassword, [
-              oldTransferPassword,
-              newTransferPassword,
-            ]),
-            returnValue: _i7.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
+            Invocation.method(#changeTransferPassword, [oldTransferPassword, newTransferPassword]),
+            returnValue: _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
           )
           as _i7.Future<Map<String, dynamic>>);
 
@@ -182,9 +136,7 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
   _i7.Future<List<_i8.Transaction>> getTransactions(String? accountId) =>
       (super.noSuchMethod(
             Invocation.method(#getTransactions, [accountId]),
-            returnValue: _i7.Future<List<_i8.Transaction>>.value(
-              <_i8.Transaction>[],
-            ),
+            returnValue: _i7.Future<List<_i8.Transaction>>.value(<_i8.Transaction>[]),
           )
           as _i7.Future<List<_i8.Transaction>>);
 }
@@ -201,10 +153,7 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
   _i2.AccountRepository get repository =>
       (super.noSuchMethod(
             Invocation.getter(#repository),
-            returnValue: _FakeAccountRepository_0(
-              this,
-              Invocation.getter(#repository),
-            ),
+            returnValue: _FakeAccountRepository_0(this, Invocation.getter(#repository)),
           )
           as _i2.AccountRepository);
 
@@ -212,10 +161,7 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
   _i4.UserLocalDataSource get userLocalDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#userLocalDataSource),
-            returnValue: _FakeUserLocalDataSource_2(
-              this,
-              Invocation.getter(#userLocalDataSource),
-            ),
+            returnValue: _FakeUserLocalDataSource_2(this, Invocation.getter(#userLocalDataSource)),
           )
           as _i4.UserLocalDataSource);
 
@@ -223,27 +169,18 @@ class MockAccountUseCase extends _i1.Mock implements _i9.AccountUseCase {
   _i3.AccountLocalDataSource get accountLocalDataSource =>
       (super.noSuchMethod(
             Invocation.getter(#accountLocalDataSource),
-            returnValue: _FakeAccountLocalDataSource_1(
-              this,
-              Invocation.getter(#accountLocalDataSource),
-            ),
+            returnValue: _FakeAccountLocalDataSource_1(this, Invocation.getter(#accountLocalDataSource)),
           )
           as _i3.AccountLocalDataSource);
 
   @override
   _i7.Future<_i10.Account?> call() =>
-      (super.noSuchMethod(
-            Invocation.method(#call, []),
-            returnValue: _i7.Future<_i10.Account?>.value(),
-          )
+      (super.noSuchMethod(Invocation.method(#call, []), returnValue: _i7.Future<_i10.Account?>.value())
           as _i7.Future<_i10.Account?>);
 
   @override
   _i7.Future<_i10.Account?> getAccountLocal() =>
-      (super.noSuchMethod(
-            Invocation.method(#getAccountLocal, []),
-            returnValue: _i7.Future<_i10.Account?>.value(),
-          )
+      (super.noSuchMethod(Invocation.method(#getAccountLocal, []), returnValue: _i7.Future<_i10.Account?>.value())
           as _i7.Future<_i10.Account?>);
 }
 
@@ -256,143 +193,93 @@ class MockAccountViewModel extends _i1.Mock implements _i11.AccountViewModel {
   }
 
   @override
-  bool get isHidden =>
-      (super.noSuchMethod(Invocation.getter(#isHidden), returnValue: false)
-          as bool);
+  bool get isHidden => (super.noSuchMethod(Invocation.getter(#isHidden), returnValue: false) as bool);
 
   @override
-  bool get isLoading =>
-      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
-          as bool);
+  bool get isLoading => (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false) as bool);
 
   @override
-  List<String> get nomes =>
-      (super.noSuchMethod(Invocation.getter(#nomes), returnValue: <String>[])
-          as List<String>);
+  List<String> get nomes => (super.noSuchMethod(Invocation.getter(#nomes), returnValue: <String>[]) as List<String>);
 
   @override
   List<String> get iconAssets =>
-      (super.noSuchMethod(
-            Invocation.getter(#iconAssets),
-            returnValue: <String>[],
-          )
-          as List<String>);
+      (super.noSuchMethod(Invocation.getter(#iconAssets), returnValue: <String>[]) as List<String>);
 
   @override
   String get displayBalance =>
       (super.noSuchMethod(
             Invocation.getter(#displayBalance),
-            returnValue: _i12.dummyValue<String>(
-              this,
-              Invocation.getter(#displayBalance),
-            ),
+            returnValue: _i12.dummyValue<String>(this, Invocation.getter(#displayBalance)),
           )
           as String);
 
   @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
+  bool get hasListeners => (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false) as bool);
 
   @override
-  void setAccount(_i10.Account? account) => super.noSuchMethod(
-    Invocation.method(#setAccount, [account]),
-    returnValueForMissingStub: null,
-  );
+  void setAccount(_i10.Account? account) =>
+      super.noSuchMethod(Invocation.method(#setAccount, [account]), returnValueForMissingStub: null);
 
   @override
-  void updateAccount(_i10.Account? account) => super.noSuchMethod(
-    Invocation.method(#updateAccount, [account]),
-    returnValueForMissingStub: null,
-  );
+  void updateAccount(_i10.Account? account) =>
+      super.noSuchMethod(Invocation.method(#updateAccount, [account]), returnValueForMissingStub: null);
 
   @override
-  void toggleVisibility() => super.noSuchMethod(
-    Invocation.method(#toggleVisibility, []),
-    returnValueForMissingStub: null,
-  );
+  void toggleVisibility() =>
+      super.noSuchMethod(Invocation.method(#toggleVisibility, []), returnValueForMissingStub: null);
 
   @override
   _i7.Future<_i13.UserResponse?> getUser() =>
-      (super.noSuchMethod(
-            Invocation.method(#getUser, []),
-            returnValue: _i7.Future<_i13.UserResponse?>.value(),
-          )
+      (super.noSuchMethod(Invocation.method(#getUser, []), returnValue: _i7.Future<_i13.UserResponse?>.value())
           as _i7.Future<_i13.UserResponse?>);
 
   @override
-  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#addListener, [listener]),
-    returnValueForMissingStub: null,
-  );
+  void addListener(_i14.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]), returnValueForMissingStub: null);
 
   @override
-  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#removeListener, [listener]),
-    returnValueForMissingStub: null,
-  );
+  void removeListener(_i14.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]), returnValueForMissingStub: null);
 
   @override
-  void dispose() => super.noSuchMethod(
-    Invocation.method(#dispose, []),
-    returnValueForMissingStub: null,
-  );
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []), returnValueForMissingStub: null);
 
   @override
-  void notifyListeners() => super.noSuchMethod(
-    Invocation.method(#notifyListeners, []),
-    returnValueForMissingStub: null,
-  );
+  void notifyListeners() =>
+      super.noSuchMethod(Invocation.method(#notifyListeners, []), returnValueForMissingStub: null);
 }
 
 /// A class which mocks [TransactionViewModel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTransactionViewModel extends _i1.Mock
-    implements _i15.TransactionViewModel {
+class MockTransactionViewModel extends _i1.Mock implements _i15.TransactionViewModel {
   MockTransactionViewModel() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  bool get showErrors =>
-      (super.noSuchMethod(Invocation.getter(#showErrors), returnValue: false)
-          as bool);
+  bool get showErrors => (super.noSuchMethod(Invocation.getter(#showErrors), returnValue: false) as bool);
 
   @override
   List<_i8.Transaction> get transactions =>
-      (super.noSuchMethod(
-            Invocation.getter(#transactions),
-            returnValue: <_i8.Transaction>[],
-          )
-          as List<_i8.Transaction>);
+      (super.noSuchMethod(Invocation.getter(#transactions), returnValue: <_i8.Transaction>[]) as List<_i8.Transaction>);
 
   @override
-  bool get isLoading =>
-      (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false)
-          as bool);
+  bool get isLoading => (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false) as bool);
 
   @override
-  bool get hasPassword =>
-      (super.noSuchMethod(Invocation.getter(#hasPassword), returnValue: false)
-          as bool);
+  bool get hasPassword => (super.noSuchMethod(Invocation.getter(#hasPassword), returnValue: false) as bool);
 
   @override
-  set showErrors(bool? value) => super.noSuchMethod(
-    Invocation.setter(#showErrors, value),
-    returnValueForMissingStub: null,
-  );
+  set showErrors(bool? value) =>
+      super.noSuchMethod(Invocation.setter(#showErrors, value), returnValueForMissingStub: null);
 
   @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
+  bool get hasListeners => (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false) as bool);
 
   @override
-  void setAccount(_i10.Account? account) => super.noSuchMethod(
-    Invocation.method(#setAccount, [account]),
-    returnValueForMissingStub: null,
-  );
+  void setAccount(_i10.Account? account) =>
+      super.noSuchMethod(Invocation.method(#setAccount, [account]), returnValueForMissingStub: null);
 
   @override
   _i7.Future<void> fetchTransactions(String? accountId) =>
@@ -405,24 +292,13 @@ class MockTransactionViewModel extends _i1.Mock
 
   @override
   _i7.Future<bool> addTransaction(_i8.Transaction? transaction) =>
-      (super.noSuchMethod(
-            Invocation.method(#addTransaction, [transaction]),
-            returnValue: _i7.Future<bool>.value(false),
-          )
+      (super.noSuchMethod(Invocation.method(#addTransaction, [transaction]), returnValue: _i7.Future<bool>.value(false))
           as _i7.Future<bool>);
 
   @override
-  _i7.Future<bool> transferBetweenAccounts(
-    String? accountId,
-    double? amount,
-    String? password,
-  ) =>
+  _i7.Future<bool> transferBetweenAccounts(String? accountId, double? amount, String? password) =>
       (super.noSuchMethod(
-            Invocation.method(#transferBetweenAccounts, [
-              accountId,
-              amount,
-              password,
-            ]),
+            Invocation.method(#transferBetweenAccounts, [accountId, amount, password]),
             returnValue: _i7.Future<bool>.value(false),
           )
           as _i7.Future<bool>);
@@ -438,10 +314,7 @@ class MockTransactionViewModel extends _i1.Mock
 
   @override
   _i7.Future<bool> verifyTransferPassword() =>
-      (super.noSuchMethod(
-            Invocation.method(#verifyTransferPassword, []),
-            returnValue: _i7.Future<bool>.value(false),
-          )
+      (super.noSuchMethod(Invocation.method(#verifyTransferPassword, []), returnValue: _i7.Future<bool>.value(false))
           as _i7.Future<bool>);
 
   @override
@@ -453,40 +326,25 @@ class MockTransactionViewModel extends _i1.Mock
           as _i7.Future<bool>);
 
   @override
-  _i7.Future<bool> changeTransferPassword(
-    String? oldTransferPassword,
-    String? newTransferPassword,
-  ) =>
+  _i7.Future<bool> changeTransferPassword(String? oldTransferPassword, String? newTransferPassword) =>
       (super.noSuchMethod(
-            Invocation.method(#changeTransferPassword, [
-              oldTransferPassword,
-              newTransferPassword,
-            ]),
+            Invocation.method(#changeTransferPassword, [oldTransferPassword, newTransferPassword]),
             returnValue: _i7.Future<bool>.value(false),
           )
           as _i7.Future<bool>);
 
   @override
-  void addListener(_i14.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#addListener, [listener]),
-    returnValueForMissingStub: null,
-  );
+  void addListener(_i14.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#addListener, [listener]), returnValueForMissingStub: null);
 
   @override
-  void removeListener(_i14.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#removeListener, [listener]),
-    returnValueForMissingStub: null,
-  );
+  void removeListener(_i14.VoidCallback? listener) =>
+      super.noSuchMethod(Invocation.method(#removeListener, [listener]), returnValueForMissingStub: null);
 
   @override
-  void dispose() => super.noSuchMethod(
-    Invocation.method(#dispose, []),
-    returnValueForMissingStub: null,
-  );
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []), returnValueForMissingStub: null);
 
   @override
-  void notifyListeners() => super.noSuchMethod(
-    Invocation.method(#notifyListeners, []),
-    returnValueForMissingStub: null,
-  );
+  void notifyListeners() =>
+      super.noSuchMethod(Invocation.method(#notifyListeners, []), returnValueForMissingStub: null);
 }

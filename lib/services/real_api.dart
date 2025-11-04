@@ -408,22 +408,21 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>?> getTransactions(String accountId) async {
+  Future<List<Map<String, dynamic>>> getTransactions(String accountId) async {
     try {
-      final response = await _dio.get(
-        '/transfers/getTransactions/$accountId',
-        options: Options(validateStatus: (status) => true),
-      );
+      final response = await _dio.get('/transfers/getTransactions/$accountId');
 
-      if (response.statusCode == 200) {
-        return {"success": true, "transactions": response.data};
+      if (response.statusCode == 200 && response.data is List) {
+        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
+
+        return data;
       } else {
-        return {"success": false, "message": response.data['error'] ?? 'Erro ao buscar transações'};
+        debugPrint('Erro ao buscar transações: ${response.data}');
+        return [];
       }
     } catch (e) {
       debugPrint('Erro ao buscar transações: $e');
-      return {"success": false, "message": 'Erro inesperado: $e'};
+      return [];
     }
   }
-
 }

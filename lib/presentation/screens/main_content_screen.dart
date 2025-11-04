@@ -1,16 +1,15 @@
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/presentation/screens/balance_card.dart';
 import 'package:financial_app/presentation/screens/quick_actions.dart';
-import 'package:financial_app/presentation/screens/recent_transactions.dart';
 import 'package:provider/provider.dart';
 
 import 'components/custom_appbar.dart';
 import 'components/skeleton.dart';
+import 'components/transaction_card.dart';
 
 class MainContentScreen extends StatefulWidget {
   const MainContentScreen({super.key});
@@ -21,27 +20,25 @@ class MainContentScreen extends StatefulWidget {
 
 class _MainContentScreenState extends State<MainContentScreen> {
   final _authViewModel = sl.get<AuthViewModel>();
-  final _transactionViewModel = sl.get<TransactionViewModel>();
   bool _showSkeleton = true;
 
   @override
   void initState() {
     super.initState();
-
+    final transactionViewModel = Provider.of<TransactionViewModel>(context, listen: false);
+    transactionViewModel.getTransactions();
+    _authViewModel.checkCurrentUser();
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) setState(() => _showSkeleton = false);
     });
-
-    _authViewModel.checkCurrentUser();
-    _transactionViewModel.getTransactions();
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _authViewModel,
-      child: Consumer<AuthViewModel>(
-        builder: (context, authVM, _) {
+      child: Consumer2<AuthViewModel, TransactionViewModel>(
+        builder: (context, authVM, transactionsVM, _) {
           if (_showSkeleton) {
             return Scaffold(
               backgroundColor: AppColors.white,
@@ -57,6 +54,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
               ),
             );
           }
+          final transactions = transactionsVM.transactionModels;
 
           return Scaffold(
             backgroundColor: AppColors.white,
@@ -71,19 +69,33 @@ class _MainContentScreenState extends State<MainContentScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       'Ações rápidas',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                     ),
-                    SizedBox(height: 16),
-                    QuickActions(),
-                    Text(
+                    const SizedBox(height: 16),
+                    const QuickActions(),
+                    const Text(
                       'Últimas transações',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                     ),
-                    SizedBox(height: 16),
-                    RecentTransactions(),
+                    const SizedBox(height: 16),
+                    if (transactions.isEmpty)
+                      const Text(
+                        'Nenhuma transação encontrada nos últimos 7 dias',
+                        style: TextStyle(fontSize: 14, color: AppColors.blackText),
+                      )
+                    else
+                      ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: transactions.length,
+                        itemBuilder: (context, index) {
+                          return TransactionCard(transaction: transactions[index]);
+                        },
+                      ),
                   ],
                 ),
               ),

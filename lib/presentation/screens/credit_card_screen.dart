@@ -7,7 +7,6 @@ import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'components/custom_appbar.dart';
-import 'components/transaction_card.dart';
 
 class CreditCardScreen extends StatefulWidget {
   const CreditCardScreen({super.key, required this.title, required this.description});
@@ -20,18 +19,6 @@ class CreditCardScreen extends StatefulWidget {
 
 class _CreditCardScreenState extends State<CreditCardScreen> {
   bool _showSkeleton = true;
-
-  final List<Transaction> _transactions = [
-    Transaction(
-      name: 'Vivo',
-      description: 'Pagamento Automático',
-      date: DateTime(2025, 10, 6),
-      time: const TimeOfDay(hour: 14, minute: 30),
-      amount: 50.00,
-      type: TransactionType.debit,
-      category: 'Serviço',
-    ),
-  ];
 
   @override
   void initState() {
@@ -178,14 +165,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                             ),
                             const SizedBox(height: 10),
-                            ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: _transactions.length,
-                              itemBuilder: (context, index) {
-                                return TransactionCard(transaction: _transactions[index]);
-                              },
+                            const Text(
+                              'Nenhuma compra realizada',
+                              style: TextStyle(fontSize: 14, color: AppColors.blackText),
                             ),
                           ],
                         ),

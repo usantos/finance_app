@@ -1,5 +1,4 @@
 import "package:financial_app/data/datasources/transaction_remote_datasource.dart";
-import "package:financial_app/domain/entities/transaction.dart";
 import "package:financial_app/domain/repositories/transaction_repository.dart";
 
 class TransactionRepositoryImpl implements TransactionRepository {
@@ -104,8 +103,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Transaction?> getTransactions(String accountId){
+  Future<List<Map<String, dynamic>>> getTransactions(String accountId) {
     return remoteDataSource.getTransactions(accountId);
-
   }
 }

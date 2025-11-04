@@ -1,33 +1,10 @@
-import 'package:financial_app/core/extensions/date_ext.dart';
-import 'package:financial_app/core/extensions/time_ext.dart';
-import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-
-enum TransactionType { credit, debit }
-
-class Transaction {
-  final String name;
-  final String? description;
-  final DateTime date;
-  final TimeOfDay time;
-  final double amount;
-  final TransactionType type;
-  final String category;
-
-  Transaction({
-    required this.name,
-    this.description,
-    required this.date,
-    required this.time,
-    required this.amount,
-    required this.type,
-    required this.category,
-  });
-}
+import 'package:financial_app/core/extensions/date_ext.dart';
+import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/domain/model/transaction_model.dart';
 
 class TransactionCard extends StatelessWidget {
   final Transaction transaction;
-
   const TransactionCard({super.key, required this.transaction});
 
   @override
@@ -51,27 +28,13 @@ class TransactionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              transaction.name,
+              transaction.toAccountName!,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.black),
               overflow: TextOverflow.ellipsis,
             ),
-
-            if (transaction.description?.isNotEmpty ?? false) ...[
-              const SizedBox(height: 5),
-              Text(
-                transaction.description ?? '',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.black),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-
-            const SizedBox(height: 5),
-            Text(
-              '${transaction.date.formatDate()} • ${transaction.time.formatHour()}',
-              style: TextStyle(color: AppColors.blackText, fontSize: 13),
-            ),
             const SizedBox(height: 8),
-
+            Text(transaction.date.formatDate(), style: TextStyle(color: AppColors.blackText, fontSize: 13)),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

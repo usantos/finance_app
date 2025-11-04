@@ -10,7 +10,6 @@ import 'package:financial_app/data/datasources/account_local_data_source.dart' a
 import 'package:financial_app/data/datasources/user_local_data_source.dart' as _i4;
 import 'package:financial_app/data/models/user_response.dart' as _i13;
 import 'package:financial_app/domain/entities/account.dart' as _i10;
-import 'package:financial_app/domain/entities/transaction.dart' as _i8;
 import 'package:financial_app/domain/repositories/account_repository.dart' as _i2;
 import 'package:financial_app/domain/repositories/transaction_repository.dart' as _i5;
 import 'package:financial_app/domain/usecases/account_usecase.dart' as _i9;
@@ -123,22 +122,6 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
           )
           as _i7.Future<Map<String, dynamic>>);
 
-  @override
-  _i7.Future<void> addTransaction(_i8.Transaction? transaction) =>
-      (super.noSuchMethod(
-            Invocation.method(#addTransaction, [transaction]),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
-          )
-          as _i7.Future<void>);
-
-  @override
-  _i7.Future<List<_i8.Transaction>> getTransactions(String? accountId) =>
-      (super.noSuchMethod(
-            Invocation.method(#getTransactions, [accountId]),
-            returnValue: _i7.Future<List<_i8.Transaction>>.value(<_i8.Transaction>[]),
-          )
-          as _i7.Future<List<_i8.Transaction>>);
 }
 
 /// A class which mocks [AccountUseCase].
@@ -261,10 +244,6 @@ class MockTransactionViewModel extends _i1.Mock implements _i15.TransactionViewM
   bool get showErrors => (super.noSuchMethod(Invocation.getter(#showErrors), returnValue: false) as bool);
 
   @override
-  List<_i8.Transaction> get transactions =>
-      (super.noSuchMethod(Invocation.getter(#transactions), returnValue: <_i8.Transaction>[]) as List<_i8.Transaction>);
-
-  @override
   bool get isLoading => (super.noSuchMethod(Invocation.getter(#isLoading), returnValue: false) as bool);
 
   @override
@@ -280,20 +259,6 @@ class MockTransactionViewModel extends _i1.Mock implements _i15.TransactionViewM
   @override
   void setAccount(_i10.Account? account) =>
       super.noSuchMethod(Invocation.method(#setAccount, [account]), returnValueForMissingStub: null);
-
-  @override
-  _i7.Future<void> fetchTransactions(String? accountId) =>
-      (super.noSuchMethod(
-            Invocation.method(#fetchTransactions, [accountId]),
-            returnValue: _i7.Future<void>.value(),
-            returnValueForMissingStub: _i7.Future<void>.value(),
-          )
-          as _i7.Future<void>);
-
-  @override
-  _i7.Future<bool> addTransaction(_i8.Transaction? transaction) =>
-      (super.noSuchMethod(Invocation.method(#addTransaction, [transaction]), returnValue: _i7.Future<bool>.value(false))
-          as _i7.Future<bool>);
 
   @override
   _i7.Future<bool> transferBetweenAccounts(String? accountId, double? amount, String? password) =>

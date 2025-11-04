@@ -1,6 +1,5 @@
 import "package:financial_app/data/datasources/account_local_data_source.dart";
 import "package:financial_app/data/datasources/user_local_data_source.dart";
-import "package:financial_app/domain/entities/transaction.dart";
 import "package:financial_app/domain/repositories/account_repository.dart";
 import "package:financial_app/domain/repositories/transaction_repository.dart";
 
@@ -106,7 +105,7 @@ class TransferUseCase {
     return transactionRepository.updateBlockType(cardId, blockType);
   }
 
-  Future<Transaction?> getTransactions() async{
+  Future<List<Map<String, dynamic>>> getTransactions() async {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.getTransactions(fromAccount!.id);
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:financial_app/core/extensions/string_ext.dart';
-import 'package:financial_app/domain/entities/transaction.dart';
 import 'package:financial_app/domain/model/credit_card_model.dart';
+import 'package:financial_app/domain/model/transaction_model.dart';
 import 'package:financial_app/domain/usecases/account_usecase.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<Map<String, dynamic>?> _pixKeys = [];
   List<Map<String, dynamic>?> _toQrCode = [];
   List<Map<String, dynamic>?> _creditCard = [];
-  Transaction? _transaction;
+  List<Map<String, dynamic>> _transaction = [];
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -35,7 +35,6 @@ class TransactionViewModel extends ChangeNotifier {
 
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
-  Transaction? get transaction => _transaction;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -51,6 +50,19 @@ class TransactionViewModel extends ChangeNotifier {
     final list = _creditCard.whereType<Map<String, dynamic>>().map((map) => CreditCardModel.fromMap(map)).toList();
 
     return list.isNotEmpty ? list[0] : null;
+  }
+
+  List<Transaction> get transactionModels {
+    try {
+      return _transaction.map((map) => Transaction.fromMap(map)).toList();
+    } catch (e) {
+      debugPrint('Erro ao converter transações: $e');
+      return [];
+    }
+  }
+
+  Future<void> init() async {
+    _account;
   }
 
   @visibleForTesting
@@ -477,23 +489,34 @@ class TransactionViewModel extends ChangeNotifier {
         _errorMessage = result['message'];
         _errorCode = result['code'];
 
-          notifyListeners();
+        notifyListeners();
         return false;
       }
 
-        notifyListeners();
+      notifyListeners();
       return true;
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
 
-        notifyListeners();
+      notifyListeners();
       return false;
     }
   }
 
-  Future<Transaction?> getTransactions() async {
-      return _transaction = await _transferUseCase.getTransactions();
-  }
+  Future<void> getTransactions() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
 
+    try {
+      _transaction = await _transferUseCase.getTransactions();
+    } catch (e) {
+      _errorMessage = e.toString();
+      _transaction = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

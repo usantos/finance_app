@@ -1,16 +1,15 @@
-import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/credit_card_screen.dart';
 import 'package:financial_app/presentation/screens/profile_screen.dart';
 import 'package:financial_app/presentation/screens/statement_screen.dart';
 import 'package:financial_app/presentation/screens/service_screen.dart';
-import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
-import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'main_content_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  static final GlobalKey<_HomeScreenState> homeKey = GlobalKey<_HomeScreenState>();
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,8 +17,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  final authViewModel = sl.get<AuthViewModel>();
-  final accountViewModel = sl.get<AccountViewModel>();
 
   static const List<Widget> _widgetOptions = <Widget>[
     MainContentScreen(),
@@ -30,9 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
+  }
+
+  void navigateToTab(int index) {
+    _onItemTapped(index);
   }
 
   @override
@@ -53,11 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: NavigationBar(
           backgroundColor: AppColors.white,
           selectedIndex: _selectedIndex,
-          onDestinationSelected: (index) {
-            if (index == _selectedIndex) return;
-            setState(() => _selectedIndex = index);
-            _onItemTapped(index);
-          },
+          onDestinationSelected: (index) => _onItemTapped(index),
           height: 70,
           indicatorColor: AppColors.secondary,
           destinations: const [

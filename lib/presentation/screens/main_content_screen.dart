@@ -75,7 +75,10 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
                     ),
                     const SizedBox(height: 16),
+
                     const QuickActions(),
+                    const SizedBox(height: 16),
+
                     const Text(
                       'Últimas transações',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),

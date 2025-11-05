@@ -66,13 +66,10 @@ class TransactionViewModel extends ChangeNotifier {
       final now = DateTime.now();
       final sevenDaysAgo = now.subtract(const Duration(days: 7));
 
-      return _transaction
-          .map((map) => Transaction.fromMap(map))
-          .where((t) {
+      return _transaction.map((map) => Transaction.fromMap(map)).where((t) {
         final date = t.date;
         return date.isAfter(sevenDaysAgo) && date.isBefore(now);
-      })
-          .toList();
+      }).toList();
     } catch (e) {
       debugPrint('Erro ao converter transações: $e');
       return [];

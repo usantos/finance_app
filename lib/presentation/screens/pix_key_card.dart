@@ -6,7 +6,6 @@ import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'components/bottom_sheet_create_pix_key.dart';
 
 class PixKeyCard extends StatefulWidget {

@@ -1,6 +1,10 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/home_screen.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import 'bottom_sheet_recharge_phone.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -11,24 +15,28 @@ class QuickActions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _QuickActionButton(
-          icon: Icons.pix,
+          icon: Icon(PhosphorIcons.pixLogo(), size: 30, color: AppColors.white),
           label: 'Pix',
           onTap: () {
             HomeScreen.homeKey.currentState?.navigateToTab(3);
           },
         ),
         _QuickActionButton(
-          icon: Icons.payment,
+          icon: Icon(PhosphorIcons.barcode(), size: 30, color: AppColors.white),
           label: 'Pagar',
           onTap: () {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pagamento em breve!')));
           },
         ),
         _QuickActionButton(
-          icon: Icons.phone_android,
+          icon: Icon(PhosphorIcons.deviceMobile(), size: 30, color: AppColors.white),
           label: 'Recarga',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Recarga em breve!')));
+            CustomBottomSheet.show(
+                context,
+                height: MediaQuery.of(context).size.height * 0.45,
+                iconClose: true,
+                child: BottomSheetRechargePhone());
           },
         ),
       ],
@@ -37,7 +45,7 @@ class QuickActions extends StatelessWidget {
 }
 
 class _QuickActionButton extends StatelessWidget {
-  final IconData icon;
+  final Icon icon;
   final String label;
   final VoidCallback onTap;
 
@@ -53,7 +61,7 @@ class _QuickActionButton extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(30)),
-            child: Icon(icon, color: AppColors.white, size: 28),
+            child: icon,
           ),
           const SizedBox(height: 8),
           Text(

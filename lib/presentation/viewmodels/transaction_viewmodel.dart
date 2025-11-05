@@ -61,6 +61,24 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
+  List<Transaction> get transactionLastWeekModels {
+    try {
+      final now = DateTime.now();
+      final sevenDaysAgo = now.subtract(const Duration(days: 7));
+
+      return _transaction
+          .map((map) => Transaction.fromMap(map))
+          .where((t) {
+        final date = t.date;
+        return date.isAfter(sevenDaysAgo) && date.isBefore(now);
+      })
+          .toList();
+    } catch (e) {
+      debugPrint('Erro ao converter transações: $e');
+      return [];
+    }
+  }
+
   Future<void> init() async {
     _account;
   }

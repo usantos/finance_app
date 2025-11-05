@@ -54,7 +54,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
               ),
             );
           }
-          final transactions = transactionVM.transactionModels;
+          final transactions = transactionVM.transactionLastWeekModels;
 
           return Scaffold(
             backgroundColor: AppColors.white,

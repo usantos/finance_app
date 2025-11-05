@@ -21,14 +21,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _authViewModel = sl.get<AuthViewModel>();
-  final _accountViewModel = sl.get<AccountViewModel>();
+  final _authVM = sl.get<AuthViewModel>();
+  final _accountVM = sl.get<AccountViewModel>();
   bool _showSkeleton = true;
 
   @override
   void initState() {
     super.initState();
-    _authViewModel.checkCurrentUser();
+    _authVM.checkCurrentUser();
 
     _showSkeleton = true;
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -44,8 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: _authViewModel),
-        ChangeNotifierProvider.value(value: _accountViewModel),
+        ChangeNotifierProvider.value(value: _authVM),
+        ChangeNotifierProvider.value(value: _accountVM),
       ],
       child: Consumer2<AuthViewModel, AccountViewModel>(
         builder: (context, authVM, accountVM, _) {

@@ -82,8 +82,8 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, viewModel, child) {
-        final pixKeys = viewModel.pixKeys;
+      builder: (context, transactionVM, child) {
+        final pixKeys = transactionVM.pixKeys;
 
         bool hasKey(String type) {
           return pixKeys.any((key) => key?['keyType'] == type);

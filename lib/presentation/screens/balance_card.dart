@@ -14,7 +14,7 @@ class _BalanceCardState extends State<BalanceCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AccountViewModel>(
-      builder: (context, accountViewModel, child) {
+      builder: (context, accountVM, child) {
         return Card(
           color: AppColors.secondary,
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -32,19 +32,16 @@ class _BalanceCardState extends State<BalanceCard> {
                     InkWell(
                       onTap: () {
                         setState(() {
-                          accountViewModel.toggleVisibility();
+                          accountVM.toggleVisibility();
                         });
                       },
-                      child: Icon(
-                        accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility,
-                        color: AppColors.white,
-                      ),
+                      child: Icon(accountVM.isHidden ? Icons.visibility_off : Icons.visibility, color: AppColors.white),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  accountViewModel.displayBalance,
+                  accountVM.displayBalance,
                   style: const TextStyle(color: AppColors.white, fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ],

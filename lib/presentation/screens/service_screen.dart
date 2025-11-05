@@ -37,15 +37,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-      await viewModel.getPixKeysByAccountId();
+      final transactionViewModel = Provider.of<TransactionViewModel>(context, listen: false);
+      await transactionViewModel.getPixKeysByAccountId();
       setState(() => _isLoad = false);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+    final transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
     if (_showSkeleton) {
       return Scaffold(
         backgroundColor: AppColors.white,
@@ -66,7 +66,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
             children: [
               ActionsService(
                 onSelect: (widget) {
-                  viewModel.clearQrCodeData();
+                  transactionVM.clearQrCodeData();
 
                   setState(() {
                     _selectedWidget = widget;

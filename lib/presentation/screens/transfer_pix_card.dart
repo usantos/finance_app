@@ -20,7 +20,7 @@ class TransferPixCard extends StatefulWidget {
 
 class _TransferPixCardState extends State<TransferPixCard> {
   final _formKey = GlobalKey<FormState>();
-  final _transactionViewModel = sl.get<TransactionViewModel>();
+  final _transactionVM = sl.get<TransactionViewModel>();
   final TextEditingController _toKeyPixTextEditingController = TextEditingController();
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toKeyPixFocusNode = FocusNode();
@@ -45,11 +45,11 @@ class _TransferPixCardState extends State<TransferPixCard> {
   }
 
   Future<void> _checkTransferPassword() async {
-    await _transactionViewModel.verifyTransferPassword();
+    await _transactionVM.verifyTransferPassword();
 
     if (!mounted) return;
 
-    if (!_transactionViewModel.hasPassword) {
+    if (!_transactionVM.hasPassword) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -99,7 +99,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
                       onCompleted: (transferPassword) {
-                        _transactionViewModel.setTransferPassword(transferPassword);
+                        _transactionVM.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
                         setState(() {});
                       },
@@ -124,7 +124,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
     _toKeyPixFocusNode.unfocus();
     _amountFocusNode.unfocus();
     setState(() {
-      _transactionViewModel.showErrors = false;
+      _transactionVM.showErrors = false;
     });
   }
 
@@ -241,13 +241,13 @@ class _TransferPixCardState extends State<TransferPixCard> {
                             backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
-                          onPressed: _transactionViewModel.hasPassword
+                          onPressed: _transactionVM.hasPassword
                               ? () async {
                                   FocusScope.of(context).unfocus();
 
                                   if (_formKey.currentState?.validate() ?? false) {
                                     setState(() {
-                                      _transactionViewModel.showErrors = true;
+                                      _transactionVM.showErrors = true;
                                     });
 
                                     PinBottomSheet.show(
@@ -264,7 +264,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                           '',
                                         );
 
-                                        final bool success = await _transactionViewModel.transferPix(
+                                        final bool success = await _transactionVM.transferPix(
                                           toPixKeyValue,
                                           amount,
                                           transferPassword,
@@ -283,12 +283,11 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                             ),
                                           );
+                                          _transactionVM.getTransactions();
                                         } else {
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(
-                                              content: Text(
-                                                _transactionViewModel.errorMessage ?? 'Erro ao realizar o Pix',
-                                              ),
+                                              content: Text(_transactionVM.errorMessage ?? 'Erro ao realizar o Pix'),
                                               backgroundColor: AppColors.redError,
                                               behavior: SnackBarBehavior.floating,
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -300,7 +299,7 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                   } else {
                                     FocusScope.of(context).unfocus();
                                     setState(() {
-                                      _transactionViewModel.showErrors = true;
+                                      _transactionVM.showErrors = true;
                                     });
                                   }
                                 }

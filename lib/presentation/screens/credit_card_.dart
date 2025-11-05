@@ -18,7 +18,7 @@ class _CreditCardState extends State<CreditCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, transactionViewModel, _) {
+      builder: (context, transactionVM, _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -48,7 +48,7 @@ class _CreditCardState extends State<CreditCard> {
                   ? () {
                       Utils.copiarTexto(
                         context,
-                        transactionViewModel.creditCardModels!.creditCardNumber.toCreditCardFull(),
+                        transactionVM.creditCardModels!.creditCardNumber.toCreditCardFull(),
                         'Cartão copiado com sucesso',
                       );
                     }
@@ -58,8 +58,8 @@ class _CreditCardState extends State<CreditCard> {
                 children: [
                   Text(
                     _showCardDetails
-                        ? transactionViewModel.creditCardModels!.creditCardNumber.toCreditCardFull()
-                        : transactionViewModel.creditCardModels!.creditCardNumber.toCreditCardMasked(),
+                        ? transactionVM.creditCardModels!.creditCardNumber.toCreditCardFull()
+                        : transactionVM.creditCardModels!.creditCardNumber.toCreditCardMasked(),
                     style: const TextStyle(
                       color: AppColors.white,
                       fontSize: 20,
@@ -81,7 +81,7 @@ class _CreditCardState extends State<CreditCard> {
                   children: [
                     const Text('PORTADOR', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                     Text(
-                      transactionViewModel.creditCardModels!.creditCardName,
+                      transactionVM.creditCardModels!.creditCardName,
                       style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -90,7 +90,7 @@ class _CreditCardState extends State<CreditCard> {
                   children: [
                     Text('VALIDADE', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                     Text(
-                      transactionViewModel.creditCardModels!.validate,
+                      transactionVM.creditCardModels!.validate,
                       style: TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ],

@@ -40,7 +40,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, transactionViewModel, child) {
+      builder: (context, transactionVM, child) {
         if (_showSkeleton) {
           return Scaffold(
             backgroundColor: AppColors.white,
@@ -51,13 +51,13 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
             ),
           );
         }
-        final creditCard = transactionViewModel.creditCardModels;
+        final creditCard = transactionVM.creditCardModels;
         final blockType = creditCard?.blockType;
 
         return Scaffold(
           backgroundColor: AppColors.white,
           appBar: CustomAppbar(title: widget.title, description: widget.description),
-          body: transactionViewModel.creditCardModels != null
+          body: transactionVM.creditCardModels != null
               ? SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,9 +91,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                           builder: (_) => const Center(child: CircularProgressIndicator()),
                                         );
 
-                                        await transactionViewModel.updateBlockType("BLOCKED");
+                                        await transactionVM.updateBlockType("BLOCKED");
                                         await Future.delayed(const Duration(seconds: 2));
-                                        await transactionViewModel.getCreditCardByAccountId();
+                                        await transactionVM.getCreditCardByAccountId();
 
                                         if (context.mounted) Navigator.pop(context);
                                       },
@@ -115,9 +115,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                           builder: (_) => const Center(child: CircularProgressIndicator()),
                                         );
 
-                                        await transactionViewModel.updateBlockType("ACTIVE");
+                                        await transactionVM.updateBlockType("ACTIVE");
                                         await Future.delayed(const Duration(seconds: 2));
-                                        await transactionViewModel.getCreditCardByAccountId();
+                                        await transactionVM.getCreditCardByAccountId();
 
                                         if (context.mounted) Navigator.pop(context);
                                       },
@@ -200,9 +200,9 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                 builder: (_) => const Center(child: CircularProgressIndicator()),
                               );
 
-                              await transactionViewModel.createCreditCard(password);
+                              await transactionVM.createCreditCard(password);
                               await Future.delayed(const Duration(seconds: 2));
-                              await transactionViewModel.getCreditCardByAccountId();
+                              await transactionVM.getCreditCardByAccountId();
 
                               if (context.mounted) Navigator.pop(context);
                             },

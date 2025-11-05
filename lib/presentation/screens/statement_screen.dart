@@ -53,8 +53,8 @@ class _StatementScreenState extends State<StatementScreen> {
     }
 
     return Consumer<TransactionViewModel>(
-      builder: (context, transactionsVM, _) {
-        final transactions = transactionsVM.transactionModels;
+      builder: (context, transactionVM, _) {
+        final transactions = transactionVM.transactionModels;
 
         final filteredTransactions = transactions.where((t) {
           final matchesDate =

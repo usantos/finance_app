@@ -20,8 +20,8 @@ class TransferCard extends StatefulWidget {
 
 class _TransferCardState extends State<TransferCard> {
   final _formKey = GlobalKey<FormState>();
-  final _accountViewModel = sl.get<AccountViewModel>();
-  final _transactionViewModel = sl.get<TransactionViewModel>();
+  final _accountVM = sl.get<AccountViewModel>();
+  final _transactionVM = sl.get<TransactionViewModel>();
   final TextEditingController _toAccountTextEditingController = TextEditingController();
   final TextEditingController _amountTextEditingController = TextEditingController();
   final FocusNode _toAccountFocusNode = FocusNode();
@@ -46,11 +46,11 @@ class _TransferCardState extends State<TransferCard> {
   }
 
   Future<void> _checkTransferPassword() async {
-    await _transactionViewModel.verifyTransferPassword();
+    await _transactionVM.verifyTransferPassword();
 
     if (!mounted) return;
 
-    if (!_transactionViewModel.hasPassword) {
+    if (!_transactionVM.hasPassword) {
       CustomBottomSheet.show(
         context,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -100,7 +100,7 @@ class _TransferCardState extends State<TransferCard> {
                       title: 'Escolha uma senha de 4 dígitos',
                       autoSubmitOnComplete: false,
                       onCompleted: (transferPassword) {
-                        _transactionViewModel.setTransferPassword(transferPassword);
+                        _transactionVM.setTransferPassword(transferPassword);
                         Navigator.of(context).pop();
                         setState(() {});
                       },
@@ -124,7 +124,7 @@ class _TransferCardState extends State<TransferCard> {
     _amountTextEditingController.clear();
     FocusScope.of(context).unfocus();
     setState(() {
-      _transactionViewModel.showErrors = false;
+      _transactionVM.showErrors = false;
     });
   }
 
@@ -234,9 +234,9 @@ class _TransferCardState extends State<TransferCard> {
                             backgroundColor: AppColors.primary,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                           ),
-                          onPressed: _transactionViewModel.hasPassword
+                          onPressed: _transactionVM.hasPassword
                               ? () async {
-                                  _transactionViewModel.showErrors = true;
+                                  _transactionVM.showErrors = true;
                                   if (!_formKey.currentState!.validate()) return;
                                   FocusScope.of(context).unfocus();
 
@@ -246,8 +246,7 @@ class _TransferCardState extends State<TransferCard> {
                                     height: MediaQuery.of(context).size.height * 0.35,
                                     title: 'Insira sua senha de 4 dígitos',
                                     onCompleted: (pin) async {
-                                      if (await _accountViewModel.getUser() == null ||
-                                          _accountViewModel.account == null) {
+                                      if (await _accountVM.getUser() == null || _accountVM.account == null) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             content: Text('Usuário ou conta não encontrados.'),
@@ -262,7 +261,7 @@ class _TransferCardState extends State<TransferCard> {
                                       );
                                       final String toAccount = _toAccountTextEditingController.text;
 
-                                      final bool success = await _transactionViewModel.transferBetweenAccounts(
+                                      final bool success = await _transactionVM.transferBetweenAccounts(
                                         toAccount,
                                         amount,
                                         pin,
@@ -279,12 +278,11 @@ class _TransferCardState extends State<TransferCard> {
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                           ),
                                         );
+                                        _transactionVM.getTransactions();
                                       } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
-                                            content: Text(
-                                              _transactionViewModel.errorMessage ?? 'Erro na transferência',
-                                            ),
+                                            content: Text(_transactionVM.errorMessage ?? 'Erro na transferência'),
                                             backgroundColor: AppColors.redError,
                                             behavior: SnackBarBehavior.floating,
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

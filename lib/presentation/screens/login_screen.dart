@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _cpfFieldKey = GlobalKey<FormFieldState>();
   final FocusNode _cpfFocusNode = FocusNode();
-  final _authViewModel = sl.get<AuthViewModel>();
+  final _authVM = sl.get<AuthViewModel>();
   bool _isLoading = false;
   bool _obscurePassword = true;
   bool _isCpfMasked = false;
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    _authViewModel.addListener(_authListener);
+    _authVM.addListener(_authListener);
     _cpfFocusNode.addListener(() {
       if (!_cpfFocusNode.hasFocus) {
         _maskCpfIfComplete();
@@ -50,13 +50,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _authListener() {
     if (!mounted) return;
     setState(() {
-      _isLoading = _authViewModel.isLoading;
+      _isLoading = _authVM.isLoading;
     });
   }
 
   @override
   void dispose() {
-    _authViewModel.removeListener(_authListener);
+    _authVM.removeListener(_authListener);
     _cpfController.dispose();
     _passwordController.dispose();
     _cpfFocusNode.dispose();
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (!_formKey.currentState!.validate()) {
                                   return;
                                 }
-                                final success = await _authViewModel.login(_rawCpf, _passwordController.text);
+                                final success = await _authVM.login(_rawCpf, _passwordController.text);
 
                                 if (!context.mounted) return;
 
@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(_authViewModel.errorMessage ?? 'Erro de login'),
+                                      content: Text(_authVM.errorMessage ?? 'Erro de login'),
                                       backgroundColor: AppColors.redError,
                                     ),
                                   );

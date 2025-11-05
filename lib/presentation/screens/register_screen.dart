@@ -210,8 +210,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 16),
 
                     Consumer<AuthViewModel>(
-                      builder: (context, authViewModel, child) {
-                        return authViewModel.isLoading
+                      builder: (context, authVM, child) {
+                        return authVM.isLoading
                             ? const CircularProgressIndicator()
                             : SizedBox(
                                 width: double.infinity,
@@ -226,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       return;
                                     }
 
-                                    final userRequest = authViewModel.toUserRequest(
+                                    final userRequest = authVM.toUserRequest(
                                       _nameController.text,
                                       _rawCpf,
                                       _rawPhone,
@@ -234,14 +234,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       _passwordController.text,
                                     );
 
-                                    final success = await authViewModel.register(userRequest);
+                                    final success = await authVM.register(userRequest);
 
                                     if (!context.mounted) return;
 
                                     if (!success) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                          content: Text(authViewModel.errorMessage ?? 'Erro no cadastro'),
+                                          content: Text(authVM.errorMessage ?? 'Erro no cadastro'),
                                           backgroundColor: AppColors.redError,
                                         ),
                                       );

@@ -28,12 +28,12 @@ class _PixKeyCardState extends State<PixKeyCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, viewModel, child) {
-        if (viewModel.isLoading) {
+      builder: (context, transactionVM, child) {
+        if (transactionVM.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final pixKeys = viewModel.pixKeys;
+        final pixKeys = transactionVM.pixKeys;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

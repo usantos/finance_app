@@ -17,15 +17,15 @@ class BottomSheetEditProfile extends StatefulWidget {
 }
 
 class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
-  final _transactionViewModel = sl.get<TransactionViewModel>();
-  final _authViewModel = sl.get<AuthViewModel>();
-  final _accountViewModel = sl.get<AccountViewModel>();
+  final _transactionVM = sl.get<TransactionViewModel>();
+  final _authVM = sl.get<AuthViewModel>();
+  final _accountVM = sl.get<AccountViewModel>();
 
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authViewModel.checkCurrentUser();
+      _authVM.checkCurrentUser();
     });
   }
 
@@ -33,8 +33,8 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: _authViewModel),
-        ChangeNotifierProvider.value(value: _accountViewModel),
+        ChangeNotifierProvider.value(value: _authVM),
+        ChangeNotifierProvider.value(value: _accountVM),
       ],
       child: Consumer2<AuthViewModel, AccountViewModel>(
         builder: (context, authVM, accountVM, _) {
@@ -139,14 +139,14 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                         titleOld: "Senha de transferência atual",
                         titleNew: "Nova senha de transferência",
                         onCompleted: (oldTransferPassword, newTransferPassword) async {
-                          final success = await _transactionViewModel.changeTransferPassword(
+                          final success = await _transactionVM.changeTransferPassword(
                             oldTransferPassword,
                             newTransferPassword,
                           );
                           Flushbar(
                             message: success
                                 ? 'Senha alterada com sucesso'
-                                : (_transactionViewModel.errorMessage ?? 'Erro ao alterar senha'),
+                                : (_transactionVM.errorMessage ?? 'Erro ao alterar senha'),
                             duration: const Duration(seconds: 3),
                             backgroundColor: success ? AppColors.greenSuccess : AppColors.redError,
                             margin: const EdgeInsets.all(8),

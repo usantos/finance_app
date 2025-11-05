@@ -28,7 +28,7 @@ class _PayloadCardState extends State<PayloadCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, viewModel, _) {
+      builder: (context, transactionVM, _) {
         return Card(
           color: AppColors.white,
           margin: EdgeInsets.zero,
@@ -70,10 +70,10 @@ class _PayloadCardState extends State<PayloadCard> {
                       onPressed: () async {
                         if (!_formKey.currentState!.validate()) return;
 
-                        await viewModel.getQrCode(_payloadController.text);
+                        await transactionVM.getQrCode(_payloadController.text);
 
-                        if (viewModel.toQrCode.isNotEmpty) {
-                          final firstItem = viewModel.toQrCode.first!;
+                        if (transactionVM.toQrCode.isNotEmpty) {
+                          final firstItem = transactionVM.toQrCode.first!;
                           final nome = firstItem['name'] ?? '';
                           final amount = firstItem['amount']?.toString().toRealString() ?? '0';
                           final amountValue = firstItem['amount'] ?? 0;
@@ -85,11 +85,34 @@ class _PayloadCardState extends State<PayloadCard> {
                             height: MediaQuery.of(context).size.height * 0.45,
                             title: 'Deseja transferir $amount para $nome?',
                             onCompleted: (transferPassword) async {
-                              await viewModel.transferQrCode(toPayloadValue, amountValue, transferPassword);
+                              final bool success = await transactionVM.transferQrCode(
+                                toPayloadValue,
+                                amountValue,
+                                transferPassword,
+                              );
+                              if (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Pagamento realizado com sucesso!'),
+                                    backgroundColor: AppColors.greenSuccess,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                );
+                                transactionVM.getTransactions();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(transactionVM.errorMessage ?? 'Erro ao realizar pagamento'),
+                                    backgroundColor: AppColors.redError,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                );
+                              }
                             },
                           );
                         }
-
                         _payloadController.clear();
                         _payloadFocusNode.unfocus();
                       },

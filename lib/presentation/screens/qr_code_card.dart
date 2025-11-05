@@ -31,12 +31,12 @@ class _QrCodeCardState extends State<QrCodeCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
-      builder: (context, viewModel, _) {
-        if (viewModel.isLoading) {
+      builder: (context, transactionVM, _) {
+        if (transactionVM.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final qrCode = viewModel.qrCode;
+        final qrCode = transactionVM.qrCode;
         final qrString = qrCode != null ? jsonEncode(qrCode) : null;
 
         return Form(
@@ -75,14 +75,14 @@ class _QrCodeCardState extends State<QrCodeCard> {
                       StreamBuilder<Duration>(
                         stream: Stream.periodic(
                           const Duration(seconds: 1),
-                          (_) => viewModel.expiresAt!.difference(DateTime.now()),
+                          (_) => transactionVM.expiresAt!.difference(DateTime.now()),
                         ),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) return const SizedBox();
                           final remaining = snapshot.data!;
                           if (remaining.isNegative) {
                             final txid = qrCode['txid'];
-                            viewModel.deleteQrCode(txid);
+                            transactionVM.deleteQrCode(txid);
                             return const SizedBox();
                           }
 
@@ -107,7 +107,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final amount = BRLCurrencyInputFormatterExt.parse(_amountController.text);
-                            await viewModel.createQrCodePix(amount);
+                            await transactionVM.createQrCodePix(amount);
                           }
                         },
                         child: const Text('Gerar QR Code', style: TextStyle(color: AppColors.white)),
@@ -170,7 +170,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                                             ),
                                             onPressed: () async {
                                               final txid = qrCode['txid'] ?? '';
-                                              await viewModel.deleteQrCode(txid);
+                                              await transactionVM.deleteQrCode(txid);
                                               _amountController.clear();
                                               Navigator.pop(context);
                                             },

@@ -38,7 +38,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
     return ChangeNotifierProvider.value(
       value: _authViewModel,
       child: Consumer2<AuthViewModel, TransactionViewModel>(
-        builder: (context, authVM, transactionsVM, _) {
+        builder: (context, authVM, transactionVM, _) {
           if (_showSkeleton) {
             return Scaffold(
               backgroundColor: AppColors.white,
@@ -54,7 +54,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
               ),
             );
           }
-          final transactions = transactionsVM.transactionModels;
+          final transactions = transactionVM.transactionModels;
 
           return Scaffold(
             backgroundColor: AppColors.white,

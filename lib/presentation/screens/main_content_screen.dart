@@ -25,8 +25,11 @@ class _MainContentScreenState extends State<MainContentScreen> {
   @override
   void initState() {
     super.initState();
-    final transactionViewModel = Provider.of<TransactionViewModel>(context, listen: false);
-    transactionViewModel.getTransactions();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+      viewModel.getTransactions();
+    });
     _authViewModel.checkCurrentUser();
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) setState(() => _showSkeleton = false);

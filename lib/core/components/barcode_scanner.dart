@@ -22,8 +22,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         _isScanning = false;
         _controller.text = value;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Código detectado: $value')));
     }
   }
 
@@ -81,7 +79,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     const Text(
                       'Aponte a câmera para o código ou digite acima.',
                       style: TextStyle(color: AppColors.white),

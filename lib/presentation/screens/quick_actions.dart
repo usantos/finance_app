@@ -1,3 +1,4 @@
+import 'package:financial_app/core/components/barcode_scanner.dart';
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
@@ -25,18 +26,15 @@ class QuickActions extends StatelessWidget {
           icon: Icon(PhosphorIcons.barcode(), size: 30, color: AppColors.white),
           label: 'Pagar',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pagamento em breve!')));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const BarcodeScanner()));
           },
         ),
+
         _QuickActionButton(
           icon: Icon(PhosphorIcons.deviceMobile(), size: 30, color: AppColors.white),
           label: 'Recarga',
           onTap: () {
-            CustomBottomSheet.show(
-                context,
-                height: 390,
-                iconClose: true,
-                child: BottomSheetRechargePhone1());
+            CustomBottomSheet.show(context, height: 390, iconClose: true, child: BottomSheetRechargePhone1());
           },
         ),
       ],

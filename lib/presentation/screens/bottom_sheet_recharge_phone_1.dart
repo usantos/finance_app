@@ -84,15 +84,17 @@ class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
               ],
             ),
             if (_selectedIndex != null && _formKey.currentState!.validate())
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(onPressed: () {
-                CustomBottomSheet.show(
-                    context,
-                    height: 390,
-                    child: BottomSheetRechargePhone2());
-              }, icon: Icon(Icons.arrow_forward, color: AppColors.black)),
-            ) else const SizedBox.shrink(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    CustomBottomSheet.show(context, height: 390, child: BottomSheetRechargePhone2());
+                  },
+                  icon: Icon(Icons.arrow_forward, color: AppColors.black),
+                ),
+              )
+            else
+              const SizedBox.shrink(),
           ],
         ),
       ),

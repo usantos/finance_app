@@ -4,7 +4,7 @@ import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/home_screen.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-import 'bottom_sheet_recharge_phone.dart';
+import 'bottom_sheet_recharge_phone_1.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -34,9 +34,9 @@ class QuickActions extends StatelessWidget {
           onTap: () {
             CustomBottomSheet.show(
                 context,
-                height: MediaQuery.of(context).size.height * 0.45,
+                height: 390,
                 iconClose: true,
-                child: BottomSheetRechargePhone());
+                child: BottomSheetRechargePhone1());
           },
         ),
       ],

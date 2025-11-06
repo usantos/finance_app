@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CustomBottomSheet.show(
                           iconClose: false,
                           context,
-                          height: MediaQuery.of(context).size.height * 0.7,
+                          height: 550,
                           isDismissible: true,
                           enableDrag: false,
                           child: const BottomSheetEditProfile(),

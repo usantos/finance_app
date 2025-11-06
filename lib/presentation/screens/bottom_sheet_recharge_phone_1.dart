@@ -1,17 +1,20 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class BottomSheetRechargePhone extends StatefulWidget {
-  const BottomSheetRechargePhone({super.key});
+import 'bottom_sheet_recharge_phone_2.dart';
+
+class BottomSheetRechargePhone1 extends StatefulWidget {
+  const BottomSheetRechargePhone1({super.key});
 
   @override
-  State<BottomSheetRechargePhone> createState() => _BottomSheetRechargePhoneState();
+  State<BottomSheetRechargePhone1> createState() => _BottomSheetRechargePhone1State();
 }
 
-class _BottomSheetRechargePhoneState extends State<BottomSheetRechargePhone> {
+class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _phoneFocusNode = FocusNode();
@@ -70,20 +73,26 @@ class _BottomSheetRechargePhoneState extends State<BottomSheetRechargePhone> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [_buildOperatorItem(0), _buildOperatorItem(2)],
+                  children: [_buildOperatorItem(0), _buildOperatorItem(1)],
                 ),
                 const SizedBox(width: 60),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [_buildOperatorItem(1), _buildOperatorItem(3)],
+                  children: [_buildOperatorItem(2), _buildOperatorItem(3)],
                 ),
               ],
             ),
+            if (_selectedIndex != null && _formKey.currentState!.validate())
             Align(
               alignment: Alignment.centerRight,
-              child: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_forward)),
-            ),
+              child: IconButton(onPressed: () {
+                CustomBottomSheet.show(
+                    context,
+                    height: 390,
+                    child: BottomSheetRechargePhone2());
+              }, icon: Icon(Icons.arrow_forward, color: AppColors.black)),
+            ) else const SizedBox.shrink(),
           ],
         ),
       ),

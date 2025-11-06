@@ -70,7 +70,7 @@ class DoublePinBottomSheet {
       isDismissible: isDismissible,
       enableDrag: enableDrag,
       iconClose: false,
-      height: MediaQuery.of(context).size.height * 0.73,
+      height: 570,
       width: width ?? MediaQuery.of(context).size.width,
       child: AnimatedSize(
         duration: const Duration(milliseconds: 200),

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:financial_app/domain/model/transaction_model.dart';
+import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -10,8 +11,11 @@ import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart
 
 class StatementShare {
   static Future<void> captureAndSharePdf(BuildContext context) async {
-    final transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
-    final transactions = transactionVM.transactionModels;
+    final _transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
+    final _accountVM = Provider.of<AccountViewModel>(context, listen: false);
+
+    final transactions = _transactionVM.transactionModels;
+    final amount = _accountVM.account?.balance;
 
     if (transactions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Nenhuma transação para exportar.')));
@@ -33,7 +37,7 @@ class StatementShare {
       }
     }
 
-    final balance = totalCredit - totalDebit;
+
 
     pdf.addPage(
       pw.MultiPage(
@@ -61,11 +65,11 @@ class StatementShare {
               ),
               pw.SizedBox(height: 6),
               pw.Text(
-                'Saldo Atual: ${formatter.format(balance)}',
+                'Saldo Atual: ${formatter.format(amount)}',
                 style: pw.TextStyle(
                   fontSize: 10,
                   fontWeight: pw.FontWeight.bold,
-                  color: balance >= 0 ? PdfColors.green800 : PdfColors.red800,
+                  color: amount! >= 0 ? PdfColors.green800 : PdfColors.red800,
                 ),
               ),
               pw.SizedBox(height: 8),

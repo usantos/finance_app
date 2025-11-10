@@ -34,10 +34,6 @@ class _CreditCardState extends State<CreditCard> {
             bannerColor = AppColors.orangeAccent;
             bannerText = 'BLOQUEADO TEMPORARIAMENTE';
             break;
-          case 'BLOCKED_PRV':
-            bannerColor = AppColors.blueAccent;
-            bannerText = 'BLOQUEIO PREVENTIVO ATIVO';
-            break;
         }
 
         return Stack(

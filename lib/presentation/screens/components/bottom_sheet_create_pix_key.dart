@@ -51,6 +51,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
     String? footerDescription,
     TextEditingController? controller,
     Widget? body,
+    required String method,
   }) {
     Navigator.pop(context);
     Navigator.push(
@@ -74,6 +75,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   return null;
                 },
               ),
+          method: method,
         ),
       ),
     );
@@ -116,6 +118,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                           keyboardType: TextInputType.phone,
                           validator: Utils.validatePhone,
                         ),
+                        method: 'Create Pix',
                       );
                     },
                     icon: const Icon(Icons.add, color: AppColors.black, size: 25),
@@ -148,6 +151,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                           keyboardType: TextInputType.number,
                           validator: Utils.validateCpf,
                         ),
+                        method: 'Create Pix',
                       );
                     },
                     icon: const Icon(Icons.add, color: AppColors.black, size: 25),
@@ -180,6 +184,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                           keyboardType: TextInputType.emailAddress,
                           validator: Utils.validateEmail,
                         ),
+                        method: 'Create Pix',
                       );
                     },
                     icon: const Icon(Icons.add, color: AppColors.black, size: 25),
@@ -221,6 +226,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                             ],
                           ),
                         ),
+                        method: 'Create Pix',
                       );
                     },
                     icon: const Icon(Icons.add, color: AppColors.black, size: 25),

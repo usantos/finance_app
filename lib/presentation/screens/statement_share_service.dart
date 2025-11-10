@@ -37,8 +37,6 @@ class StatementShare {
       }
     }
 
-
-
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,

@@ -1,3 +1,4 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/components/skeleton.dart';
@@ -6,6 +7,7 @@ import 'package:financial_app/presentation/screens/credit_limit_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'bottom_sheet_block_credit_card.dart';
 import 'components/custom_appbar.dart';
 
 class CreditCardScreen extends StatefulWidget {
@@ -84,18 +86,15 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                             blockType == "ACTIVE"
                                 ? Expanded(
                                     child: OutlinedButton.icon(
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (_) => const Center(child: CircularProgressIndicator()),
+                                      onPressed: () {
+                                        CustomBottomSheet.show(
+                                          iconClose: true,
+                                          context,
+                                          width: MediaQuery.of(context).size.width,
+                                          isDismissible: true,
+                                          enableDrag: false,
+                                          child: const BottomSheetBlockCreditCard(),
                                         );
-
-                                        await transactionVM.updateBlockType("BLOCKED");
-                                        await Future.delayed(const Duration(seconds: 2));
-                                        await transactionVM.getCreditCardByAccountId();
-
-                                        if (context.mounted) Navigator.pop(context);
                                       },
                                       icon: const Icon(Icons.lock_outline, color: AppColors.black),
                                       label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
@@ -108,19 +107,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                   )
                                 : Expanded(
                                     child: OutlinedButton.icon(
-                                      onPressed: () async {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (_) => const Center(child: CircularProgressIndicator()),
-                                        );
-
-                                        await transactionVM.updateBlockType("ACTIVE");
-                                        await Future.delayed(const Duration(seconds: 2));
-                                        await transactionVM.getCreditCardByAccountId();
-
-                                        if (context.mounted) Navigator.pop(context);
-                                      },
+                                      onPressed: () {},
                                       icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
                                       label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
                                       style: OutlinedButton.styleFrom(

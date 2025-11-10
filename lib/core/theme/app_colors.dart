@@ -16,4 +16,7 @@ class AppColors {
   static const Color greenShade50 = Color(0xFFE8F5E9);
   static const Color transparent = Color(0x00000000);
   static const Color greyBackground = Color(0xFFF2F2F2);
+  static const Color redAccent = Color(0xFFFF5252);
+  static const Color orangeAccent = Color(0xFFFFAB40);
+  static const Color blueAccent = Color(0xFF448AFF);
 }

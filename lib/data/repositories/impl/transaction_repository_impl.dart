@@ -106,4 +106,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<Map<String, dynamic>>> getTransactions(String accountId) {
     return remoteDataSource.getTransactions(accountId);
   }
+
+  @override
+  Future<Map<String, dynamic>> deleteCreditCard(String cardId) {
+    return remoteDataSource.deleteCreditCard(cardId);
+  }
 }

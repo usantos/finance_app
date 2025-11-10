@@ -534,4 +534,31 @@ class TransactionViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> deleteCreditCard() async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final cardId = creditCardModels?.id ?? '';
+      final result = await _transferUseCase.deleteCreditCard(cardId);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      _creditCard = [];
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
 }

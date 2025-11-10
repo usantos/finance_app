@@ -109,4 +109,8 @@ class TransferUseCase {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.getTransactions(fromAccount!.id);
   }
+
+  Future<Map<String, dynamic>> deleteCreditCard(String cardId) async {
+    return transactionRepository.deleteCreditCard(cardId);
+  }
 }

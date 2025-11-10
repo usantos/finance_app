@@ -399,7 +399,7 @@ class RealApi {
 
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
     try {
-      final response = await _dio.post('/creditCard/updateBlockType$cardId', data: {'blockType': blockType});
+      final response = await _dio.post('/creditCard/updateBlockType/$cardId', data: {'blockType': blockType});
 
       return response.data;
     } catch (e) {
@@ -423,6 +423,24 @@ class RealApi {
     } catch (e) {
       debugPrint('Erro ao buscar transações: $e');
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteCreditCard(String cardId) async {
+    try {
+      final response = await _dio.delete('/creditCard/deleteCreditCard/$cardId');
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao deletar cartão',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao deletar cartão: $e'};
     }
   }
 }

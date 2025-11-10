@@ -43,13 +43,6 @@ class _PixKeyCardState extends State<PixKeyCard> {
                   'Suas chaves PIX',
                   style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
                 ),
-                const Spacer(),
-                /* InkWell(
-                  onTap: () {
-                    viewModel.getPixKeys();
-                  },
-                  child: const Icon(Icons.refresh, color: AppColors.black),
-                ), */
               ],
             ),
             const SizedBox(height: 10),

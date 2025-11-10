@@ -50,4 +50,6 @@ abstract class TransactionRepository {
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType);
 
   Future<List<Map<String, dynamic>>> getTransactions(String accountId);
+
+  Future<Map<String, dynamic>> deleteCreditCard(String cardId);
 }

@@ -106,7 +106,6 @@ class _TemplateScreenState extends State<TemplateScreen> {
                           )
                         : Row(
                             children: [
-                              // BOTÃO CANCELAR
                               Expanded(
                                 child: SizedBox(
                                   height: 48,
@@ -116,7 +115,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                     ),
                                     onPressed: () {
-                                      Navigator.pop(context); // fecha o modal
+                                      Navigator.pop(context);
                                     },
                                     child: const Text(
                                       'Cancelar',
@@ -126,8 +125,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
                                 ),
                               ),
 
-                              const SizedBox(width: 12), // espaçamento entre os botões
-                              // BOTÃO CONFIRMAR
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: SizedBox(
                                   height: 48,

@@ -83,40 +83,86 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           children: [
-                            blockType == "ACTIVE"
-                                ? Expanded(
-                                    child: OutlinedButton.icon(
-                                      onPressed: () {
-                                        CustomBottomSheet.show(
-                                          iconClose: true,
-                                          context,
-                                          width: MediaQuery.of(context).size.width,
-                                          isDismissible: true,
-                                          enableDrag: false,
-                                          child: const BottomSheetBlockCreditCard(),
-                                        );
-                                      },
-                                      icon: const Icon(Icons.lock_outline, color: AppColors.black),
-                                      label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
-                                      style: OutlinedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(vertical: 12),
-                                        side: const BorderSide(color: AppColors.grey),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                      ),
-                                    ),
-                                  )
-                                : Expanded(
-                                    child: OutlinedButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
-                                      label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
-                                      style: OutlinedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(vertical: 12),
-                                        side: const BorderSide(color: AppColors.grey),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                      ),
-                                    ),
+                            if (blockType == "ACTIVE") ...[
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: () {
+                                    CustomBottomSheet.show(
+                                      iconClose: true,
+                                      context,
+                                      width: MediaQuery.of(context).size.width,
+                                      isDismissible: true,
+                                      enableDrag: false,
+                                      child: const BottomSheetBlockCreditCard(),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
+                                  label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    side: const BorderSide(color: AppColors.grey),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                   ),
+                                ),
+                              ),
+                            ] else if (blockType == "BLOCKED_DEF") ...[
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: () {
+                                    PinBottomSheet.show(
+                                      autoSubmitOnComplete: false,
+                                      height: MediaQuery.of(context).size.height * 0.45,
+                                      context,
+                                      title: "Escolha uma senha de 4 dígitos para seu novo cartão",
+                                      onCompleted: (password) async {
+                                        showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (_) => const Center(child: CircularProgressIndicator()),
+                                        );
+                                        await transactionVM.deleteCreditCard();
+                                        await transactionVM.createCreditCard(password);
+                                        await Future.delayed(const Duration(seconds: 2));
+                                        await transactionVM.getCreditCardByAccountId();
+
+                                        if (context.mounted) Navigator.pop(context);
+                                      },
+                                    );
+                                  },
+                                  label: const Text('Pedir um novo cartão', style: TextStyle(color: AppColors.black)),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    side: const BorderSide(color: AppColors.grey),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                              ),
+                            ] else ...[
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (_) => const Center(child: CircularProgressIndicator()),
+                                    );
+
+                                    await transactionVM.updateBlockType("ACTIVE");
+                                    await Future.delayed(const Duration(seconds: 2));
+                                    await transactionVM.getCreditCardByAccountId();
+
+                                    if (context.mounted) Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.lock_outline, color: AppColors.black),
+                                  label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    side: const BorderSide(color: AppColors.grey),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                              ),
+                            ],
                             const SizedBox(width: 16),
                             Expanded(
                               child: OutlinedButton.icon(

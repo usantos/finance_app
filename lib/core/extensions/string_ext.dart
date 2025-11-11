@@ -176,4 +176,27 @@ extension StringExtension on String {
     if (digits.length != 16) return this;
     return '${digits.substring(0, 4)} **** **** ${digits.substring(12, 16)}';
   }
+
+  String toCreditCardName() {
+    final ignored = {'de', 'da', 'do', 'das', 'dos'};
+    final parts = trim().split(RegExp(r'\s+')).map((e) => e.toLowerCase()).toList();
+    if (parts.isEmpty) return '';
+
+    if (parts.length == 1) return parts.first.toUpperCase();
+
+    final filtered = <String>[];
+    for (var i = 0; i < parts.length; i++) {
+      final e = parts[i];
+      if (i == 0 || i == parts.length - 1 || !ignored.contains(e)) {
+        filtered.add(e);
+      }
+    }
+
+    final first = filtered.first.toUpperCase();
+    final last = filtered.last.toUpperCase();
+
+    final middleInitials = filtered.sublist(1, filtered.length - 1).map((n) => ' ${n[0].toUpperCase()}').join();
+
+    return '$first$middleInitials $last';
+  }
 }

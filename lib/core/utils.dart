@@ -1,7 +1,6 @@
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'extensions/brl_currency_input_formatter_ext.dart';
 
 class Utils {
@@ -166,4 +165,5 @@ class Utils {
       SnackBar(content: Text(snackbarText), duration: const Duration(seconds: 2), behavior: SnackBarBehavior.floating),
     );
   }
+
 }

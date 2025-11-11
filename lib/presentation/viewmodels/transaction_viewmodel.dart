@@ -43,6 +43,9 @@ class TransactionViewModel extends ChangeNotifier {
   Map<String, dynamic>? qrCode;
   DateTime? expiresAt;
   Timer? _qrCodeTimer;
+  bool _showCardDetails = true;
+  bool get showCardDetails => _showCardDetails;
+
 
   CreditCardModel? get creditCardModels {
     if (_creditCard.isEmpty) return null;
@@ -59,6 +62,16 @@ class TransactionViewModel extends ChangeNotifier {
       debugPrint('Erro ao converter transações: $e');
       return [];
     }
+  }
+
+  void toggleCardDetails() {
+    _showCardDetails = !_showCardDetails;
+    notifyListeners();
+  }
+
+  void setCardDetailsVisibility(bool value) {
+    _showCardDetails = value;
+    notifyListeners();
   }
 
   List<Transaction> get transactionLastWeekModels {

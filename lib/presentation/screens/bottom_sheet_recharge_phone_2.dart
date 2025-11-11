@@ -56,11 +56,7 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Saldo:",
-                    style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 14),
                   Text(
                     accountViewModel.displayBalance,
                     style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),

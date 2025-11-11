@@ -1,14 +1,18 @@
+
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/presentation/screens/components/skeleton.dart';
+import 'package:financial_app/presentation/screens/bottom_sheet_adjuste_limit.dart';
+import 'package:financial_app/presentation/screens/bottom_sheet_block_credit_card.dart';
 import 'package:financial_app/presentation/screens/credit_card_.dart';
 import 'package:financial_app/presentation/screens/credit_limit_card.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'bottom_sheet_block_credit_card.dart';
+
 import 'components/custom_appbar.dart';
+import 'components/skeleton.dart';
 
 class CreditCardScreen extends StatefulWidget {
   const CreditCardScreen({super.key, required this.title, required this.description});
@@ -20,6 +24,7 @@ class CreditCardScreen extends StatefulWidget {
 }
 
 class _CreditCardScreenState extends State<CreditCardScreen> {
+
   bool _showSkeleton = true;
 
   @override
@@ -53,6 +58,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
             ),
           );
         }
+
         final creditCard = transactionVM.creditCardModels;
         final blockType = creditCard?.blockType;
 
@@ -166,7 +172,13 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                             const SizedBox(width: 16),
                             Expanded(
                               child: OutlinedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  CustomBottomSheet.show(
+                                    iconClose: true,
+                                    context,
+                                    child: const BottomSheetAdjustLimit(),
+                                  );
+                                },
                                 icon: const Icon(Icons.settings_outlined, color: AppColors.black),
                                 label: const Text('Configurar', style: TextStyle(color: AppColors.black)),
                                 style: OutlinedButton.styleFrom(

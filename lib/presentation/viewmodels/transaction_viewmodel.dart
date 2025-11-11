@@ -43,7 +43,7 @@ class TransactionViewModel extends ChangeNotifier {
   Map<String, dynamic>? qrCode;
   DateTime? expiresAt;
   Timer? _qrCodeTimer;
-  bool _showCardDetails = true;
+  bool _showCardDetails = false;
   bool get showCardDetails => _showCardDetails;
 
 

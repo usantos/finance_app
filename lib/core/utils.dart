@@ -165,5 +165,4 @@ class Utils {
       SnackBar(content: Text(snackbarText), duration: const Duration(seconds: 2), behavior: SnackBarBehavior.floating),
     );
   }
-
 }

@@ -1,5 +1,8 @@
+import 'package:financial_app/core/components/pin_bottom_sheet.dart';
+import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
+import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +14,7 @@ class BottomSheetRechargePhone2 extends StatefulWidget {
 }
 
 class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
+  final _transactionVM = sl.get<TransactionViewModel>();
   int? _selectedIndex;
   final List<String> _values = ["R\$20,00", "R\$30,00", "R\$50,00", "R\$100,00"];
 
@@ -51,48 +55,79 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
               ),
               SizedBox(height: 16),
               Text("Seu saldo", style: TextStyle(color: AppColors.black, fontSize: 18)),
-              SizedBox(height: 18),
+              SizedBox(height: 10),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(width: 14),
                   Text(
-                    accountViewModel.displayBalance,
+                    accountViewModel.balanceRecharge,
                     style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 10),
                   InkWell(
                     onTap: () {
                       setState(() {
-                        accountViewModel.toggleVisibility();
+                        accountViewModel.toggleVisibilityRecharge();
                       });
                     },
                     child: Icon(
-                      accountViewModel.isHidden ? Icons.visibility_off : Icons.visibility,
+                      accountViewModel.isHiddenRecharge ? Icons.visibility_off : Icons.visibility,
                       color: AppColors.black,
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 18),
               _selectedIndex == null
                   ? SizedBox()
-                  : Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Recarga de ${_values[_selectedIndex!]} efetuada com sucesso!'),
-                              backgroundColor: AppColors.greenSuccess,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            ),
+                  : SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        ),
+                        onPressed: () async {
+                          PinBottomSheet.show(
+                            context,
+                            autoSubmitOnComplete: false,
+                            height: 320,
+                            title: 'Insira sua senha de 4 dígitos',
+                            onCompleted: (transferPassword) async {
+                              final double value = double.parse(
+                                _values[_selectedIndex!].replaceAll('R\$', '').replaceAll(',', '.'),
+                              );
+
+                              final bool success = await _transactionVM.rechargePhone(transferPassword, value);
+
+                              if (success) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Recarga de ${_values[_selectedIndex!]} efetuada com sucesso!'),
+                                    backgroundColor: AppColors.greenSuccess,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(_transactionVM.errorMessage ?? 'Erro ao realizar recarga'),
+                                    backgroundColor: AppColors.redError,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                );
+                              }
+                            },
                           );
                         },
-                        icon: Icon(Icons.arrow_forward, color: AppColors.black),
+                        child: Text('Confirmar', style: TextStyle(color: AppColors.white)),
                       ),
                     ),
             ],

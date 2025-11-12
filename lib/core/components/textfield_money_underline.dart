@@ -98,20 +98,15 @@ class MonetaryInputFieldState extends State<TextFieldMoneyUnderline> {
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       decoration: const InputDecoration(
-        errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary),
-        ),
+        errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
+        focusedErrorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
         counterText: '',
         hintText: r'R$ 0,00',
         hintStyle: TextStyle(color: AppColors.primary),
         border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
       ),
-      style: TextStyle(
-          fontSize: widget.fontSize, fontWeight: FontWeight.w800, color: _textColor),
+      style: TextStyle(fontSize: widget.fontSize, fontWeight: FontWeight.w800, color: _textColor),
     );
   }
 

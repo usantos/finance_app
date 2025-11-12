@@ -111,4 +111,9 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
   Future<Map<String, dynamic>> deleteCreditCard(String cardId) async {
     return await realApi.deleteCreditCard(cardId);
   }
+
+  @override
+  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, String transferPassword, double value) async {
+    return await realApi.rechargePhone(fromAccountNumber, transferPassword, value);
+  }
 }

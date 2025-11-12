@@ -443,4 +443,25 @@ class RealApi {
       return {"success": false, "message": 'Erro inesperado ao deletar cartão: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> rechargePhone(String accountId, String transferPassword, double value) async {
+    try {
+      final response = await _dio.post(
+        '/transfers/rechargePhone',
+        data: {'accountId': accountId, 'transferPassword': transferPassword, 'value': value},
+      );
+
+      if (response.statusCode == 200) {
+        return {"success": true, "message": response.data};
+      } else {
+        return {
+          "success": false,
+          "code": response.data['code'],
+          "message": response.data['error'] ?? 'Erro desconhecido ao realizar a recarga',
+        };
+      }
+    } catch (e) {
+      return {"success": false, "message": 'Erro inesperado ao realizar a recarga: $e'};
+    }
+  }
 }

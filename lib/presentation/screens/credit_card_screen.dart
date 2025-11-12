@@ -1,4 +1,3 @@
-
 import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
@@ -24,7 +23,6 @@ class CreditCardScreen extends StatefulWidget {
 }
 
 class _CreditCardScreenState extends State<CreditCardScreen> {
-
   bool _showSkeleton = true;
 
   @override

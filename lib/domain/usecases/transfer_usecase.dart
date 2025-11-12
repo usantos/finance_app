@@ -113,4 +113,9 @@ class TransferUseCase {
   Future<Map<String, dynamic>> deleteCreditCard(String cardId) async {
     return transactionRepository.deleteCreditCard(cardId);
   }
+
+  Future<Map<String, dynamic>> rechargePhone(String transferPassword, double value) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.rechargePhone(fromAccount!.id, transferPassword, value);
+  }
 }

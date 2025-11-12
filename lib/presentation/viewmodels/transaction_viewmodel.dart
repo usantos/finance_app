@@ -46,7 +46,6 @@ class TransactionViewModel extends ChangeNotifier {
   bool _showCardDetails = false;
   bool get showCardDetails => _showCardDetails;
 
-
   CreditCardModel? get creditCardModels {
     if (_creditCard.isEmpty) return null;
 
@@ -565,6 +564,36 @@ class TransactionViewModel extends ChangeNotifier {
         return false;
       }
       _creditCard = [];
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> rechargePhone(String transferPassword, double value) async {
+    _isLoading = true;
+    _errorMessage = null;
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.rechargePhone(transferPassword, value);
+
+      _isLoading = false;
+
+      if (!(result['success'] ?? false)) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        await refreshAccountBalance();
+        notifyListeners();
+        return false;
+      }
+
+      await refreshAccountBalance();
       notifyListeners();
       return true;
     } catch (e) {

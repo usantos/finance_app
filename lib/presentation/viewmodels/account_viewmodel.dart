@@ -14,6 +14,9 @@ class AccountViewModel extends ChangeNotifier {
   bool _isHidden = true;
   bool get isHidden => _isHidden;
 
+  bool _isHiddenRecharge = true;
+  bool get isHiddenRecharge => _isHiddenRecharge;
+
   @visibleForTesting
   void setAccount(Account? account) {
     _account = account;
@@ -55,6 +58,16 @@ class AccountViewModel extends ChangeNotifier {
   void toggleVisibility() {
     _isHidden = !_isHidden;
     notifyListeners();
+  }
+
+  void toggleVisibilityRecharge() {
+    _isHiddenRecharge = !_isHiddenRecharge;
+    notifyListeners();
+  }
+
+  String get balanceRecharge {
+    if (_isHiddenRecharge) return '••••••';
+    return _balance;
   }
 
   String get displayBalance {

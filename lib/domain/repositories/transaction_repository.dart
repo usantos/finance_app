@@ -52,4 +52,6 @@ abstract class TransactionRepository {
   Future<List<Map<String, dynamic>>> getTransactions(String accountId);
 
   Future<Map<String, dynamic>> deleteCreditCard(String cardId);
+
+  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, String transferPassword, double value);
 }

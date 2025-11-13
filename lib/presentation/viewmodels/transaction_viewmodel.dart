@@ -116,7 +116,6 @@ class TransactionViewModel extends ChangeNotifier {
         return false;
       }
       await refreshAccountBalance();
-      await getTransactions();
       notifyListeners();
       return true;
     } catch (e) {
@@ -192,6 +191,31 @@ class TransactionViewModel extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _hasPassword = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> validateTransferPassword(String transferPassword) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _transferUseCase.validateTransferPassword(transferPassword);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
       _errorMessage = e.toString();
       notifyListeners();
       return false;
@@ -302,14 +326,14 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> transferPix(String toPixKeyValue, double amount, String transferPassword) async {
+  Future<bool> transferPix(String toPixKeyValue, double amount) async {
     _isLoading = true;
     _errorMessage = null;
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.transferPix(toPixKeyValue, amount, transferPassword);
+      final result = await _transferUseCase.transferPix(toPixKeyValue, amount);
 
       _isLoading = false;
 
@@ -322,7 +346,6 @@ class TransactionViewModel extends ChangeNotifier {
       }
 
       await refreshAccountBalance();
-      await getTransactions();
       notifyListeners();
       return true;
     } catch (e) {

@@ -36,6 +36,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
+  Future<Map<String, dynamic>> validateTransferPassword(String accountId, String transferPassword) {
+    return remoteDataSource.validateTransferPassword(accountId, transferPassword);
+  }
+
+  @override
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) {
     return remoteDataSource.createPixKey(accountId, keyType, keyValue);
   }
@@ -51,14 +56,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> transferPix(
-    String fromAccountId,
-    String toPixKeyValue,
-    double amount,
-    String transferPassword,
-    String userId,
-  ) {
-    return remoteDataSource.transferPix(fromAccountId, toPixKeyValue, amount, transferPassword, userId);
+  Future<Map<String, dynamic>> transferPix(String fromAccountId, String toPixKeyValue, double amount, String userId) {
+    return remoteDataSource.transferPix(fromAccountId, toPixKeyValue, amount, userId);
   }
 
   @override

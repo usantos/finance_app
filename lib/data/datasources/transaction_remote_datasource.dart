@@ -10,6 +10,8 @@ abstract class TransactionRemoteDataSource {
 
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword);
 
+  Future<Map<String, dynamic>> validateTransferPassword(String accountId, String transferPassword);
+
   Future<Map<String, dynamic>> changeTransferPassword(
     String accountNumber,
     String oldTransferPassword,
@@ -22,13 +24,7 @@ abstract class TransactionRemoteDataSource {
 
   Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue);
 
-  Future<Map<String, dynamic>> transferPix(
-    String fromAccountId,
-    String toPixKeyValue,
-    double amount,
-    String transferPassword,
-    String userId,
-  );
+  Future<Map<String, dynamic>> transferPix(String fromAccountId, String toPixKeyValue, double amount, String userId);
 
   Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId);
 

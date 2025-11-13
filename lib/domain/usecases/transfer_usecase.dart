@@ -31,6 +31,11 @@ class TransferUseCase {
     return transactionRepository.setTransferPassword(fromAccount!.accountNumber, transferPassword);
   }
 
+  Future<Map<String, dynamic>> validateTransferPassword(String transferPassword) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.validateTransferPassword(fromAccount!.id, transferPassword);
+  }
+
   Future<Map<String, dynamic>> changeTransferPassword(String oldTransferPassword, String newTransferPassword) async {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.changeTransferPassword(
@@ -55,15 +60,9 @@ class TransferUseCase {
     return transactionRepository.deletePixKey(keyType, keyValue);
   }
 
-  Future<Map<String, dynamic>> transferPix(String toPixKeyValue, double amount, String transferPassword) async {
+  Future<Map<String, dynamic>> transferPix(String toPixKeyValue, double amount) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.transferPix(
-      fromAccount!.id,
-      toPixKeyValue,
-      amount,
-      transferPassword,
-      fromAccount.userId,
-    );
+    return transactionRepository.transferPix(fromAccount!.id, toPixKeyValue, amount, fromAccount.userId);
   }
 
   Future<Map<String, dynamic>> createQrCodePix(double amount) async {

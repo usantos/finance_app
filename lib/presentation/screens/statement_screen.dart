@@ -26,6 +26,10 @@ class _StatementScreenState extends State<StatementScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
+      viewModel.getTransactions();
+    });
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {

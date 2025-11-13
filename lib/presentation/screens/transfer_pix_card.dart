@@ -3,6 +3,7 @@ import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -250,12 +251,9 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                       _transactionVM.showErrors = true;
                                     });
 
-                                    PinBottomSheet.show(
-                                      context,
-                                      autoSubmitOnComplete: false,
-                                      height: MediaQuery.of(context).size.height * 0.42,
-                                      title: 'Insira sua senha de 4 dígitos',
-                                      onCompleted: (transferPassword) async {
+                                    await TransferPasswordService.showAndHandle(
+                                      context: context,
+                                      onSuccess: () async {
                                         final double amount = BRLCurrencyInputFormatterExt.parse(
                                           _amountTextEditingController.text,
                                         );
@@ -264,26 +262,9 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                           '',
                                         );
 
-                                        final bool success = await _transactionVM.transferPix(
-                                          toPixKeyValue,
-                                          amount,
-                                          transferPassword,
-                                        );
+                                        final bool success = await _transactionVM.transferPix(toPixKeyValue, amount);
 
-                                        if (mounted) {
-                                          _resetForm();
-                                        }
-
-                                        if (success) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(
-                                              content: const Text('Pix realizada com sucesso!'),
-                                              backgroundColor: AppColors.greenSuccess,
-                                              behavior: SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                            ),
-                                          );
-                                        } else {
+                                        if (!success) {
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(
                                               content: Text(_transactionVM.errorMessage ?? 'Erro ao realizar o Pix'),
@@ -292,7 +273,23 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                             ),
                                           );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: const Text('Pix realizado com sucesso!'),
+                                              backgroundColor: AppColors.greenSuccess,
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          );
                                         }
+
+                                        if (mounted) {
+                                          _resetForm();
+                                        }
+                                      },
+                                      onError: (message) {
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
                                       },
                                     );
                                   } else {

@@ -110,6 +110,20 @@ class RealApi {
     }
   }
 
+  Future<Map<String, dynamic>> validateTransferPassword(String accountId, String transferPassword) async {
+    try {
+      final response = await _dio.post(
+        '/transfers/validate_transfer_password',
+        options: Options(validateStatus: (status) => true),
+        data: {'accountId': accountId, 'transferPassword': transferPassword},
+      );
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro ao validar senha de transferência: $e');
+      return {"success": false, "message": "Erro ao validar senha de transferência"};
+    }
+  }
+
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword) async {
     try {
       final response = await _dio.post(
@@ -227,18 +241,12 @@ class RealApi {
     String fromAccountId,
     String toPixKeyValue,
     double amount,
-    String transferPassword,
     String userId,
   ) async {
     try {
       final response = await _dio.post(
         '/pix/transferPix',
-        data: {
-          'fromAccountId': fromAccountId,
-          'toPixKeyValue': toPixKeyValue,
-          'amount': amount,
-          'transferPassword': transferPassword,
-        },
+        data: {'fromAccountId': fromAccountId, 'toPixKeyValue': toPixKeyValue, 'amount': amount},
       );
 
       return response.data;

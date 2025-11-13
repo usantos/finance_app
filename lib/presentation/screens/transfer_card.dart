@@ -278,7 +278,6 @@ class _TransferCardState extends State<TransferCard> {
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                           ),
                                         );
-                                        _transactionVM.getTransactions();
                                       } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(

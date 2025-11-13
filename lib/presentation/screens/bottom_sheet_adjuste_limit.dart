@@ -1,3 +1,4 @@
+import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/components/textfield_money_underline.dart';
 import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
@@ -21,7 +22,7 @@ class _BottomSheetAdjustLimitState extends State<BottomSheetAdjustLimit> {
   Widget build(BuildContext context) {
     return Consumer<TransactionViewModel>(
       builder: (context, transactionVM, _) {
-        final double? creditCardAvailable = transactionVM.creditCardModels?.creditCardAvailable;
+        final double? creditCardAvailable = transactionVM.creditCardModels?.creditCardLimit;
         final double? creditCardUsed = transactionVM.creditCardModels?.creditCardUsed;
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -61,7 +62,51 @@ class _BottomSheetAdjustLimitState extends State<BottomSheetAdjustLimit> {
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                 ),
-                onPressed: _enableAction ? () async {} : null,
+                onPressed: _enableAction
+                    ? () async {
+                        PinBottomSheet.show(
+                          context,
+                          autoSubmitOnComplete: false,
+                          height: 320,
+                          title: 'Insira sua senha de 4 dígitos',
+                          onCompleted: (transferPassword) async {
+                            final newLimit = _transactionValue;
+
+                            final bool success = await transactionVM.adjustLimit(newLimit!, transferPassword);
+
+                            if (success) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (_) => const Center(child: CircularProgressIndicator()),
+                              );
+                              await transactionVM.getCreditCardByAccountId();
+                              await Future.delayed(const Duration(seconds: 2));
+                              if (context.mounted) Navigator.pop(context);
+                              Navigator.pop(context);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Limite ajustado com sucesso!'),
+                                  backgroundColor: AppColors.greenSuccess,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(transactionVM.errorMessage ?? 'Erro ao ajustar limite'),
+                                  backgroundColor: AppColors.redError,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      }
+                    : null,
                 child: const Text('Confirmar', style: TextStyle(color: AppColors.white)),
               ),
             ),

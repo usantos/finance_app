@@ -22,15 +22,12 @@ class RealApi {
   Future<Map<String, dynamic>?> login(String cpf, String password) async {
     try {
       final response = await _dio.post('/users/login', data: {'cpf': cpf, 'password': password});
-
       if (response.data != null && response.data is Map<String, dynamic>) {
         if (response.data['token'] != null) {
           _token = response.data['token'];
         }
-        return response.data;
       }
-      debugPrint('Resposta inesperada do servidor: ${response.data}');
-      return null;
+      return response.data;
     } catch (e) {
       debugPrint('Erro no login: $e');
       return null;
@@ -106,12 +103,10 @@ class RealApi {
         options: Options(validateStatus: (status) => true),
         data: {'accountNumber': accountNumber},
       );
-      return {
-        "success": response.data['success'] ?? false,
-        "message": response.data['message'] ?? 'Senha de transferência válida',
-      };
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao realizar validação: $e'};
+      debugPrint('Erro ao verificar senha de transferência: $e');
+      return {"success": false, "message": "Erro ao verificar senha de transferência"};
     }
   }
 
@@ -123,16 +118,10 @@ class RealApi {
         data: {'accountNumber': accountNumber, 'transferPassword': transferPassword},
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data['message'] ?? 'Senha de transferência definida/atualizada'};
-      } else {
-        return {
-          "success": false,
-          "message": response.data['error'] ?? 'Erro desconhecido na definição/atualização da senha',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao criar senha: $e'};
+      debugPrint('Erro ao criar senha de transferência: $e');
+      return {"success": false, "message": "Erro ao criar senha de transferência"};
     }
   }
 
@@ -152,13 +141,10 @@ class RealApi {
         },
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data['message'] ?? 'Senha de transferência alterada com sucesso'};
-      } else {
-        return {"success": false, "message": response.data['error'] ?? 'Erro desconhecido ao alterar senha'};
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao alterar senha: $e'};
+      debugPrint('Erro ao trocar senha de transferência: $e');
+      return {"success": false, "message": "Erro ao trocar senha de transferência"};
     }
   }
 
@@ -230,17 +216,10 @@ class RealApi {
     try {
       final response = await _dio.delete('/pix/deletePixKey/$keyType/$keyValue');
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": Map<String, dynamic>.from(response.data)};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao deletar chave PIX',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao deletar chave PIX: $e'};
+      debugPrint('Erro ao deletar chave PIX: $e');
+      return {"success": false, "message": "Erro ao deletar chave PIX"};
     }
   }
 
@@ -262,17 +241,10 @@ class RealApi {
         },
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao realizar transferência PIX',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
+      debugPrint('Erro ao realizar transferência PIX: $e');
+      return {"success": false, "message": "Erro ao realizar transferência PIX"};
     }
   }
 
@@ -283,17 +255,10 @@ class RealApi {
         data: {'accountId': accountId, 'amount': amount, 'userId': userId, 'expiresInMinutes': 15},
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido na criaçao do QR Code',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao criar QR Code: $e'};
+      debugPrint('Erro ao criar QR Code PIX: $e');
+      return {"success": false, "message": "Erro ao criar QR Code PIX"};
     }
   }
 
@@ -301,17 +266,10 @@ class RealApi {
     try {
       final response = await _dio.delete('/pix/deleteQrCode/$txid');
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao deletar QR Code',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao deletar QR Code: $e'};
+      debugPrint('Erro ao deletar QR Code PIX: $e');
+      return {"success": false, "message": "Erro ao deletar QR Code PIX"};
     }
   }
 
@@ -351,17 +309,10 @@ class RealApi {
         },
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao realizar transferência PIX',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao realizar transferência PIX: $e'};
+      debugPrint('Erro ao realizar transferência via QR Code PIX: $e');
+      return {"success": false, "message": "Erro ao realizar transferência via QR Code PIX"};
     }
   }
 
@@ -430,17 +381,10 @@ class RealApi {
     try {
       final response = await _dio.delete('/creditCard/deleteCreditCard/$cardId');
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao deletar cartão',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao deletar cartão: $e'};
+      debugPrint('Erro ao deletar cartão de crédito: $e');
+      return {"success": false, "message": "Erro ao deletar cartão de crédito"};
     }
   }
 
@@ -451,17 +395,29 @@ class RealApi {
         data: {'accountId': accountId, 'transferPassword': transferPassword, 'value': value},
       );
 
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido ao realizar a recarga',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao realizar a recarga: $e'};
+      debugPrint('Erro ao realizar recarga: $e');
+      return {"success": false, "message": "Erro ao realizar recarga"};
+    }
+  }
+
+  Future<Map<String, dynamic>> adjustLimit(
+    String cardId,
+    String accountId,
+    double newLimitAvailable,
+    String transferPassword,
+  ) async {
+    try {
+      final response = await _dio.post(
+        '/creditCard/adjustLimit/$cardId',
+        data: {'accountId': accountId, 'newLimitAvailable': newLimitAvailable, 'transferPassword': transferPassword},
+      );
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro ao ajustar limite do cartão de crédito: $e');
+      return {"success": false, "message": "Erro ao ajustar limite do cartão de crédito"};
     }
   }
 }

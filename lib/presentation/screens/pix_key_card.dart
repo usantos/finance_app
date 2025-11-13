@@ -154,7 +154,11 @@ class _PixKeyCardState extends State<PixKeyCard> {
                               ),
                               onPressed: () async {
                                 if (keyType != null) {
-                                  keyValue = keyValue.replaceAll(RegExp(r'\D'), '');
+                                  if (keyType == 'Aleatoria') {
+                                    keyValue = keyValue;
+                                  } else {
+                                    keyValue = keyValue.replaceAll(RegExp(r'\D'), '');
+                                  }
                                   await _transactionViewModel.deletePixKey(keyType, keyValue);
                                   final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
                                   viewModel.getPixKeysByAccountId();

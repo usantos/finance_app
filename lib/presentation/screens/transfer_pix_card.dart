@@ -283,7 +283,6 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                             ),
                                           );
-                                          _transactionVM.getTransactions();
                                         } else {
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(

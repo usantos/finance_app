@@ -118,4 +118,9 @@ class TransferUseCase {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.rechargePhone(fromAccount!.id, transferPassword, value);
   }
+
+  Future<Map<String, dynamic>> adjustLimit(String cardId, double newLimitAvailable, String transferPassword) async {
+    final fromAccount = await accountLocalDataSource.getAccount();
+    return transactionRepository.adjustLimit(cardId, fromAccount!.id, newLimitAvailable, transferPassword);
+  }
 }

@@ -116,6 +116,7 @@ class TransactionViewModel extends ChangeNotifier {
         return false;
       }
       await refreshAccountBalance();
+      await getTransactions();
       notifyListeners();
       return true;
     } catch (e) {
@@ -149,17 +150,17 @@ class TransactionViewModel extends ChangeNotifier {
       final result = await _transferUseCase.verifyTransferPassword();
       _isLoading = false;
 
-      if (result['success'] == true) {
-        _hasPassword = true;
+      if (!result['success']) {
+        _hasPassword = false;
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
         notifyListeners();
-        return true;
+        return false;
       }
 
-      _hasPassword = false;
-      _errorMessage = result['message'];
-      _errorCode = result['code'];
+      _hasPassword = true;
       notifyListeners();
-      return false;
+      return true;
     } catch (e) {
       _isLoading = false;
       _hasPassword = false;
@@ -321,6 +322,7 @@ class TransactionViewModel extends ChangeNotifier {
       }
 
       await refreshAccountBalance();
+      await getTransactions();
       notifyListeners();
       return true;
     } catch (e) {
@@ -599,6 +601,36 @@ class TransactionViewModel extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> adjustLimit(double newLimitAvailable, String transferPassword) async {
+    _errorCode = null;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final cardId = creditCardModels?.id ?? '';
+      final result = await _transferUseCase.adjustLimit(cardId, newLimitAvailable, transferPassword);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+
+        notifyListeners();
+        return false;
+      }
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+
       notifyListeners();
       return false;
     }

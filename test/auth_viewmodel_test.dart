@@ -32,6 +32,7 @@ void main() {
   );
 
   final testUserResponse = UserResponse(
+    success: true,
     message: 'Login successful',
     token: 'dummy_token',
     user: testUser,

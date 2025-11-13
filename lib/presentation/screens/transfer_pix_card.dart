@@ -289,7 +289,13 @@ class _TransferPixCardState extends State<TransferPixCard> {
                                         }
                                       },
                                       onError: (message) {
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(message),
+                                            backgroundColor: AppColors.redError,
+                                            behavior: SnackBarBehavior.floating,
+                                          ),
+                                        );
                                       },
                                     );
                                   } else {

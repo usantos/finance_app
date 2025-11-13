@@ -41,7 +41,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserResponse?> getCurrentUser(String token) async {
     final userJson = await realApi.getCurrentUser();
     if (userJson != null) {
-      return UserResponse.fromJson(userJson);
+      return UserResponse.fromJson(userJson['user']);
     }
     return null;
   }

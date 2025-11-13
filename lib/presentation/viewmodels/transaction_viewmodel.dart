@@ -383,7 +383,7 @@ class TransactionViewModel extends ChangeNotifier {
 
     try {
       final response = await _transferUseCase.createQrCodePix(amount);
-      final data = response['message'];
+      final data = response['qrCode'];
 
       _isLoading = false;
       if (!(response['success'] ?? false)) {

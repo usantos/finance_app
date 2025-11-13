@@ -212,8 +212,8 @@ class RealApi {
     try {
       final response = await _dio.get('/pix/getPixKeysByAccountId/$accountId');
 
-      if (response.statusCode == 200 && response.data is List) {
-        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
+      if (response.statusCode == 200 && response.data['pixKeys'] is List) {
+        final data = (response.data['pixKeys'] as List).whereType<Map<String, dynamic>>().toList();
 
         return data;
       } else {
@@ -285,8 +285,8 @@ class RealApi {
     try {
       final response = await _dio.get('/pix/getQrCode/$payload');
 
-      if (response.statusCode == 200 && response.data is List) {
-        final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
+      if (response.statusCode == 200 && response.data['pixQr'] is List) {
+        final data = (response.data['pixQr'] as List).whereType<Map<String, dynamic>>().toList();
 
         return data;
       } else {

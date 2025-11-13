@@ -115,6 +115,8 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                                   ),
                                 );
                               } else {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(_transactionVM.errorMessage ?? 'Erro ao realizar recarga'),

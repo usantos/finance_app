@@ -80,12 +80,7 @@ class TransferUseCase {
 
   Future<Map<String, dynamic>> transferQrCode(String toPayloadValue, double amount) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.transferQrCode(
-      fromAccount!.id,
-      toPayloadValue,
-      amount,
-      fromAccount.userId,
-    );
+    return transactionRepository.transferQrCode(fromAccount!.id, toPayloadValue, amount, fromAccount.userId);
   }
 
   Future<Map<String, dynamic>> createCreditCard(String password) async {

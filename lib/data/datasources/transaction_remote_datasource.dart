@@ -1,9 +1,5 @@
 abstract class TransactionRemoteDataSource {
-  Future<Map<String, dynamic>> transferBetweenAccounts(
-    String fromAccountNumber,
-    String toAccountNumber,
-    double amount,
-  );
+  Future<Map<String, dynamic>> transferBetweenAccounts(String fromAccountNumber, String toAccountNumber, double amount);
 
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber);
 

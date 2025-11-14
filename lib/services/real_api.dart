@@ -171,11 +171,7 @@ class RealApi {
       final response = await _dio.post(
         '/transfers/transfer',
         options: Options(validateStatus: (status) => true),
-        data: {
-          'fromAccountNumber': fromAccountNumber,
-          'toAccountNumber': toAccountNumber,
-          'amount': amount,
-        },
+        data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber, 'amount': amount},
       );
 
       if (response.statusCode == 200) {
@@ -306,11 +302,7 @@ class RealApi {
     try {
       final response = await _dio.post(
         '/pix/transfer_qr_code',
-        data: {
-          'fromAccountId': fromAccountId,
-          'toPayloadValue': toPayloadValue,
-          'amount': amount,
-        },
+        data: {'fromAccountId': fromAccountId, 'toPayloadValue': toPayloadValue, 'amount': amount},
       );
 
       return response.data;

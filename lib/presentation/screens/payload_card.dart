@@ -85,10 +85,7 @@ class _PayloadCardState extends State<PayloadCard> {
                             height: MediaQuery.of(context).size.height * 0.45,
                             title: 'Deseja transferir $amount para $nome?',
                             onCompleted: (transferPassword) async {
-                              final bool success = await transactionVM.transferQrCode(
-                                toPayloadValue,
-                                amountValue,
-                              );
+                              final bool success = await transactionVM.transferQrCode(toPayloadValue, amountValue);
                               if (success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

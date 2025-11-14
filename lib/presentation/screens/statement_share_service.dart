@@ -86,15 +86,18 @@ class StatementShare {
                   children: [
                     pw.Expanded(
                       flex: 2,
-                      child: pw.Text(DateFormat("dd/MM/yyyy 'às' HH:mm").format(transactions[i].date), style: const pw.TextStyle(fontSize: 10)),
+                      child: pw.Text(
+                        DateFormat("dd/MM/yyyy 'às' HH:mm").format(transactions[i].date),
+                        style: const pw.TextStyle(fontSize: 10),
+                      ),
                     ),
-                        pw.Expanded(
-                          flex: 3,
-                          child: pw.Text(
-                            '${transactions[i].category} para \n${transactions[i].toAccountName ?? '-'}',
-                            style: const pw.TextStyle(fontSize: 10),
-                          ),
-                        ),
+                    pw.Expanded(
+                      flex: 3,
+                      child: pw.Text(
+                        '${transactions[i].category} para \n${transactions[i].toAccountName ?? '-'}',
+                        style: const pw.TextStyle(fontSize: 10),
+                      ),
+                    ),
                     pw.Expanded(
                       flex: 2,
                       child: pw.Text(

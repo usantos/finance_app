@@ -1,9 +1,5 @@
 abstract class TransactionRepository {
-  Future<Map<String, dynamic>> transferBetweenAccounts(
-    String fromAccountNumber,
-    String toAccountNumber,
-    double amount,
-  );
+  Future<Map<String, dynamic>> transferBetweenAccounts(String fromAccountNumber, String toAccountNumber, double amount);
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber);
 
   Future<Map<String, dynamic>> setTransferPassword(String accountNumber, String transferPassword);

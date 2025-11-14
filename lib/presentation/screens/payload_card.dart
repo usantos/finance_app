@@ -1,5 +1,5 @@
-import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -68,49 +68,72 @@ class _PayloadCardState extends State<PayloadCard> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                       ),
                       onPressed: () async {
-                        if (!_formKey.currentState!.validate()) return;
+                        FocusScope.of(context).unfocus();
 
-                        await transactionVM.getQrCode(_payloadController.text);
+                        if (_formKey.currentState?.validate() ?? false) {
+                          setState(() {
+                            transactionVM.showErrors = true;
+                          });
 
-                        if (transactionVM.toQrCode.isNotEmpty) {
-                          final firstItem = transactionVM.toQrCode.first!;
-                          final nome = firstItem['name'] ?? '';
-                          final amount = firstItem['amount']?.toString().toRealString() ?? '0';
-                          final amountValue = firstItem['amount'] ?? 0;
-                          final toPayloadValue = firstItem['payload'] ?? '';
+                          await transactionVM.getQrCode(_payloadController.text);
 
-                          PinBottomSheet.show(
-                            context,
-                            autoSubmitOnComplete: false,
-                            height: MediaQuery.of(context).size.height * 0.45,
-                            title: 'Deseja transferir $amount para $nome?',
-                            onCompleted: (transferPassword) async {
-                              final bool success = await transactionVM.transferQrCode(toPayloadValue, amountValue);
-                              if (success) {
+                          if (transactionVM.toQrCode.isNotEmpty) {
+                            final firstItem = transactionVM.toQrCode.first!;
+                            final nome = firstItem['name'] ?? '';
+                            final amount = firstItem['amount']?.toString().toRealString() ?? '0';
+                            final amountValue = firstItem['amount'] ?? 0;
+                            final toPayloadValue = firstItem['payload'] ?? '';
+
+                            await TransferPasswordService.showAndHandle(
+                              context: context,
+                              title: 'Deseja transferir $amount para $nome?',
+                              onSuccess: () async {
+                                final bool success = await transactionVM.transferQrCode(toPayloadValue, amountValue);
+
+                                if (success) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Pagamento realizado com sucesso!'),
+                                      backgroundColor: AppColors.greenSuccess,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    ),
+                                  );
+                                  transactionVM.getTransactions();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(transactionVM.errorMessage ?? 'Erro ao realizar pagamento'),
+                                      backgroundColor: AppColors.redError,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    ),
+                                  );
+                                }
+
+                                if (mounted) {
+                                  _payloadController.clear();
+                                  _payloadFocusNode.unfocus();
+                                }
+                              },
+
+                              onError: (message) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: const Text('Pagamento realizado com sucesso!'),
-                                    backgroundColor: AppColors.greenSuccess,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                );
-                                transactionVM.getTransactions();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(transactionVM.errorMessage ?? 'Erro ao realizar pagamento'),
+                                    content: Text(message),
                                     backgroundColor: AppColors.redError,
                                     behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                   ),
                                 );
-                              }
-                            },
-                          );
+                              },
+                            );
+                          } else {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              transactionVM.showErrors = true;
+                            });
+                          }
                         }
-                        _payloadController.clear();
-                        _payloadFocusNode.unfocus();
                       },
                       child: const Text('Transferir', style: TextStyle(color: AppColors.white)),
                     ),

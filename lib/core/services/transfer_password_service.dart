@@ -8,6 +8,7 @@ class TransferPasswordService {
     required BuildContext context,
     VoidCallback? onSuccess,
     ValueChanged<String>? onError,
+    String title = "Insira sua senha de 4 dígitos"
   }) async {
     final transactionVM = context.read<TransactionViewModel>();
     bool result = false;
@@ -16,7 +17,7 @@ class TransferPasswordService {
       context,
       autoSubmitOnComplete: false,
       height: MediaQuery.of(context).size.height * 0.42,
-      title: 'Insira sua senha de 4 dígitos',
+      title: title,
       onCompleted: (transferPassword) async {
         final bool success = await transactionVM.validateTransferPassword(transferPassword);
 

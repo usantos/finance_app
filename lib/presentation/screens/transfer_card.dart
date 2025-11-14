@@ -21,7 +21,6 @@ class TransferCard extends StatefulWidget {
 
 class _TransferCardState extends State<TransferCard> {
   final _formKey = GlobalKey<FormState>();
-  final _accountVM = sl.get<AccountViewModel>();
   final _transactionVM = sl.get<TransactionViewModel>();
   final TextEditingController _toAccountTextEditingController = TextEditingController();
   final TextEditingController _amountTextEditingController = TextEditingController();

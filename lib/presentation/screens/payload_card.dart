@@ -88,7 +88,6 @@ class _PayloadCardState extends State<PayloadCard> {
                               final bool success = await transactionVM.transferQrCode(
                                 toPayloadValue,
                                 amountValue,
-                                transferPassword,
                               );
                               if (success) {
                                 ScaffoldMessenger.of(context).showSnackBar(

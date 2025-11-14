@@ -97,14 +97,14 @@ class TransactionViewModel extends ChangeNotifier {
     _account = account;
   }
 
-  Future<bool> transferBetweenAccounts(String accountId, double amount, String password) async {
+  Future<bool> transferBetweenAccounts(String accountId, double amount) async {
     _isLoading = true;
     _errorMessage = null;
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase(accountId, amount, password);
+      final result = await _transferUseCase(accountId, amount);
 
       _isLoading = false;
 
@@ -455,14 +455,14 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> transferQrCode(String toPayloadValue, double amount, String transferPassword) async {
+  Future<bool> transferQrCode(String toPayloadValue, double amount) async {
     _isLoading = true;
     _errorMessage = null;
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.transferQrCode(toPayloadValue, amount, transferPassword);
+      final result = await _transferUseCase.transferQrCode(toPayloadValue, amount);
 
       _isLoading = false;
 

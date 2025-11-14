@@ -58,7 +58,7 @@ class StatementShare {
               ),
               pw.SizedBox(height: 6),
               pw.Text(
-                'Total de Débitos: ${formatter.format(totalDebit)}',
+                'Total de Débitos: -${formatter.format(totalDebit)}',
                 style: pw.TextStyle(fontSize: 10, color: PdfColors.red800),
               ),
               pw.SizedBox(height: 6),
@@ -86,15 +86,15 @@ class StatementShare {
                   children: [
                     pw.Expanded(
                       flex: 2,
-                      child: pw.Text(dateFormat.format(transactions[i].date), style: const pw.TextStyle(fontSize: 10)),
+                      child: pw.Text(DateFormat("dd/MM/yyyy 'às' HH:mm").format(transactions[i].date), style: const pw.TextStyle(fontSize: 10)),
                     ),
-                    pw.Expanded(
-                      flex: 3,
-                      child: pw.Text(
-                        '${transactions[i].toAccountName ?? '-'}\n(${transactions[i].category})',
-                        style: const pw.TextStyle(fontSize: 10),
-                      ),
-                    ),
+                        pw.Expanded(
+                          flex: 3,
+                          child: pw.Text(
+                            '${transactions[i].category} para \n${transactions[i].toAccountName ?? '-'}',
+                            style: const pw.TextStyle(fontSize: 10),
+                          ),
+                        ),
                     pw.Expanded(
                       flex: 2,
                       child: pw.Text(
@@ -110,8 +110,13 @@ class StatementShare {
                       child: pw.Align(
                         alignment: pw.Alignment.centerRight,
                         child: pw.Text(
-                          formatter.format(transactions[i].amount),
-                          style: const pw.TextStyle(fontSize: 10),
+                          '-${formatter.format(transactions[i].amount)}',
+                          style: pw.TextStyle(
+                            fontSize: 10,
+                            color: transactions[i].type == TransactionType.credit
+                                ? PdfColors.green800
+                                : PdfColors.red800,
+                          ),
                         ),
                       ),
                     ),

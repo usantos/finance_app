@@ -6,7 +6,7 @@ class RealApi {
   final Dio _dio;
   String? _token;
 
-  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.1.16:3000')) {
+  RealApi({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: 'http://192.168.0.113:3000')) {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -166,7 +166,6 @@ class RealApi {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
-    String password,
   ) async {
     try {
       final response = await _dio.post(
@@ -175,7 +174,6 @@ class RealApi {
         data: {
           'fromAccountNumber': fromAccountNumber,
           'toAccountNumber': toAccountNumber,
-          'transferPassword': password,
           'amount': amount,
         },
       );
@@ -197,7 +195,7 @@ class RealApi {
   Future<Map<String, dynamic>> createPixKey(String accountId, String keyType, String keyValue) async {
     try {
       final response = await _dio.post(
-        '/pix/PixKey',
+        '/pix/create_pix_key',
         data: {'accountId': accountId, 'keyType': keyType, 'keyValue': keyValue},
       );
 
@@ -210,7 +208,7 @@ class RealApi {
 
   Future<List<Map<String, dynamic>>> getPixKeysByAccountId(String accountId) async {
     try {
-      final response = await _dio.get('/pix/getPixKeysByAccountId/$accountId');
+      final response = await _dio.get('/pix/get_pix_keys_by_accountId/$accountId');
 
       if (response.statusCode == 200 && response.data['pixKeys'] is List) {
         final data = (response.data['pixKeys'] as List).whereType<Map<String, dynamic>>().toList();
@@ -228,7 +226,7 @@ class RealApi {
 
   Future<Map<String, dynamic>> deletePixKey(String keyType, String keyValue) async {
     try {
-      final response = await _dio.delete('/pix/deletePixKey/$keyType/$keyValue');
+      final response = await _dio.delete('/pix/delete_pix_key/$keyType/$keyValue');
 
       return response.data;
     } catch (e) {
@@ -245,7 +243,7 @@ class RealApi {
   ) async {
     try {
       final response = await _dio.post(
-        '/pix/transferPix',
+        '/pix/transfer_pix',
         data: {'fromAccountId': fromAccountId, 'toPixKeyValue': toPixKeyValue, 'amount': amount},
       );
 
@@ -259,7 +257,7 @@ class RealApi {
   Future<Map<String, dynamic>> createQrCodePix(String accountId, double amount, String userId) async {
     try {
       final response = await _dio.post(
-        '/pix/createPixQr',
+        '/pix/create_pix_qr',
         data: {'accountId': accountId, 'amount': amount, 'userId': userId, 'expiresInMinutes': 15},
       );
 
@@ -272,7 +270,7 @@ class RealApi {
 
   Future<Map<String, dynamic>> deleteQrCode(String txid) async {
     try {
-      final response = await _dio.delete('/pix/deleteQrCode/$txid');
+      final response = await _dio.delete('/pix/delete_qr_code/$txid');
 
       return response.data;
     } catch (e) {
@@ -283,7 +281,7 @@ class RealApi {
 
   Future<List<Map<String, dynamic>>> getQrCode(String payload) async {
     try {
-      final response = await _dio.get('/pix/getQrCode/$payload');
+      final response = await _dio.get('/pix/get_qr_code/$payload');
 
       if (response.statusCode == 200 && response.data['pixQr'] is List) {
         final data = (response.data['pixQr'] as List).whereType<Map<String, dynamic>>().toList();
@@ -303,17 +301,15 @@ class RealApi {
     String fromAccountId,
     String toPayloadValue,
     double amount,
-    String transferPassword,
     String userId,
   ) async {
     try {
       final response = await _dio.post(
-        '/pix/transferQrCode',
+        '/pix/transfer_qr_code',
         data: {
           'fromAccountId': fromAccountId,
           'toPayloadValue': toPayloadValue,
           'amount': amount,
-          'transferPassword': transferPassword,
         },
       );
 
@@ -327,7 +323,7 @@ class RealApi {
   Future<Map<String, dynamic>> createCreditCard(String accountId, String name, String password) async {
     try {
       final response = await _dio.post(
-        '/creditCard/createCreditCard',
+        '/credit_card/create_credit_card',
         data: {'accountId': accountId, 'name': name, 'password': password},
       );
 
@@ -340,7 +336,7 @@ class RealApi {
 
   Future<List<Map<String, dynamic>>> getCreditCardByAccountId(String accountId) async {
     try {
-      final response = await _dio.get('/creditCard/getCreditCardByAccountId/$accountId');
+      final response = await _dio.get('/credit_card/get_credit_card_by_accountId/$accountId');
 
       if (response.statusCode == 200 && response.data is List) {
         final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
@@ -358,7 +354,7 @@ class RealApi {
 
   Future<Map<String, dynamic>> updateBlockType(String cardId, String blockType) async {
     try {
-      final response = await _dio.post('/creditCard/updateBlockType/$cardId', data: {'blockType': blockType});
+      final response = await _dio.post('/credit_card/update_block_type/$cardId', data: {'blockType': blockType});
 
       return response.data;
     } catch (e) {
@@ -369,7 +365,7 @@ class RealApi {
 
   Future<List<Map<String, dynamic>>> getTransactions(String accountId) async {
     try {
-      final response = await _dio.get('/transfers/getTransactions/$accountId');
+      final response = await _dio.get('/transfers/get_transactions/$accountId');
 
       if (response.statusCode == 200 && response.data is List) {
         final data = (response.data as List).whereType<Map<String, dynamic>>().toList();
@@ -387,7 +383,7 @@ class RealApi {
 
   Future<Map<String, dynamic>> deleteCreditCard(String cardId) async {
     try {
-      final response = await _dio.delete('/creditCard/deleteCreditCard/$cardId');
+      final response = await _dio.delete('/credit_card/delete_credit_card/$cardId');
 
       return response.data;
     } catch (e) {
@@ -399,7 +395,7 @@ class RealApi {
   Future<Map<String, dynamic>> rechargePhone(String accountId, String transferPassword, double value) async {
     try {
       final response = await _dio.post(
-        '/transfers/rechargePhone',
+        '/transfers/recharge_phone',
         data: {'accountId': accountId, 'transferPassword': transferPassword, 'value': value},
       );
 
@@ -418,7 +414,7 @@ class RealApi {
   ) async {
     try {
       final response = await _dio.post(
-        '/creditCard/adjustLimit/$cardId',
+        '/credit_card/adjust_limit/$cardId',
         data: {'accountId': accountId, 'newLimitAvailable': newLimitAvailable, 'transferPassword': transferPassword},
       );
 

@@ -53,7 +53,7 @@ void main() {
 
     test('successfully transfers and updates account balance', () async {
       // Stub do TransferUseCase
-      when(mockTransferUseCase.call('accDest1', 50.0, 'password'))
+      when(mockTransferUseCase.call('accDest1', 50.0))
           .thenAnswer((_) async => {'success': true, 'message': 'Transferência realizada'});
 
       // Stub do AccountUseCase para saldo atualizado
@@ -63,7 +63,6 @@ void main() {
       final result = await transactionViewModel.transferBetweenAccounts(
         'accDest1',
         50.0,
-        'password',
       );
 
       expect(result, true);
@@ -73,7 +72,7 @@ void main() {
 
     test('fails transfer and sets errorMessage', () async {
       // Stub do TransferUseCase com falha
-      when(mockTransferUseCase.call('86271-0', 150.0, 'password'))
+      when(mockTransferUseCase.call('86271-0', 150.0))
           .thenAnswer((_) async => {'success': false, 'message': 'Saldo insuficiente'});
 
       // Stub do AccountUseCase mantém saldo inalterado
@@ -83,7 +82,6 @@ void main() {
       final result = await transactionViewModel.transferBetweenAccounts(
         '86271-0',
         150.0,
-        'password',
       );
 
       expect(result, false);
@@ -92,13 +90,12 @@ void main() {
     });
 
     test('throws exception during transfer', () async {
-      when(mockTransferUseCase.call('accDest3', 50.0, 'password'))
+      when(mockTransferUseCase.call('accDest3', 50.0))
           .thenThrow(Exception('Erro no servidor'));
 
       final result = await transactionViewModel.transferBetweenAccounts(
         'accDest3',
         50.0,
-        'password',
       );
 
       expect(result, false);
@@ -112,7 +109,6 @@ void main() {
       final result = await transactionViewModel.transferBetweenAccounts(
         'accDest4',
         50.0,
-        'password',
       );
 
       expect(result, false);

@@ -97,7 +97,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: transactions.length,
+                        itemCount: 7,
                         itemBuilder: (context, index) {
                           return TransactionCard(transaction: transactions[index]);
                         },

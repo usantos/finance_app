@@ -16,9 +16,9 @@ class TransferUseCase {
     this.transactionRepository,
   );
 
-  Future<Map<String, dynamic>> call(String toAccountNumber, double amount, String password) async {
+  Future<Map<String, dynamic>> call(String toAccountNumber, double amount) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount, password);
+    return transactionRepository.transferBetweenAccounts(fromAccount!.accountNumber, toAccountNumber, amount);
   }
 
   Future<Map<String, dynamic>> verifyTransferPassword() async {
@@ -78,13 +78,12 @@ class TransferUseCase {
     return transactionRepository.getQrCode(payload);
   }
 
-  Future<Map<String, dynamic>> transferQrCode(String toPayloadValue, double amount, String transferPassword) async {
+  Future<Map<String, dynamic>> transferQrCode(String toPayloadValue, double amount) async {
     final fromAccount = await accountLocalDataSource.getAccount();
     return transactionRepository.transferQrCode(
       fromAccount!.id,
       toPayloadValue,
       amount,
-      transferPassword,
       fromAccount.userId,
     );
   }

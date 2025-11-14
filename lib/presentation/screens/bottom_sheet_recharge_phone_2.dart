@@ -80,17 +80,17 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                 ],
               ),
               SizedBox(height: 18),
-              _selectedIndex == null
-                  ? SizedBox()
-                  : SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                        ),
-                        onPressed: () async {
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                  ),
+                  onPressed: _selectedIndex == null
+                      ? null
+                      : () async {
                           PinBottomSheet.show(
                             context,
                             autoSubmitOnComplete: false,
@@ -129,9 +129,9 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                             },
                           );
                         },
-                        child: Text('Confirmar', style: TextStyle(color: AppColors.white)),
-                      ),
-                    ),
+                  child: Text('Confirmar', style: TextStyle(color: AppColors.white)),
+                ),
+              ),
             ],
           ),
         );

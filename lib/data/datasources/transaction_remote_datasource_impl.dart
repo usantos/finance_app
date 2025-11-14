@@ -11,9 +11,8 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
-    String password,
   ) async {
-    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
+    return await realApi.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
   }
 
   @override
@@ -85,10 +84,9 @@ class TransactionRemoteDataSourceImpl implements TransactionRemoteDataSource {
     String fromAccountId,
     String toPayloadValue,
     double amount,
-    String transferPassword,
     String userId,
   ) async {
-    return await realApi.transferQrCode(fromAccountId, toPayloadValue, amount, transferPassword, userId);
+    return await realApi.transferQrCode(fromAccountId, toPayloadValue, amount, userId);
   }
 
   @override

@@ -1,5 +1,5 @@
+import 'package:financial_app/core/extensions/date_time_ext.dart';
 import 'package:flutter/material.dart';
-import 'package:financial_app/core/extensions/date_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/domain/model/transaction_model.dart';
 
@@ -33,7 +33,7 @@ class TransactionCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
-            Text(transaction.date.formatDate(), style: TextStyle(color: AppColors.blackText, fontSize: 13)),
+            Text(transaction.date.formatDateTime(), style: TextStyle(color: AppColors.blackText, fontSize: 13)),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

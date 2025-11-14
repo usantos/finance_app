@@ -20,9 +20,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
-    String password,
   ) {
-    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount, password);
+    return remoteDataSource.transferBetweenAccounts(fromAccountNumber, toAccountNumber, amount);
   }
 
   @override
@@ -80,10 +79,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
     String fromAccountId,
     String toPayloadValue,
     double amount,
-    String transferPassword,
     String userId,
   ) {
-    return remoteDataSource.transferQrCode(fromAccountId, toPayloadValue, amount, transferPassword, userId);
+    return remoteDataSource.transferQrCode(fromAccountId, toPayloadValue, amount, userId);
   }
 
   @override

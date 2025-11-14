@@ -135,7 +135,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                               CustomBottomSheet.show(
                                 iconClose: false,
                                 context,
-                                height: MediaQuery.of(context).size.height * 0.26,
+                                height: 180,
                                 child: Padding(
                                   padding: EdgeInsets.all(16),
                                   child: Column(

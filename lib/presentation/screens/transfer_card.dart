@@ -3,6 +3,7 @@ import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/account_input_formatter_ext.dart';
 import 'package:financial_app/core/extensions/brl_currency_input_formatter_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
@@ -236,60 +237,67 @@ class _TransferCardState extends State<TransferCard> {
                           ),
                           onPressed: _transactionVM.hasPassword
                               ? () async {
-                                  _transactionVM.showErrors = true;
-                                  if (!_formKey.currentState!.validate()) return;
                                   FocusScope.of(context).unfocus();
 
-                                  PinBottomSheet.show(
-                                    context,
-                                    autoSubmitOnComplete: false,
-                                    height: MediaQuery.of(context).size.height * 0.35,
-                                    title: 'Insira sua senha de 4 dígitos',
-                                    onCompleted: (pin) async {
-                                      if (await _accountVM.getUser() == null || _accountVM.account == null) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Usuário ou conta não encontrados.'),
-                                            backgroundColor: AppColors.redError,
-                                          ),
+                                  if (_formKey.currentState?.validate() ?? false) {
+                                    setState(() {
+                                      _transactionVM.showErrors = true;
+                                    });
+
+                                    await TransferPasswordService.showAndHandle(
+                                      context: context,
+                                      onSuccess: () async {
+                                        final double amount = BRLCurrencyInputFormatterExt.parse(
+                                          _amountTextEditingController.text,
                                         );
-                                        return;
-                                      }
+                                        final String toAccount = _toAccountTextEditingController.text;
 
-                                      final double amount = BRLCurrencyInputFormatterExt.parse(
-                                        _amountTextEditingController.text,
-                                      );
-                                      final String toAccount = _toAccountTextEditingController.text;
+                                        final bool success = await _transactionVM.transferBetweenAccounts(
+                                          toAccount,
+                                          amount,
+                                        );
 
-                                      final bool success = await _transactionVM.transferBetweenAccounts(
-                                        toAccount,
-                                        amount,
-                                        pin,
-                                      );
+                                        if (success) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: const Text('Transferência realizada com sucesso!'),
+                                              backgroundColor: AppColors.greenSuccess,
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(_transactionVM.errorMessage ?? 'Erro na transferência'),
+                                              backgroundColor: AppColors.redError,
+                                              behavior: SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          );
+                                        }
 
-                                      _resetForm();
+                                        if (mounted) {
+                                          _resetForm();
+                                        }
+                                      },
 
-                                      if (success) {
+                                      onError: (message) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
-                                            content: const Text('Transferência realizada com sucesso!'),
-                                            backgroundColor: AppColors.greenSuccess,
-                                            behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          ),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(_transactionVM.errorMessage ?? 'Erro na transferência'),
+                                            content: Text(message),
                                             backgroundColor: AppColors.redError,
                                             behavior: SnackBarBehavior.floating,
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                           ),
                                         );
-                                      }
-                                    },
-                                  );
+                                      },
+                                    );
+                                  } else {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      _transactionVM.showErrors = true;
+                                    });
+                                  }
                                 }
                               : null,
                           child: const Text('Transferir', style: TextStyle(color: AppColors.white)),

@@ -3,7 +3,6 @@ abstract class TransactionRepository {
     String fromAccountNumber,
     String toAccountNumber,
     double amount,
-    String password,
   );
   Future<Map<String, dynamic>> verifyTransferPassword(String accountNumber);
 
@@ -35,7 +34,6 @@ abstract class TransactionRepository {
     String fromAccountId,
     String toPayloadValue,
     double amount,
-    String transferPassword,
     String userId,
   );
 

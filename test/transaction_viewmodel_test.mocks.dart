@@ -91,9 +91,9 @@ class MockTransferUseCase extends _i1.Mock implements _i6.TransferUseCase {
           as _i5.TransactionRepository);
 
   @override
-  _i7.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount, String? password) =>
+  _i7.Future<Map<String, dynamic>> call(String? toAccountNumber, double? amount) =>
       (super.noSuchMethod(
-            Invocation.method(#call, [toAccountNumber, amount, password]),
+            Invocation.method(#call, [toAccountNumber, amount]),
             returnValue: _i7.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
           )
           as _i7.Future<Map<String, dynamic>>);
@@ -261,9 +261,9 @@ class MockTransactionViewModel extends _i1.Mock implements _i15.TransactionViewM
       super.noSuchMethod(Invocation.method(#setAccount, [account]), returnValueForMissingStub: null);
 
   @override
-  _i7.Future<bool> transferBetweenAccounts(String? accountId, double? amount, String? password) =>
+  _i7.Future<bool> transferBetweenAccounts(String? accountId, double? amount) =>
       (super.noSuchMethod(
-            Invocation.method(#transferBetweenAccounts, [accountId, amount, password]),
+            Invocation.method(#transferBetweenAccounts, [accountId, amount]),
             returnValue: _i7.Future<bool>.value(false),
           )
           as _i7.Future<bool>);

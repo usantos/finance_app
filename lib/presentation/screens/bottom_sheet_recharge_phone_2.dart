@@ -1,5 +1,6 @@
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -91,17 +92,14 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                   onPressed: _selectedIndex == null
                       ? null
                       : () async {
-                          PinBottomSheet.show(
-                            context,
-                            autoSubmitOnComplete: false,
-                            height: 320,
-                            title: 'Insira sua senha de 4 dígitos',
-                            onCompleted: (transferPassword) async {
+                          await TransferPasswordService.showAndHandle(
+                            context: context,
+                            onSuccess: () async {
                               final double value = double.parse(
                                 _values[_selectedIndex!].replaceAll('R\$', '').replaceAll(',', '.'),
                               );
 
-                              final bool success = await _transactionVM.rechargePhone(transferPassword, value);
+                              final bool success = await _transactionVM.rechargePhone(value);
 
                               if (success) {
                                 Navigator.pop(context);
@@ -126,6 +124,16 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                                   ),
                                 );
                               }
+                            },
+
+                            onError: (message) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                  backgroundColor: AppColors.redError,
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
                             },
                           );
                         },

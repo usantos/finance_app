@@ -599,14 +599,14 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> rechargePhone(String transferPassword, double value) async {
+  Future<bool> rechargePhone(double value) async {
     _isLoading = true;
     _errorMessage = null;
     _errorCode = null;
     notifyListeners();
 
     try {
-      final result = await _transferUseCase.rechargePhone(transferPassword, value);
+      final result = await _transferUseCase.rechargePhone(value);
 
       _isLoading = false;
 
@@ -629,14 +629,14 @@ class TransactionViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> adjustLimit(double newLimitAvailable, String transferPassword) async {
+  Future<bool> adjustLimit(double newLimitAvailable) async {
     _errorCode = null;
     _isLoading = true;
     notifyListeners();
 
     try {
       final cardId = creditCardModels?.id ?? '';
-      final result = await _transferUseCase.adjustLimit(cardId, newLimitAvailable, transferPassword);
+      final result = await _transferUseCase.adjustLimit(cardId, newLimitAvailable);
 
       _isLoading = false;
 

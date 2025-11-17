@@ -173,18 +173,10 @@ class RealApi {
         options: Options(validateStatus: (status) => true),
         data: {'fromAccountNumber': fromAccountNumber, 'toAccountNumber': toAccountNumber, 'amount': amount},
       );
-
-      if (response.statusCode == 200) {
-        return {"success": true, "message": response.data['message'] ?? 'Transferência realizada com sucesso'};
-      } else {
-        return {
-          "success": false,
-          "code": response.data['code'],
-          "message": response.data['error'] ?? 'Erro desconhecido na transferência',
-        };
-      }
+      return response.data;
     } catch (e) {
-      return {"success": false, "message": 'Erro inesperado ao realizar transferência: $e'};
+      debugPrint('Erro na transferência: $e');
+      return {"success": false, "message": "Erro na transferência"};
     }
   }
 
@@ -384,12 +376,9 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> rechargePhone(String accountId, String transferPassword, double value) async {
+  Future<Map<String, dynamic>> rechargePhone(String accountId, double value) async {
     try {
-      final response = await _dio.post(
-        '/transfers/recharge_phone',
-        data: {'accountId': accountId, 'transferPassword': transferPassword, 'value': value},
-      );
+      final response = await _dio.post('/transfers/recharge_phone', data: {'accountId': accountId, 'value': value});
 
       return response.data;
     } catch (e) {
@@ -398,16 +387,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> adjustLimit(
-    String cardId,
-    String accountId,
-    double newLimitAvailable,
-    String transferPassword,
-  ) async {
+  Future<Map<String, dynamic>> adjustLimit(String cardId, String accountId, double newLimitAvailable) async {
     try {
       final response = await _dio.post(
         '/credit_card/adjust_limit/$cardId',
-        data: {'accountId': accountId, 'newLimitAvailable': newLimitAvailable, 'transferPassword': transferPassword},
+        data: {'accountId': accountId, 'newLimitAvailable': newLimitAvailable},
       );
 
       return response.data;

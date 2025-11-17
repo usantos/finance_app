@@ -114,6 +114,9 @@ class _PayloadCardState extends State<PayloadCard> {
                                 if (mounted) {
                                   _payloadController.clear();
                                   _payloadFocusNode.unfocus();
+                                  setState(() {
+                                    transactionVM.showErrors = false;
+                                  });
                                 }
                               },
 

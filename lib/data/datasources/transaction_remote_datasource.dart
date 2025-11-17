@@ -43,12 +43,7 @@ abstract class TransactionRemoteDataSource {
 
   Future<Map<String, dynamic>> deleteCreditCard(String cardId);
 
-  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, String transferPassword, double value);
+  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, double value);
 
-  Future<Map<String, dynamic>> adjustLimit(
-    String cardId,
-    String accountId,
-    double newLimitAvailable,
-    String transferPassword,
-  );
+  Future<Map<String, dynamic>> adjustLimit(String cardId, String accountId, double newLimitAvailable);
 }

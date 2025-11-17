@@ -1,6 +1,7 @@
 import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/components/textfield_money_underline.dart';
 import 'package:financial_app/core/extensions/money_ext.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -64,15 +65,12 @@ class _BottomSheetAdjustLimitState extends State<BottomSheetAdjustLimit> {
                 ),
                 onPressed: _enableAction
                     ? () async {
-                        PinBottomSheet.show(
-                          context,
-                          autoSubmitOnComplete: false,
-                          height: 320,
-                          title: 'Insira sua senha de 4 dígitos',
-                          onCompleted: (transferPassword) async {
+                        await TransferPasswordService.showAndHandle(
+                          context: context,
+                          onSuccess: () async {
                             final newLimit = _transactionValue;
 
-                            final bool success = await transactionVM.adjustLimit(newLimit!, transferPassword);
+                            final bool success = await transactionVM.adjustLimit(newLimit!);
 
                             if (success) {
                               showDialog(

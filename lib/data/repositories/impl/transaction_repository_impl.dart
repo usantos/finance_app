@@ -110,17 +110,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, String transferPassword, double value) {
-    return remoteDataSource.rechargePhone(fromAccountNumber, transferPassword, value);
+  Future<Map<String, dynamic>> rechargePhone(String fromAccountNumber, double value) {
+    return remoteDataSource.rechargePhone(fromAccountNumber, value);
   }
 
   @override
-  Future<Map<String, dynamic>> adjustLimit(
-    String cardId,
-    String accountId,
-    double newLimitAvailable,
-    String transferPassword,
-  ) {
-    return remoteDataSource.adjustLimit(cardId, accountId, newLimitAvailable, transferPassword);
+  Future<Map<String, dynamic>> adjustLimit(String cardId, String accountId, double newLimitAvailable) {
+    return remoteDataSource.adjustLimit(cardId, accountId, newLimitAvailable);
   }
 }

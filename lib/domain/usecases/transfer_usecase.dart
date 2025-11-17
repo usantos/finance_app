@@ -107,13 +107,13 @@ class TransferUseCase {
     return transactionRepository.deleteCreditCard(cardId);
   }
 
-  Future<Map<String, dynamic>> rechargePhone(String transferPassword, double value) async {
+  Future<Map<String, dynamic>> rechargePhone(double value) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.rechargePhone(fromAccount!.id, transferPassword, value);
+    return transactionRepository.rechargePhone(fromAccount!.id, value);
   }
 
-  Future<Map<String, dynamic>> adjustLimit(String cardId, double newLimitAvailable, String transferPassword) async {
+  Future<Map<String, dynamic>> adjustLimit(String cardId, double newLimitAvailable) async {
     final fromAccount = await accountLocalDataSource.getAccount();
-    return transactionRepository.adjustLimit(cardId, fromAccount!.id, newLimitAvailable, transferPassword);
+    return transactionRepository.adjustLimit(cardId, fromAccount!.id, newLimitAvailable);
   }
 }

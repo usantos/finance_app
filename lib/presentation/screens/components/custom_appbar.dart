@@ -25,6 +25,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
             title != null
                 ? Text(
                     title!,
+                    maxLines: 1,
                     style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 20),
                   )
                 : const SizedBox.shrink(),

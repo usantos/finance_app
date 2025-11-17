@@ -1,3 +1,4 @@
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
@@ -63,7 +64,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
             backgroundColor: AppColors.white,
             appBar: CustomAppbar(
               toolbarSize: 168,
-              title: 'Olá, ${authVM.currentUser?.user.name ?? ''}!',
+              title: 'Olá, ${authVM.currentUser?.user.name.showThreeNames() ?? ''}!',
               description: "Bem-vindo de volta",
               body: const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [BalanceCard()]),
             ),

@@ -1,4 +1,3 @@
-import 'package:financial_app/core/components/pin_bottom_sheet.dart';
 import 'package:financial_app/core/components/textfield_money_underline.dart';
 import 'package:financial_app/core/extensions/money_ext.dart';
 import 'package:financial_app/core/services/transfer_password_service.dart';

@@ -1,6 +1,8 @@
 import 'dart:typed_data';
+import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/domain/model/transaction_model.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
+import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -13,6 +15,7 @@ class StatementShare {
   static Future<void> captureAndSharePdf(BuildContext context) async {
     final _transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
     final _accountVM = Provider.of<AccountViewModel>(context, listen: false);
+    final _authVM = Provider.of<AuthViewModel>(context, listen: false);
 
     final transactions = _transactionVM.transactionModels;
     final amount = _accountVM.account?.balance;
@@ -36,43 +39,59 @@ class StatementShare {
         totalDebit += t.amount;
       }
     }
-
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(24),
         build: (context) => [
-          pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
+          pw.Row(
             children: [
-              pw.Text(
-                'Extrato de Transações',
-                style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold, color: PdfColors.blue800),
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text(
+                    'Extrato de Transações',
+                    style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold, color: PdfColors.blue800),
+                  ),
+                  pw.SizedBox(height: 6),
+                  pw.Text('Gerado em: ${dateFormat.format(DateTime.now())}', style: const pw.TextStyle(fontSize: 10)),
+                  pw.SizedBox(height: 6),
+                  pw.Text(
+                    'Total de Créditos: ${formatter.format(totalCredit)}',
+                    style: pw.TextStyle(fontSize: 10, color: PdfColors.green800),
+                  ),
+                  pw.SizedBox(height: 6),
+                  pw.Text(
+                    'Total de Débitos: -${formatter.format(totalDebit)}',
+                    style: pw.TextStyle(fontSize: 10, color: PdfColors.red800),
+                  ),
+                  pw.SizedBox(height: 6),
+                  pw.Text(
+                    'Saldo Atual: ${formatter.format(amount)}',
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold,
+                      color: amount! >= 0 ? PdfColors.green800 : PdfColors.red800,
+                    ),
+                  ),
+                  pw.SizedBox(height: 8),
+                  pw.Divider(thickness: 1, color: PdfColors.grey600),
+                  pw.SizedBox(height: 8),
+                ],
               ),
-              pw.SizedBox(height: 6),
-              pw.Text('Gerado em: ${dateFormat.format(DateTime.now())}', style: const pw.TextStyle(fontSize: 10)),
-              pw.SizedBox(height: 6),
-              pw.Text(
-                'Total de Créditos: ${formatter.format(totalCredit)}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.green800),
+              pw.Spacer(),
+              pw.Column(
+                children: [
+                  pw.Text(_authVM.currentUser?.user.name ?? '', style: pw.TextStyle(fontSize: 10)),
+                  pw.SizedBox(height: 6),
+                  pw.Text(
+                    'CPF: ${_authVM.currentUser?.user.cpf.maskCPFMid()}',
+                    style: const pw.TextStyle(fontSize: 10),
+                  ),
+                  pw.SizedBox(height: 6),
+                  pw.Text('Conta: ${_accountVM.account?.accountNumber}', style: pw.TextStyle(fontSize: 10)),
+                ],
               ),
-              pw.SizedBox(height: 6),
-              pw.Text(
-                'Total de Débitos: -${formatter.format(totalDebit)}',
-                style: pw.TextStyle(fontSize: 10, color: PdfColors.red800),
-              ),
-              pw.SizedBox(height: 6),
-              pw.Text(
-                'Saldo Atual: ${formatter.format(amount)}',
-                style: pw.TextStyle(
-                  fontSize: 10,
-                  fontWeight: pw.FontWeight.bold,
-                  color: amount! >= 0 ? PdfColors.green800 : PdfColors.red800,
-                ),
-              ),
-              pw.SizedBox(height: 8),
-              pw.Divider(thickness: 1, color: PdfColors.grey600),
-              pw.SizedBox(height: 8),
             ],
           ),
 

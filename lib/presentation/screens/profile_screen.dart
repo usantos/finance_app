@@ -135,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      authVM.currentUser?.user.name ?? '-',
+                      authVM.currentUser?.user.name.showThreeNames() ?? '-',
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
                     ),
                     Text(

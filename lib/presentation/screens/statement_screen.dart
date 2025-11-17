@@ -1,5 +1,6 @@
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/presentation/screens/statement_share_service.dart';
+import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,8 +28,8 @@ class _StatementScreenState extends State<StatementScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final viewModel = Provider.of<TransactionViewModel>(context, listen: false);
-      viewModel.getTransactions();
+      final transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
+      transactionVM.getTransactions();
     });
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
@@ -56,8 +57,8 @@ class _StatementScreenState extends State<StatementScreen> {
       );
     }
 
-    return Consumer<TransactionViewModel>(
-      builder: (context, transactionVM, _) {
+    return Consumer2<TransactionViewModel, AuthViewModel>(
+      builder: (context, transactionVM, authVM, _) {
         final transactions = transactionVM.transactionModels;
 
         final filteredTransactions = transactions.where((t) {
@@ -142,7 +143,10 @@ class _StatementScreenState extends State<StatementScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () => StatementShare.captureAndSharePdf(context),
+                      onPressed: () async {
+                        await authVM.checkCurrentUser();
+                        StatementShare.captureAndSharePdf(context);
+                      },
                       style: TextButton.styleFrom(fixedSize: const Size(150, 40), padding: EdgeInsets.zero),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,

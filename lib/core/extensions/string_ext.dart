@@ -55,7 +55,7 @@ extension StringExtension on String {
 
     final chars = d.split('');
     for (int i = 3; i <= 8 && i < chars.length; i++) {
-      chars[i] = '•';
+      chars[i] = '·';
     }
 
     final rebuilt = chars.join();
@@ -95,7 +95,7 @@ extension StringExtension on String {
     }
   }
 
-  String maskPhoneMid({String maskChar = '•'}) {
+  String maskPhoneMid({String maskChar = '·'}) {
     final digits = replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';
 
@@ -198,5 +198,33 @@ extension StringExtension on String {
     final middleInitials = filtered.sublist(1, filtered.length - 1).map((n) => ' ${n[0].toUpperCase()}').join();
 
     return '$first$middleInitials $last';
+  }
+
+  String showThreeNames() {
+    final ignored = {'de', 'da', 'do', 'das', 'dos'};
+    final parts = trim().split(RegExp(r'\s+'));
+
+    if (parts.length <= 3) return parts.join(' ');
+
+    final result = <String>[];
+
+    for (var i = 0; i < parts.length; i++) {
+      final e = parts[i].toLowerCase();
+
+      if (result.isEmpty) {
+        result.add(parts[i]);
+        continue;
+      }
+
+      if (result.length == 2 && ignored.contains(e)) {
+        continue;
+      }
+
+      if (result.length == 3) break;
+
+      result.add(parts[i]);
+    }
+
+    return result.join(' ');
   }
 }

@@ -1,5 +1,6 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
-import 'package:financial_app/presentation/screens/statement_share_service.dart';
+import 'package:financial_app/presentation/screens/bottom_sheet_double_data.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +21,9 @@ class StatementScreen extends StatefulWidget {
 }
 
 class _StatementScreenState extends State<StatementScreen> {
-  DateTime? _selectedDate;
   bool _showSkeleton = true;
-  String _searchQuery = '';
+  String _searchQueryBegin = '';
+  DateTime? _selectedDateBegin;
 
   @override
   void initState() {
@@ -42,10 +43,6 @@ class _StatementScreenState extends State<StatementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String dateLabel = _selectedDate == null
-        ? 'Data do extrato'
-        : DateFormat('dd/MM/yyyy').format(_selectedDate!);
-
     if (_showSkeleton) {
       return Scaffold(
         backgroundColor: AppColors.white,
@@ -59,20 +56,10 @@ class _StatementScreenState extends State<StatementScreen> {
 
     return Consumer2<TransactionViewModel, AuthViewModel>(
       builder: (context, transactionVM, authVM, _) {
-        final transactions = transactionVM.transactionModels;
-
-        final filteredTransactions = transactions.where((t) {
-          final matchesDate =
-              _selectedDate == null ||
-              (t.date.year == _selectedDate!.year &&
-                  t.date.month == _selectedDate!.month &&
-                  t.date.day == _selectedDate!.day);
-
-          final matchesSearch =
-              _searchQuery.isEmpty || (t.toAccountName?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false);
-
-          return matchesDate && matchesSearch;
-        }).toList();
+        final String dateLabel = transactionVM.selectedDateBegin == null
+            ? 'Data do extrato'
+            : DateFormat('dd/MM/yyyy').format(transactionVM.selectedDateBegin!);
+        final transactions = transactionVM.filteredTransactions;
 
         return Scaffold(
           backgroundColor: AppColors.white,
@@ -84,17 +71,14 @@ class _StatementScreenState extends State<StatementScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    onChanged: (value) => setState(() => _searchQuery = value),
+                    onChanged: (value) => setState(() => _searchQueryBegin = value),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.white,
                       hintText: 'Buscar por nome da conta...',
                       hintStyle: const TextStyle(color: AppColors.black),
                       prefixIcon: const Icon(Icons.search, color: AppColors.black),
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.filter_list, color: AppColors.black),
-                      ),
+
                       contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                       border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                       enabledBorder: const OutlineInputBorder(
@@ -110,9 +94,12 @@ class _StatementScreenState extends State<StatementScreen> {
                   const SizedBox(height: 12),
 
                   GestureDetector(
-                    onTap: () => _selectDate(context),
+                    onTap: () => _selectDateBegin(context),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: _selectedDate == null ? 12 : 0),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: transactionVM.selectedDateBegin == null ? 12 : 0,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: AppColors.grey),
@@ -126,12 +113,12 @@ class _StatementScreenState extends State<StatementScreen> {
                           ),
                           SizedBox(
                             width: 24,
-                            child: _selectedDate == null
+                            child: transactionVM.selectedDateBegin == null
                                 ? const Icon(Icons.arrow_drop_down, color: AppColors.black)
                                 : IconButton(
                                     padding: EdgeInsets.zero,
                                     constraints: const BoxConstraints(),
-                                    onPressed: _clearDate,
+                                    onPressed: transactionVM.clearVariaveis,
                                     icon: const Icon(Icons.close, size: 18, color: AppColors.black),
                                   ),
                           ),
@@ -144,8 +131,7 @@ class _StatementScreenState extends State<StatementScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () async {
-                        await authVM.checkCurrentUser();
-                        StatementShare.captureAndSharePdf(context);
+                        CustomBottomSheet.show(context, height: 240, child: BottomSheetDoubleData());
                       },
                       style: TextButton.styleFrom(fixedSize: const Size(150, 40), padding: EdgeInsets.zero),
                       child: const Row(
@@ -159,7 +145,7 @@ class _StatementScreenState extends State<StatementScreen> {
                     ),
                   ),
 
-                  if (filteredTransactions.isEmpty)
+                  if (transactions.isEmpty)
                     const Text(
                       'Nenhuma transação encontrada.',
                       style: TextStyle(fontSize: 14, color: AppColors.blackText),
@@ -169,9 +155,9 @@ class _StatementScreenState extends State<StatementScreen> {
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: filteredTransactions.length,
+                      itemCount: transactions.length,
                       itemBuilder: (context, index) {
-                        return TransactionCard(transaction: filteredTransactions[index]);
+                        return TransactionCard(transaction: transactions[index]);
                       },
                     ),
                 ],
@@ -183,11 +169,13 @@ class _StatementScreenState extends State<StatementScreen> {
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDateBegin(BuildContext context) async {
+    final transactionVM = Provider.of<TransactionViewModel>(context, listen: false);
+
     final DateTime today = DateTime.now();
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? today,
+      initialDate: transactionVM.selectedDateBegin ?? today,
       firstDate: DateTime(2023),
       lastDate: DateTime(2026),
       locale: const Locale('pt', 'BR'),
@@ -207,11 +195,9 @@ class _StatementScreenState extends State<StatementScreen> {
     );
 
     if (pickedDate != null) {
-      setState(() => _selectedDate = pickedDate);
-    }
-  }
+      setState(() => _selectedDateBegin = pickedDate);
 
-  void _clearDate() {
-    setState(() => _selectedDate = null);
+      transactionVM.setVariaveis(_searchQueryBegin, _selectedDateBegin);
+    }
   }
 }

@@ -17,7 +17,7 @@ class StatementShare {
     final _accountVM = Provider.of<AccountViewModel>(context, listen: false);
     final _authVM = Provider.of<AuthViewModel>(context, listen: false);
 
-    final transactions = _transactionVM.transactionModels;
+    final transactions = _transactionVM.filteredTransactionsStatementShare;
     final amount = _accountVM.account?.balance;
 
     if (transactions.isEmpty) {

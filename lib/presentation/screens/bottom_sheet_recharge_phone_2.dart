@@ -102,7 +102,6 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
 
                               if (success) {
                                 Navigator.pop(context);
-                                Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('Recarga de ${_values[_selectedIndex!]} efetuada com sucesso!'),
@@ -112,7 +111,6 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
                                   ),
                                 );
                               } else {
-                                Navigator.pop(context);
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

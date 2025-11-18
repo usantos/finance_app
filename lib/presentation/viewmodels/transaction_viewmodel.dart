@@ -17,6 +17,10 @@ class TransactionViewModel extends ChangeNotifier {
   List<Map<String, dynamic>?> _toQrCode = [];
   List<Map<String, dynamic>?> _creditCard = [];
   List<Map<String, dynamic>> _transaction = [];
+  String _searchQueryBegin = '';
+  DateTime? _selectedDateBegin;
+  DateTime? _selectedDateInit;
+  DateTime? _selectedDateEnd;
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -35,6 +39,10 @@ class TransactionViewModel extends ChangeNotifier {
 
   List<Map<String, dynamic>?> get pixKeys => _pixKeys;
   List<Map<String, dynamic>?> get toQrCode => _toQrCode;
+  String get searchQueryBegin => _searchQueryBegin;
+  DateTime? get selectedDateBegin => _selectedDateBegin;
+  DateTime? get selectedDatInit => _selectedDateInit;
+  DateTime? get selectedDateEnd => _selectedDateEnd;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get errorCode => _errorCode;
@@ -61,6 +69,75 @@ class TransactionViewModel extends ChangeNotifier {
       debugPrint('Erro ao converter transações: $e');
       return [];
     }
+  }
+
+  List<Transaction> get filteredTransactions {
+    try {
+      return transactionModels.where((t) {
+        final matchesDate =
+            selectedDateBegin == null ||
+            (t.date.year == selectedDateBegin!.year &&
+                t.date.month == selectedDateBegin!.month &&
+                t.date.day == selectedDateBegin!.day);
+
+        final matchesSearch =
+            searchQueryBegin.isEmpty ||
+            (t.toAccountName?.toLowerCase().contains(searchQueryBegin.toLowerCase()) ?? false);
+
+        return matchesDate && matchesSearch;
+      }).toList();
+    } catch (e) {
+      debugPrint('Erro ao converter transações: $e');
+      return [];
+    }
+  }
+
+  List<Transaction> get filteredTransactionsStatementShare {
+    try {
+      return transactionModels.where((t) {
+        final matchesDate =
+            (_selectedDateInit == null && _selectedDateEnd == null) ||
+            ((_selectedDateInit == null ||
+                    t.date.isAfter(_selectedDateInit!) ||
+                    t.date.isAtSameMomentAs(_selectedDateInit!)) &&
+                (_selectedDateEnd == null ||
+                    t.date.isBefore(_selectedDateEnd!) ||
+                    t.date.isAtSameMomentAs(_selectedDateEnd!)));
+
+        final matchesSearch =
+            searchQueryBegin.isEmpty ||
+            (t.toAccountName?.toLowerCase().contains(searchQueryBegin.toLowerCase()) ?? false);
+
+        return matchesDate && matchesSearch;
+      }).toList();
+    } catch (e) {
+      debugPrint('Erro ao converter transações: $e');
+      return [];
+    }
+  }
+
+  Future<void> setVariaveis(String searchQueryBegin, DateTime? selectedDateBegin) async {
+    _searchQueryBegin = searchQueryBegin;
+    _selectedDateBegin = selectedDateBegin;
+    notifyListeners();
+  }
+
+  Future<void> clearVariaveis() async {
+    _searchQueryBegin = '';
+    _selectedDateBegin = null;
+    notifyListeners();
+  }
+
+  Future<void> setVariaveisStatementShare(DateTime? selectedDateInit, DateTime? selectedDateEnd) async {
+    _selectedDateInit = selectedDateInit;
+    _selectedDateEnd = selectedDateEnd;
+    notifyListeners();
+  }
+
+  Future<void> clearVariaveisStatementShare() async {
+    _selectedDateInit = null;
+    _selectedDateEnd = null;
+    notifyListeners();
   }
 
   void toggleCardDetails() {

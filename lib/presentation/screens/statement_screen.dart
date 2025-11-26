@@ -71,7 +71,7 @@ class _StatementScreenState extends State<StatementScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    onChanged: (value) => setState(() => _searchQueryBegin = value),
+                    onChanged: (value) => setState(() => transactionVM.setVariaveis(value, _selectedDateBegin)),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: AppColors.white,

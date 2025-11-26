@@ -150,8 +150,8 @@ class RealApi {
         options: Options(validateStatus: (status) => true),
         data: {
           'accountNumber': accountNumber,
-          'old_transfer_password': oldTransferPassword,
-          'new_transfer_password': newTransferPassword,
+          'oldTransferPassword': oldTransferPassword,
+          'newTransferPassword': newTransferPassword,
         },
       );
 

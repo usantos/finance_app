@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:financial_app/core/components/double_pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
@@ -48,137 +47,86 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                 ),
               ),
               const Text(
-                "Dados bancários",
+                "Dados pessoais",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
               ),
               const SizedBox(height: 18),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Nome",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                      ),
-                      Text(
-                        "${authVM.currentUser?.user.name}",
-                        style: const TextStyle(fontSize: 16, color: AppColors.blackText),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
-                  ),
-                ],
-              ),
-              Divider(color: AppColors.grey, height: 38),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Telefone",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                      ),
-                      Text(
-                        authVM.currentUser?.user.phone.maskPhoneMid() ?? '-',
-                        style: const TextStyle(fontSize: 16, color: AppColors.blackText),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
-                  ),
-                ],
-              ),
-              Divider(color: AppColors.grey, height: 38),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Senha",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                      ),
-                      const Text("****", style: TextStyle(fontSize: 16, color: AppColors.blackText)),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
-                  ),
-                ],
-              ),
-              Divider(color: AppColors.grey, height: 38),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Senha de transferência",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                      ),
-                      Text("****", style: TextStyle(fontSize: 16, color: AppColors.blackText)),
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () async {
-                      await DoublePinBottomSheet.showDouble(
-                        autoSubmitOnComplete: false,
-                        context,
-                        titleOld: "Senha de transferência atual",
-                        titleNew: "Nova senha de transferência",
-                        onCompleted: (oldTransferPassword, newTransferPassword) async {
-                          final success = await _transactionVM.changeTransferPassword(
-                            oldTransferPassword,
-                            newTransferPassword,
-                          );
-                          Flushbar(
-                            message: success
-                                ? 'Senha alterada com sucesso'
-                                : (_transactionVM.errorMessage ?? 'Erro ao alterar senha'),
-                            duration: const Duration(seconds: 3),
-                            backgroundColor: success ? AppColors.greenSuccess : AppColors.redError,
-                            margin: const EdgeInsets.all(8),
-                            borderRadius: BorderRadius.circular(8),
-                            flushbarPosition: FlushbarPosition.BOTTOM,
-                          ).show(context);
-                        },
+              _rows(title: "Nome", value: authVM.currentUser?.user.name ?? ""),
+              Divider(color: AppColors.grey, height: 36),
+              _rows(title: "Telefone", value: authVM.currentUser?.user.phone.maskPhoneMid() ?? ""),
+              Divider(color: AppColors.grey, height: 36),
+              _rows(title: "Senha do aplicativo", value: "****"),
+              Divider(color: AppColors.grey, height: 36),
+              _rows(
+                title: "Senha de transferência",
+                value: "****",
+                onTap: () async {
+                  await DoublePinBottomSheet.showDouble(
+                    autoSubmitOnComplete: false,
+                    context,
+                    titleOld: "Senha de transferência atual",
+                    titleNew: "Nova senha de transferência",
+                    onCompleted: (oldTransferPassword, newTransferPassword) async {
+                      final success = await _transactionVM.changeTransferPassword(
+                        oldTransferPassword,
+                        newTransferPassword,
                       );
-                    },
-                    icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
-                  ),
-                ],
-              ),
 
-              Divider(color: AppColors.grey, height: 38),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Close Finance Pagamentos LTDA-\nInstituição de Pagamentos ",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
-                      ),
-                    ],
-                  ),
-                ],
+                      if (!success) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(_transactionVM.errorMessage ?? 'Erro ao alterar senha'),
+                            backgroundColor: AppColors.redError,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                        );
+                      } else {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Senha alterada com sucesso!'),
+                            backgroundColor: AppColors.greenSuccess,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                        );
+                      }
+                    },
+                  );
+                },
               ),
+              Divider(color: AppColors.grey, height: 36),
+              _rows(title: "Close Finance Pagamentos LTDA-\nInstituição de Pagamentos"),
             ],
           );
         },
       ),
+    );
+  }
+
+  Widget _rows({required String title, String? value, VoidCallback? onTap}) {
+    return Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+            ),
+            Text(value ?? "", maxLines: 1, style: const TextStyle(fontSize: 16, color: AppColors.blackText)),
+          ],
+        ),
+        const Spacer(),
+        onTap != null
+            ? IconButton(
+                onPressed: onTap,
+                icon: const Icon(Icons.edit, color: AppColors.black, size: 25),
+              )
+            : const SizedBox.shrink(),
+      ],
     );
   }
 }

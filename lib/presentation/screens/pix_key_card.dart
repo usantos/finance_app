@@ -154,7 +154,7 @@ class _PixKeyCardState extends State<PixKeyCard> {
                               ),
                               onPressed: () async {
                                 if (keyType != null) {
-                                  if (keyType == 'Aleatoria') {
+                                  if (keyType == 'Aleatoria' || keyType == 'Email') {
                                     keyValue = keyValue;
                                   } else {
                                     keyValue = keyValue.replaceAll(RegExp(r'\D'), '');

@@ -26,7 +26,7 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
           child: Column(
             children: [
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: .centerLeft,
                 child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -37,18 +37,18 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
               Text("Escolha os valores", style: TextStyle(color: AppColors.black, fontSize: 18)),
               SizedBox(height: 14),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: .center,
+                crossAxisAlignment: .start,
                 children: [
                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
                     children: [_buildOperatorItem(0), _buildOperatorItem(1)],
                   ),
                   const SizedBox(width: 60),
                   Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .start,
                     children: [_buildOperatorItem(2), _buildOperatorItem(3)],
                   ),
                 ],
@@ -57,13 +57,13 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
               Text("Seu saldo", style: TextStyle(color: AppColors.black, fontSize: 18)),
               SizedBox(height: 10),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: .center,
+                mainAxisAlignment: .center,
                 children: [
                   const SizedBox(width: 14),
                   Text(
                     accountViewModel.balanceRecharge,
-                    style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: .bold),
                   ),
                   const SizedBox(width: 10),
                   InkWell(
@@ -81,7 +81,7 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
               ),
               SizedBox(height: 18),
               SizedBox(
-                width: double.infinity,
+                width: .infinity,
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -150,9 +150,9 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
       onTap: () => setState(() => _selectedIndex = index),
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const .symmetric(vertical: 10),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: .center,
           children: [
             SizedBox(
               width: 30,
@@ -169,7 +169,7 @@ class _BottomSheetRechargePhone2State extends State<BottomSheetRechargePhone2> {
               ),
             ),
             const SizedBox(width: 8),
-            Text(_values[index], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            Text(_values[index], style: const TextStyle(fontSize: 18, fontWeight: .w500)),
           ],
         ),
       ),

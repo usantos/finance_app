@@ -51,7 +51,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         backgroundColor: AppColors.white,
         appBar: CustomAppbar(title: widget.title, description: widget.description),
         body: const Padding(
-          padding: EdgeInsets.only(top: 30),
+          padding: .only(top: 30),
           child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
         ),
       );
@@ -61,7 +61,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
       appBar: CustomAppbar(title: widget.title, description: widget.description),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const .all(16.0),
           child: Column(
             children: [
               ActionsService(
@@ -77,25 +77,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
               if (_selectedWidget != null)
                 Card(
                   color: AppColors.white,
-                  margin: const EdgeInsets.all(8),
+                  margin: const .all(8),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: .circular(12),
                     side: BorderSide(color: AppColors.grey, width: 1),
                   ),
-                  child: Padding(padding: const EdgeInsets.all(16.0), child: _selectedWidget!),
+                  child: Padding(padding: const .all(16.0), child: _selectedWidget!),
                 ),
 
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
+                padding: const .symmetric(horizontal: 11, vertical: 10),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   spacing: 16,
                   children: [
                     if (_selectedWidget.runtimeType == TransferPixCard) ...[
                       Text(
                         'Contatos Pix recentes',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                        style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                       ),
                       const RecentContacts(),
                     ] else if (_selectedWidget.runtimeType == QrCodeCard) ...[

@@ -31,22 +31,22 @@ class _PayloadCardState extends State<PayloadCard> {
       builder: (context, transactionVM, _) {
         return Card(
           color: AppColors.white,
-          margin: EdgeInsets.zero,
+          margin: .zero,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: .circular(12),
             side: BorderSide(color: AppColors.grey, width: 1),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const .all(16.0),
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   const Text(
                     'Pagar com Copia e cola',
-                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -56,7 +56,7 @@ class _PayloadCardState extends State<PayloadCard> {
                       filled: true,
                       fillColor: AppColors.greyBackground,
                       labelText: 'Cole o código copiado',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                      border: OutlineInputBorder(borderRadius: .circular(4), borderSide: .none),
                     ),
                     validator: Utils.validateEmpty,
                   ),
@@ -65,7 +65,7 @@ class _PayloadCardState extends State<PayloadCard> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                       ),
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
@@ -96,7 +96,7 @@ class _PayloadCardState extends State<PayloadCard> {
                                       content: const Text('Pagamento realizado com sucesso!'),
                                       backgroundColor: AppColors.greenSuccess,
                                       behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      shape: RoundedRectangleBorder(borderRadius: .circular(12)),
                                     ),
                                   );
                                   transactionVM.getTransactions();
@@ -106,7 +106,7 @@ class _PayloadCardState extends State<PayloadCard> {
                                       content: Text(transactionVM.errorMessage ?? 'Erro ao realizar pagamento'),
                                       backgroundColor: AppColors.redError,
                                       behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      shape: RoundedRectangleBorder(borderRadius: .circular(12)),
                                     ),
                                   );
                                 }

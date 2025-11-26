@@ -40,7 +40,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
           return Column(
             children: [
               Align(
-                alignment: Alignment.topLeft,
+                alignment: .topLeft,
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close, color: AppColors.black, size: 20),
@@ -48,7 +48,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
               ),
               const Text(
                 "Dados pessoais",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.black),
+                style: TextStyle(fontSize: 20, fontWeight: .bold, color: AppColors.black),
               ),
               const SizedBox(height: 18),
               _rows(title: "Nome", value: authVM.currentUser?.user.name ?? ""),
@@ -79,7 +79,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                             content: Text(_transactionVM.errorMessage ?? 'Erro ao alterar senha'),
                             backgroundColor: AppColors.redError,
                             behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(borderRadius: .circular(12)),
                           ),
                         );
                       } else {
@@ -89,7 +89,7 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
                             content: const Text('Senha alterada com sucesso!'),
                             backgroundColor: AppColors.greenSuccess,
                             behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(borderRadius: .circular(12)),
                           ),
                         );
                       }
@@ -110,11 +110,11 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
     return Row(
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+              style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
             ),
             Text(value ?? "", maxLines: 1, style: const TextStyle(fontSize: 16, color: AppColors.blackText)),
           ],

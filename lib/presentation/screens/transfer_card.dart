@@ -22,8 +22,8 @@ class TransferCard extends StatefulWidget {
 class _TransferCardState extends State<TransferCard> {
   final _formKey = GlobalKey<FormState>();
   final _transactionVM = sl.get<TransactionViewModel>();
-  final TextEditingController _toAccountTextEditingController = TextEditingController();
-  final TextEditingController _amountTextEditingController = TextEditingController();
+  final TextEditingController _toAccountTextEditingController = .new();
+  final TextEditingController _amountTextEditingController = .new();
   final FocusNode _toAccountFocusNode = FocusNode();
   final FocusNode _amountFocusNode = FocusNode();
 
@@ -56,26 +56,26 @@ class _TransferCardState extends State<TransferCard> {
         height: MediaQuery.of(context).size.height * 0.35,
         iconClose: true,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: .center,
+          crossAxisAlignment: .center,
           children: [
             const SizedBox(height: 30),
             const Center(
               child: Text(
                 'Para efetuar a transação é necessário \ncadastrar a senha de 4 dígitos.',
-                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
+                textAlign: .center,
               ),
             ),
             const SizedBox(height: 30),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: .center,
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: .circular(7),
                       side: const BorderSide(color: AppColors.black),
                     ),
                   ),
@@ -89,7 +89,7 @@ class _TransferCardState extends State<TransferCard> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: .circular(7),
                       side: const BorderSide(color: AppColors.black),
                     ),
                   ),
@@ -140,10 +140,10 @@ class _TransferCardState extends State<TransferCard> {
                 Row(
                   children: [
                     const Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: .centerLeft,
                       child: Text(
                         'Fazer transferência',
-                        style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
                       ),
                     ),
                     const Spacer(),
@@ -162,10 +162,10 @@ class _TransferCardState extends State<TransferCard> {
                 ),
                 const SizedBox(height: 35),
                 const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: .centerLeft,
                   child: Text(
                     'Conta',
-                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -174,22 +174,22 @@ class _TransferCardState extends State<TransferCard> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.greyBackground,
-                    enabledBorder: InputBorder.none,
+                    enabledBorder: .none,
                     hintText: 'EX: 00000-0',
                     hintStyle: const TextStyle(color: AppColors.blackText),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                    border: OutlineInputBorder(borderRadius: .circular(4)),
                   ),
-                  keyboardType: TextInputType.number,
+                  keyboardType: .number,
                   inputFormatters: [AccountInputFormatterExt()],
                   validator: Utils.validateToAccount,
                   focusNode: _toAccountFocusNode,
                 ),
                 const SizedBox(height: 20),
                 const Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: .centerLeft,
                   child: Text(
                     'Valor',
-                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -198,12 +198,12 @@ class _TransferCardState extends State<TransferCard> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.greyBackground,
-                    enabledBorder: InputBorder.none,
+                    enabledBorder: .none,
                     hintText: 'R\$ 0,00',
                     hintStyle: const TextStyle(color: AppColors.blackText),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                    border: OutlineInputBorder(borderRadius: .circular(4)),
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+                  keyboardType: const .numberWithOptions(decimal: false, signed: false),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
                   validator: Utils.validateAmount,
                   focusNode: _amountFocusNode,
@@ -214,12 +214,12 @@ class _TransferCardState extends State<TransferCard> {
                     const Spacer(),
                     const Text(
                       "Saldo:",
-                      style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: .bold),
                     ),
                     const SizedBox(width: 10),
                     Text(
                       accountViewModel.displayBalance,
-                      style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: AppColors.blackText, fontSize: 16, fontWeight: .bold),
                     ),
                   ],
                 ),
@@ -227,12 +227,12 @@ class _TransferCardState extends State<TransferCard> {
                 transactionViewModel.isLoading || accountViewModel.isLoading
                     ? const CircularProgressIndicator()
                     : SizedBox(
-                        width: double.infinity,
+                        width: .infinity,
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                            shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                           ),
                           onPressed: _transactionVM.hasPassword
                               ? () async {
@@ -262,7 +262,7 @@ class _TransferCardState extends State<TransferCard> {
                                               content: const Text('Transferência realizada com sucesso!'),
                                               backgroundColor: AppColors.greenSuccess,
                                               behavior: SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                              shape: RoundedRectangleBorder(borderRadius: .circular(12)),
                                             ),
                                           );
                                         } else {

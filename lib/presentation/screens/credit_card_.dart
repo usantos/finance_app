@@ -40,13 +40,13 @@ class CreditCard extends StatelessWidget {
         final isBlocked = bannerColor != null;
 
         return Stack(
-          alignment: Alignment.center,
+          alignment: .center,
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
                     const Row(
                       children: [
@@ -76,7 +76,7 @@ class CreditCard extends StatelessWidget {
                               'Cartão copiado com sucesso',
                             );
                           },
-                    style: TextButton.styleFrom(fixedSize: const Size(300, 40), padding: EdgeInsets.zero),
+                    style: TextButton.styleFrom(fixedSize: const Size(300, 40), padding: .zero),
                     child: Row(
                       children: [
                         Text(
@@ -86,13 +86,13 @@ class CreditCard extends StatelessWidget {
                           style: const TextStyle(
                             color: AppColors.white,
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: .bold,
                             letterSpacing: 2,
                           ),
                         ),
                         if (showCardDetails && !isBlocked)
                           const Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: .only(left: 8),
                             child: Icon(Icons.copy, size: 16, color: AppColors.white),
                           ),
                       ],
@@ -103,15 +103,15 @@ class CreditCard extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .start,
                       children: [
                         const Text('PORTADOR', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                         Text(
                           creditCard.creditCardName.toCreditCardName(),
-                          style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                          style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: .bold),
                         ),
                       ],
                     ),
@@ -120,7 +120,7 @@ class CreditCard extends StatelessWidget {
                         const Text('VALIDADE', style: TextStyle(color: AppColors.grey, fontSize: 12)),
                         Text(
                           creditCard.validate,
-                          style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                          style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: .bold),
                         ),
                       ],
                     ),
@@ -133,14 +133,14 @@ class CreditCard extends StatelessWidget {
               Positioned.fill(
                 child: Container(
                   color: AppColors.black.withValues(alpha: 0.45),
-                  alignment: Alignment.center,
+                  alignment: .center,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const .symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(color: bannerColor, borderRadius: BorderRadius.circular(8)),
                     child: Text(
                       bannerText!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, letterSpacing: 1),
+                      textAlign: .center,
+                      style: const TextStyle(color: AppColors.white, fontWeight: .bold, letterSpacing: 1),
                     ),
                   ),
                 ),

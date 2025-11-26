@@ -42,11 +42,11 @@ class _QrCodeCardState extends State<QrCodeCard> {
         return Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               const Text(
                 'Receba com QR Code',
-                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
               ),
               const SizedBox(height: 10),
 
@@ -59,9 +59,9 @@ class _QrCodeCardState extends State<QrCodeCard> {
                     fillColor: AppColors.greyBackground,
                     labelText: 'Digite o valor que deseja receber',
                     hintText: 'R\$ 0,00',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                    border: OutlineInputBorder(borderRadius: .circular(4), borderSide: .none),
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+                  keyboardType: const .numberWithOptions(decimal: false, signed: false),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly, BRLCurrencyInputFormatterExt()],
                   validator: Utils.validateAmount,
                 ),
@@ -102,7 +102,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                          shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -117,7 +117,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                              shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                             ),
                             onPressed: () {
                               final payload = qrCode['payload'] ?? '';
@@ -129,7 +129,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                              shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                             ),
                             onPressed: () async {
                               CustomBottomSheet.show(
@@ -137,10 +137,10 @@ class _QrCodeCardState extends State<QrCodeCard> {
                                 context,
                                 height: 180,
                                 child: Padding(
-                                  padding: EdgeInsets.all(16),
+                                  padding: .all(16),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: .center,
+                                    crossAxisAlignment: .center,
                                     children: [
                                       Text(
                                         "Deseja realmente excluir o QR Code?",
@@ -148,7 +148,7 @@ class _QrCodeCardState extends State<QrCodeCard> {
                                       ),
                                       SizedBox(height: 20),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment: .spaceEvenly,
                                         children: [
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(

@@ -13,9 +13,9 @@ class PinBottomSheet {
     double spacing = 20,
     double titleFontSize = 20,
     Color titleColor = AppColors.black,
-    FontWeight titleFontWeight = FontWeight.bold,
+    FontWeight titleFontWeight = .bold,
     int pinLength = 4,
-    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+    EdgeInsetsGeometry padding = const .all(16),
     List<Widget>? extraActions,
     bool autoSubmitOnComplete = true,
     bool obscureText = true,
@@ -53,10 +53,10 @@ class PinBottomSheet {
         child: Padding(
           padding: padding,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: .center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: .spaceBetween,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.close, color: AppColors.black),
@@ -77,7 +77,7 @@ class PinBottomSheet {
               ),
               Text(
                 title,
-                textAlign: TextAlign.center,
+                textAlign: .center,
                 style: TextStyle(fontSize: titleFontSize, fontWeight: titleFontWeight, color: titleColor),
               ),
               SizedBox(height: spacing),
@@ -88,7 +88,7 @@ class PinBottomSheet {
                     obscureText: isObscured,
                     controller: controller,
                     length: pinLength,
-                    keyboardType: TextInputType.number,
+                    keyboardType: .number,
                     onComplete: (_) {
                       if (autoSubmitOnComplete) confirmPin();
                     },
@@ -100,7 +100,7 @@ class PinBottomSheet {
                 builder: (context, errorText, _) {
                   if (errorText == null) return const SizedBox.shrink();
                   return Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const .only(top: 8),
                     child: Text(errorText, style: const TextStyle(color: AppColors.red, fontSize: 14)),
                   );
                 },
@@ -108,13 +108,13 @@ class PinBottomSheet {
               SizedBox(height: spacing),
               if (!autoSubmitOnComplete)
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: .spaceEvenly,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: .circular(7),
                           side: const BorderSide(color: AppColors.black),
                         ),
                       ),
@@ -125,7 +125,7 @@ class PinBottomSheet {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: .circular(7),
                           side: const BorderSide(color: AppColors.black),
                         ),
                       ),

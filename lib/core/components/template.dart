@@ -48,27 +48,27 @@ class _TemplateScreenState extends State<TemplateScreen> {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const .symmetric(horizontal: 24.0),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Text(
                       widget.title,
-                      style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.black),
+                      style: const TextStyle(fontSize: 26, fontWeight: .bold, color: AppColors.black),
                     ),
                     const SizedBox(height: 8),
                     if (widget.description != null)
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
+                        padding: const .only(bottom: 16),
                         child: Text(widget.description!, style: TextStyle(fontSize: 18, color: AppColors.blackText)),
                       ),
                     const SizedBox(height: 32),
                     Expanded(child: SingleChildScrollView(child: widget.body)),
                     if (widget.footerDescription != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 16),
+                        padding: const .only(top: 16),
                         child: Text(
                           widget.footerDescription!,
                           style: TextStyle(fontSize: 14, color: AppColors.blackText),
@@ -77,12 +77,12 @@ class _TemplateScreenState extends State<TemplateScreen> {
                     const SizedBox(height: 16),
                     widget.method == 'Create Pix'
                         ? SizedBox(
-                            width: double.infinity,
+                            width: .infinity,
                             height: 48,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                shape: RoundedRectangleBorder(borderRadius: .circular(8)),
                               ),
                               onPressed: () async {
                                 final isValid =
@@ -112,14 +112,14 @@ class _TemplateScreenState extends State<TemplateScreen> {
                                   child: OutlinedButton(
                                     style: OutlinedButton.styleFrom(
                                       side: const BorderSide(color: AppColors.primary, width: 1.5),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                      shape: RoundedRectangleBorder(borderRadius: .circular(8)),
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
                                     child: const Text(
                                       'Cancelar',
-                                      style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
+                                      style: TextStyle(color: AppColors.primary, fontWeight: .w600),
                                     ),
                                   ),
                                 ),
@@ -132,7 +132,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: AppColors.primary,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                      shape: RoundedRectangleBorder(borderRadius: .circular(8)),
                                     ),
                                     onPressed: () async {
                                       final blockType = widget.typeTitle;
@@ -151,7 +151,7 @@ class _TemplateScreenState extends State<TemplateScreen> {
                                     },
                                     child: Text(
                                       widget.buttonText,
-                                      style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w600),
+                                      style: const TextStyle(color: AppColors.white, fontWeight: .w600),
                                     ),
                                   ),
                                 ),

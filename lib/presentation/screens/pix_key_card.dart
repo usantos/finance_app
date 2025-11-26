@@ -35,13 +35,13 @@ class _PixKeyCardState extends State<PixKeyCard> {
         final pixKeys = transactionVM.pixKeys;
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             Row(
               children: [
                 const Text(
                   'Suas chaves PIX',
-                  style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, color: AppColors.black, fontWeight: .bold),
                 ),
               ],
             ),
@@ -73,7 +73,7 @@ class _PixKeyCardState extends State<PixKeyCard> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                        shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                       ),
                       onPressed: () {
                         CustomBottomSheet.show(
@@ -96,16 +96,16 @@ class _PixKeyCardState extends State<PixKeyCard> {
 
   Widget _pixKeys({required String text, required String subText, required String? keyType, required String keyValue}) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      margin: const .symmetric(horizontal: 0, vertical: 5),
       elevation: 0,
       color: AppColors.greyBackground,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      shape: RoundedRectangleBorder(borderRadius: .circular(6)),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 9),
+        contentPadding: const .symmetric(horizontal: 9),
         title: Text(text, style: const TextStyle(color: AppColors.black, fontSize: 16)),
         subtitle: Text(subText.toShort(), style: const TextStyle(color: AppColors.black, fontSize: 14)),
         trailing: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: .min,
           children: [
             IconButton(
               onPressed: () {
@@ -120,11 +120,11 @@ class _PixKeyCardState extends State<PixKeyCard> {
                   context,
                   height: MediaQuery.of(context).size.height * 0.26,
                   child: Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: .all(16),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .center,
+                      crossAxisAlignment: .center,
                       children: [
                         Text(
                           "Deseja realmente excluir a chave PIX $text?",
@@ -132,13 +132,13 @@ class _PixKeyCardState extends State<PixKeyCard> {
                         ),
                         SizedBox(height: 20),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: .spaceEvenly,
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.white,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7),
+                                  borderRadius: .circular(7),
                                   side: const BorderSide(color: AppColors.black),
                                 ),
                               ),
@@ -150,7 +150,7 @@ class _PixKeyCardState extends State<PixKeyCard> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                               ),
                               onPressed: () async {
                                 if (keyType != null) {

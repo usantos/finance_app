@@ -17,15 +17,15 @@ class _CreditLimitCardState extends State<CreditLimitCard> {
     return Consumer<TransactionViewModel>(
       builder: (context, transactionViewModel, _) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const .symmetric(horizontal: 16.0),
           child: Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const .all(16.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.grey),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 _buildLimitRow(
                   'Limite total',
@@ -52,14 +52,14 @@ class _CreditLimitCardState extends State<CreditLimitCard> {
 
   Widget _buildLimitRow(String label, String value, Color valueColor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const .symmetric(vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: .spaceBetween,
         children: [
           Text(label, style: const TextStyle(fontSize: 16, color: AppColors.blackText)),
           Text(
             value,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: valueColor),
+            style: TextStyle(fontSize: 16, fontWeight: .bold, color: valueColor),
           ),
         ],
       ),

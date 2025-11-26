@@ -25,8 +25,8 @@ class _BottomSheetAdjustLimitState extends State<BottomSheetAdjustLimit> {
         final double? creditCardAvailable = transactionVM.creditCardModels?.creditCardLimit;
         final double? creditCardUsed = transactionVM.creditCardModels?.creditCardUsed;
         return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: .min,
+          mainAxisAlignment: .center,
           children: [
             Text('Ajuste o limite disponível', style: TextStyle(color: AppColors.black, fontSize: 18)),
             const SizedBox(height: 20),
@@ -45,17 +45,17 @@ class _BottomSheetAdjustLimitState extends State<BottomSheetAdjustLimit> {
             ),
             SizedBox(height: 10),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: .centerRight,
               child: Text('Máximo: ${creditCardAvailable.toReal()}', style: TextStyle(color: AppColors.black)),
             ),
             SizedBox(height: 8),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: .centerRight,
               child: Text('Minimo: ${creditCardUsed.toReal()}', style: TextStyle(color: AppColors.black)),
             ),
             SizedBox(height: 20),
             SizedBox(
-              width: double.infinity,
+              width: .infinity,
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

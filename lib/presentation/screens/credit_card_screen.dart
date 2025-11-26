@@ -50,7 +50,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
             backgroundColor: AppColors.white,
             appBar: CustomAppbar(title: widget.title, description: widget.description),
             body: const Padding(
-              padding: EdgeInsets.only(top: 30),
+              padding: .only(top: 30),
               child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
             ),
           );
@@ -65,25 +65,25 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
           body: transactionVM.creditCardModels != null
               ? SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: .start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const .all(16.0),
                         child: Card(
                           elevation: 4,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          shape: RoundedRectangleBorder(borderRadius: .circular(15)),
                           child: Container(
                             decoration: BoxDecoration(
                               color: AppColors.primary,
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            padding: const EdgeInsets.all(12.0),
+                            padding: const .all(12.0),
                             child: CreditCard(),
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        padding: const .symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Row(
                           children: [
                             if (blockType == "ACTIVE") ...[
@@ -102,7 +102,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                   icon: const Icon(Icons.lock_open_outlined, color: AppColors.black),
                                   label: const Text('Bloquear', style: TextStyle(color: AppColors.black)),
                                   style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    padding: const .symmetric(vertical: 12),
                                     side: const BorderSide(color: AppColors.grey),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                   ),
@@ -134,7 +134,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                   },
                                   label: const Text('Pedir um novo cartão', style: TextStyle(color: AppColors.black)),
                                   style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    padding: const .symmetric(vertical: 12),
                                     side: const BorderSide(color: AppColors.grey),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                   ),
@@ -159,7 +159,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                   icon: const Icon(Icons.lock_outline, color: AppColors.black),
                                   label: const Text('Desbloquear', style: TextStyle(color: AppColors.black)),
                                   style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12),
+                                    padding: const .symmetric(vertical: 12),
                                     side: const BorderSide(color: AppColors.grey),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                   ),
@@ -179,7 +179,7 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                                 icon: const Icon(Icons.settings_outlined, color: AppColors.black),
                                 label: const Text('Configurar', style: TextStyle(color: AppColors.black)),
                                 style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const .symmetric(vertical: 12),
                                   side: const BorderSide(color: AppColors.grey),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                 ),
@@ -190,21 +190,21 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        padding: const .symmetric(horizontal: 16.0, vertical: 8.0),
                         child: const Text(
                           'Limite disponível',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                          style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                         ),
                       ),
                       CreditLimitCard(),
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const .all(16.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: .start,
                           children: [
                             const Text(
                               'Compras recentes',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                              style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                             ),
                             const SizedBox(height: 10),
                             const Text(
@@ -219,13 +219,13 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
                 )
               : Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: .center,
                     children: [
                       const Icon(Icons.credit_card_outlined, size: 80, color: AppColors.blackText),
                       const SizedBox(height: 16),
                       const Text(
                         'Nenhum cartão encontrado',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.blackText),
+                        style: TextStyle(fontSize: 18, fontWeight: .w600, color: AppColors.blackText),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
@@ -253,12 +253,12 @@ class _CreditCardScreenState extends State<CreditCardScreen> {
 
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const .symmetric(horizontal: 24, vertical: 12),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         child: const Text(
                           'Solicitar novo cartão',
-                          style: TextStyle(color: AppColors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: AppColors.white, fontSize: 16, fontWeight: .bold),
                         ),
                       ),
                     ],

@@ -17,16 +17,16 @@ class _BalanceCardState extends State<BalanceCard> {
       builder: (context, accountVM, child) {
         return Card(
           color: AppColors.secondary,
-          margin: const EdgeInsets.symmetric(vertical: 10),
+          margin: const .symmetric(vertical: 10),
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(borderRadius: .circular(12)),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const .all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
                     const Text('Saldo disponível', style: TextStyle(color: AppColors.grey, fontSize: 16)),
                     InkWell(
@@ -42,7 +42,7 @@ class _BalanceCardState extends State<BalanceCard> {
                 const SizedBox(height: 8),
                 Text(
                   accountVM.displayBalance,
-                  style: const TextStyle(color: AppColors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: AppColors.white, fontSize: 28, fontWeight: .bold),
                 ),
               ],
             ),

@@ -48,7 +48,7 @@ class _StatementScreenState extends State<StatementScreen> {
         backgroundColor: AppColors.white,
         appBar: CustomAppbar(title: widget.title, description: widget.description),
         body: const Padding(
-          padding: EdgeInsets.only(top: 30),
+          padding: .only(top: 30),
           child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
         ),
       );
@@ -66,9 +66,9 @@ class _StatementScreenState extends State<StatementScreen> {
           appBar: CustomAppbar(title: widget.title, description: widget.description),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const .all(18.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   TextField(
                     onChanged: (value) => setState(() => transactionVM.setVariaveis(value, _selectedDateBegin)),
@@ -79,15 +79,15 @@ class _StatementScreenState extends State<StatementScreen> {
                       hintStyle: const TextStyle(color: AppColors.black),
                       prefixIcon: const Icon(Icons.search, color: AppColors.black),
 
-                      contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                      contentPadding: const .symmetric(vertical: 10.0),
+                      border: const OutlineInputBorder(borderRadius: .all(Radius.circular(12))),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderRadius: .all(Radius.circular(12)),
                       ),
                       focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderRadius: .all(Radius.circular(12)),
                       ),
                     ),
                   ),
@@ -96,12 +96,9 @@ class _StatementScreenState extends State<StatementScreen> {
                   GestureDetector(
                     onTap: () => _selectDateBegin(context),
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: transactionVM.selectedDateBegin == null ? 12 : 0,
-                      ),
+                      padding: .symmetric(horizontal: 12, vertical: transactionVM.selectedDateBegin == null ? 12 : 0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: .circular(12),
                         border: Border.all(color: AppColors.grey),
                       ),
                       child: Row(
@@ -116,7 +113,7 @@ class _StatementScreenState extends State<StatementScreen> {
                             child: transactionVM.selectedDateBegin == null
                                 ? const Icon(Icons.arrow_drop_down, color: AppColors.black)
                                 : IconButton(
-                                    padding: EdgeInsets.zero,
+                                    padding: .zero,
                                     constraints: const BoxConstraints(),
                                     onPressed: transactionVM.clearVariaveis,
                                     icon: const Icon(Icons.close, size: 18, color: AppColors.black),
@@ -128,14 +125,14 @@ class _StatementScreenState extends State<StatementScreen> {
                   ),
 
                   Align(
-                    alignment: Alignment.centerRight,
+                    alignment: .centerRight,
                     child: TextButton(
                       onPressed: () async {
                         CustomBottomSheet.show(context, height: 240, child: BottomSheetDoubleData());
                       },
-                      style: TextButton.styleFrom(fixedSize: const Size(150, 40), padding: EdgeInsets.zero),
+                      style: TextButton.styleFrom(fixedSize: const Size(150, 40), padding: .zero),
                       child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: .center,
                         children: [
                           Text('Compartilhar', style: TextStyle(color: AppColors.blackText)),
                           SizedBox(width: 4),
@@ -152,7 +149,7 @@ class _StatementScreenState extends State<StatementScreen> {
                     )
                   else
                     ListView.builder(
-                      padding: EdgeInsets.zero,
+                      padding: .zero,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: transactions.length,

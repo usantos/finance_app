@@ -50,7 +50,7 @@ class _BottomSheetBlockCreditCardState extends State<BottomSheetBlockCreditCard>
         const SizedBox(height: 20),
         Text(
           "Escolha o tipo de bloqueio que deseja fazer",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+          style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
         ),
         const SizedBox(height: 30),
         InkWell(
@@ -71,7 +71,7 @@ class _BottomSheetBlockCreditCardState extends State<BottomSheetBlockCreditCard>
             );
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const .symmetric(vertical: 8.0),
             child: Row(
               children: [
                 const Text("Bloqueio Definitivo", style: TextStyle(fontSize: 18, color: AppColors.black)),
@@ -103,7 +103,7 @@ class _BottomSheetBlockCreditCardState extends State<BottomSheetBlockCreditCard>
             );
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const .symmetric(vertical: 8.0),
             child: Row(
               children: [
                 const Text("Bloqueio Temporário", style: TextStyle(fontSize: 18, color: AppColors.black)),

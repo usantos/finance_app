@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
@@ -53,7 +55,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
                 ),
               ),
               body: const Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: .only(top: 30),
                 child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
               ),
             );
@@ -66,17 +68,17 @@ class _MainContentScreenState extends State<MainContentScreen> {
               toolbarSize: 168,
               title: 'Olá, ${authVM.currentUser?.user.name.showThreeNames() ?? ''}!',
               description: "Bem-vindo de volta",
-              body: const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [BalanceCard()]),
+              body: const Column(crossAxisAlignment: .start, children: [BalanceCard()]),
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const .all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     const Text(
                       'Ações rápidas',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                      style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                     ),
                     const SizedBox(height: 16),
 
@@ -85,7 +87,7 @@ class _MainContentScreenState extends State<MainContentScreen> {
 
                     const Text(
                       'Últimas transações',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                      style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                     ),
                     const SizedBox(height: 16),
                     if (transactions.isEmpty)
@@ -95,10 +97,10 @@ class _MainContentScreenState extends State<MainContentScreen> {
                       )
                     else
                       ListView.builder(
-                        padding: EdgeInsets.zero,
+                        padding: .zero,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 5,
+                        itemCount: min(transactions.length, 5),
                         itemBuilder: (context, index) {
                           return TransactionCard(transaction: transactions[index]);
                         },

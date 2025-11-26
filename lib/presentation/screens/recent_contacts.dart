@@ -21,8 +21,8 @@ class _RecentContactsState extends State<RecentContacts> {
     return SizedBox(
       height: 100,
       child: ListView.separated(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.horizontal,
+        padding: .zero,
+        scrollDirection: .horizontal,
         itemCount: contacts.length,
         separatorBuilder: (_, __) => const SizedBox(width: 18),
         itemBuilder: (context, index) {
@@ -43,16 +43,16 @@ class _RecentContactsState extends State<RecentContacts> {
           width: 60,
           height: 60,
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          alignment: Alignment.center,
+          alignment: .center,
           child: Text(
             initial,
-            style: TextStyle(color: textColor, fontSize: 25, fontWeight: FontWeight.bold),
+            style: TextStyle(color: textColor, fontSize: 25, fontWeight: .bold),
           ),
         ),
         const SizedBox(height: 8),
         Text(
           name,
-          style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+          style: const TextStyle(fontWeight: .w500, color: AppColors.black),
           overflow: TextOverflow.ellipsis,
         ),
       ],

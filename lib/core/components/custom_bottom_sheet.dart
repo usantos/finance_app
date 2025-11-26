@@ -22,7 +22,7 @@ class CustomBottomSheet {
       backgroundColor: AppColors.transparent,
       barrierColor: AppColors.black.withValues(alpha: 0.5),
       builder: (context) => Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: .only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () => FocusScope.of(context).unfocus(),
@@ -31,23 +31,23 @@ class CustomBottomSheet {
             child: Container(
               height: isFull ? MediaQuery.of(context).size.height * 0.92 : height,
               width: width,
-              padding: const EdgeInsets.all(16),
+              padding: const .all(16),
               decoration: const BoxDecoration(
                 color: AppColors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: .vertical(top: Radius.circular(20)),
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: .min,
                 children: [
                   Container(
                     width: 40,
                     height: 5,
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(color: AppColors.black, borderRadius: BorderRadius.circular(2)),
+                    margin: const .only(bottom: 12),
+                    decoration: BoxDecoration(color: AppColors.black, borderRadius: .circular(2)),
                   ),
                   if (iconClose)
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: .start,
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
@@ -58,7 +58,7 @@ class CustomBottomSheet {
                   Flexible(
                     fit: FlexFit.loose,
                     child: SingleChildScrollView(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [child]),
+                      child: Column(mainAxisSize: .min, children: [child]),
                     ),
                   ),
                 ],

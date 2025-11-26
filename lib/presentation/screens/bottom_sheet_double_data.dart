@@ -26,11 +26,11 @@ class _BottomSheetDoubleDataState extends State<BottomSheetDoubleData> {
             children: [
               Text(
                 "Escolha a data que deseja ver\ndo extrato",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
               ),
               const SizedBox(height: 26),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: .spaceEvenly,
                 children: [
                   Container(
                     child: _buildDateSelector(

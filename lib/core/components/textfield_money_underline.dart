@@ -26,7 +26,7 @@ class TextFieldMoneyUnderline extends StatefulWidget {
 }
 
 class MonetaryInputFieldState extends State<TextFieldMoneyUnderline> {
-  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _amountController = .new();
   final FocusNode _focusNode = FocusNode();
   Color _textColor = AppColors.primary;
 
@@ -63,13 +63,13 @@ class MonetaryInputFieldState extends State<TextFieldMoneyUnderline> {
       _textColor = AppColors.primary;
       isValid = true;
     } else if (number > widget.maxValue) {
-      _textColor = Colors.red;
+      _textColor = AppColors.red;
       isValid = false;
     } else if (number == 0.00) {
       _textColor = AppColors.primary;
       isValid = false;
     } else {
-      _textColor = Colors.red;
+      _textColor = AppColors.red;
       isValid = false;
     }
 
@@ -95,7 +95,7 @@ class MonetaryInputFieldState extends State<TextFieldMoneyUnderline> {
       cursorColor: AppColors.primary,
       maxLength: 9,
       controller: _amountController,
-      keyboardType: TextInputType.number,
+      keyboardType: .number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       decoration: const InputDecoration(
         errorBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
@@ -106,7 +106,7 @@ class MonetaryInputFieldState extends State<TextFieldMoneyUnderline> {
         border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
       ),
-      style: TextStyle(fontSize: widget.fontSize, fontWeight: FontWeight.w800, color: _textColor),
+      style: TextStyle(fontSize: widget.fontSize, fontWeight: .w800, color: _textColor),
     );
   }
 

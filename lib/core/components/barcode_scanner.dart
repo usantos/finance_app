@@ -10,7 +10,7 @@ class BarcodeScanner extends StatefulWidget {
 }
 
 class _BarcodeScannerState extends State<BarcodeScanner> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = .new();
   bool _isScanning = true;
 
   void _onDetect(BarcodeCapture capture) {
@@ -58,9 +58,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
             child: Expanded(
               flex: 1,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                padding: const .symmetric(vertical: 30, horizontal: 16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: .center,
                   children: [
                     TextField(
                       style: const TextStyle(color: AppColors.white),
@@ -68,7 +68,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       controller: _controller,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: .circular(10),
                           borderSide: const BorderSide(color: AppColors.white),
                         ),
                         labelText: 'Digite o código manualmente',

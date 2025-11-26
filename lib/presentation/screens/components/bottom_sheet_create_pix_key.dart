@@ -102,7 +102,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const SizedBox(width: 12),
                   const Text(
                     "Telefone",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                   ),
                   const Spacer(),
                   IconButton(
@@ -115,7 +115,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                         controller: _telefoneController,
                         body: TextFormField(
                           controller: _telefoneController,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: .phone,
                           validator: Utils.validatePhone,
                         ),
                         method: 'Create Pix',
@@ -135,7 +135,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const SizedBox(width: 12),
                   const Text(
                     "CPF",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                   ),
                   const Spacer(),
                   IconButton(
@@ -148,7 +148,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                         controller: _cpfController,
                         body: TextFormField(
                           controller: _cpfController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: .number,
                           validator: Utils.validateCpf,
                         ),
                         method: 'Create Pix',
@@ -168,7 +168,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const SizedBox(width: 12),
                   const Text(
                     "Email",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                   ),
                   const Spacer(),
                   IconButton(
@@ -181,7 +181,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                         controller: _emailController,
                         body: TextFormField(
                           controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: .emailAddress,
                           validator: Utils.validateEmail,
                         ),
                         method: 'Create Pix',
@@ -201,7 +201,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const SizedBox(width: 12),
                   const Text(
                     "Chave aleatória",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                    style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                   ),
                   const Spacer(),
                   IconButton(
@@ -221,7 +221,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                               const SizedBox(width: 12),
                               const Text(
                                 "Chave aleatória",
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                                style: TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                               ),
                             ],
                           ),

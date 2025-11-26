@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: AppColors.white,
               appBar: CustomAppbar(title: widget.title, description: widget.description),
               body: const Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: .only(top: 30),
                 child: SingleChildScrollView(child: LoadSkeleton(itemCount: 8)),
               ),
             );
@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             appBar: CustomAppbar(title: widget.title, description: widget.description),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const .all(16.0),
                 child: Column(
                   children: [
                     _buildUserInfoCard(authVM, accountVM),
@@ -93,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const Text('Versão do aplicativo', style: TextStyle(color: AppColors.blackText)),
                     const Text(
                       '1.0.0',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
+                      style: TextStyle(fontSize: 16, fontWeight: .bold, color: AppColors.black),
                     ),
                     const SizedBox(height: 16),
                     _buildLogoutButton(context, authVM),
@@ -113,11 +113,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       elevation: 2,
       shadowColor: AppColors.black,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: .circular(16),
         side: const BorderSide(color: AppColors.grey),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const .all(20.0),
         child: Column(
           children: [
             Row(
@@ -132,11 +132,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(width: 16),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Text(
                       authVM.currentUser?.user.name.showThreeNames() ?? '-',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.black),
+                      style: const TextStyle(fontSize: 18, fontWeight: .bold, color: AppColors.black),
                     ),
                     Text(
                       'Conta: ${accountVM.account?.accountNumber ?? '-'}',
@@ -160,12 +160,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: .spaceBetween,
       children: [
         Text(label, style: const TextStyle(color: AppColors.black)),
         Text(
           value,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.black),
+          style: const TextStyle(fontWeight: .bold, fontSize: 15, color: AppColors.black),
         ),
       ],
     );
@@ -174,16 +174,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildMenuOption({required IconData icon, required String text, required VoidCallback onTap}) {
     return Card(
       color: AppColors.white,
-      margin: const EdgeInsets.symmetric(vertical: 6),
+      margin: const .symmetric(vertical: 6),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: .circular(12),
         side: const BorderSide(color: AppColors.grey),
       ),
       child: ListTile(
         leading: Icon(icon, color: AppColors.black),
         title: Text(
           text,
-          style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+          style: const TextStyle(fontWeight: .w500, color: AppColors.black),
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.black),
         onTap: onTap,
@@ -193,11 +193,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildVerifiedAccountCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const .all(16),
       decoration: BoxDecoration(
         color: AppColors.greenShade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.green),
+        borderRadius: .circular(12),
+        border: .all(color: AppColors.green),
       ),
       child: Row(
         children: [
@@ -205,11 +205,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 Text(
                   'Conta verificada',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.black),
+                  style: TextStyle(fontWeight: .bold, color: AppColors.black),
                 ),
                 Text('Sua conta está totalmente verificada e segura', style: TextStyle(color: AppColors.blackText)),
               ],
@@ -222,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildLogoutButton(BuildContext context, AuthViewModel authVM) {
     return SizedBox(
-      width: double.infinity,
+      width: .infinity,
       child: TextButton.icon(
         icon: const Icon(Icons.logout),
         label: const Text('Sair da conta', style: TextStyle(color: AppColors.red)),
@@ -234,9 +234,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         style: TextButton.styleFrom(
           foregroundColor: AppColors.red,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const .symmetric(vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: .circular(12),
             side: const BorderSide(color: AppColors.red),
           ),
         ),

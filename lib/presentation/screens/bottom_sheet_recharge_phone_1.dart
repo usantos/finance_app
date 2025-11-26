@@ -39,21 +39,21 @@ class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
             Text("Qual número deseja recarregar", style: TextStyle(color: AppColors.black, fontSize: 18)),
             SizedBox(height: 14),
             TextFormField(
-              keyboardType: TextInputType.number,
+              keyboardType: .number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               maxLength: 11,
               buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
               controller: _phoneController,
               style: const TextStyle(fontSize: 14),
               decoration: InputDecoration(
-                enabledBorder: InputBorder.none,
+                enabledBorder: .none,
                 filled: true,
                 fillColor: AppColors.greyBackground,
                 hintText: '(00) 00000-0000',
                 labelText: 'Número',
                 labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                 prefixIcon: const Icon(Icons.phone, size: 18, color: AppColors.black),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                border: OutlineInputBorder(borderRadius: .circular(4)),
               ),
               validator: Utils.validatePhone,
               onChanged: (value) {
@@ -67,25 +67,25 @@ class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
             Text("Escolha a operadora", style: TextStyle(color: AppColors.black, fontSize: 18)),
             SizedBox(height: 14),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: .center,
+              crossAxisAlignment: .start,
               children: [
                 Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: .min,
+                  crossAxisAlignment: .start,
                   children: [_buildOperatorItem(0), _buildOperatorItem(1)],
                 ),
                 const SizedBox(width: 60),
                 Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: .min,
+                  crossAxisAlignment: .start,
                   children: [_buildOperatorItem(2), _buildOperatorItem(3)],
                 ),
               ],
             ),
             if (_selectedIndex != null && _formKey.currentState!.validate())
               Align(
-                alignment: Alignment.centerRight,
+                alignment: .centerRight,
                 child: IconButton(
                   onPressed: () {
                     CustomBottomSheet.show(context, height: 390, child: BottomSheetRechargePhone2());
@@ -107,9 +107,9 @@ class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
       onTap: () => setState(() => _selectedIndex = index),
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const .symmetric(vertical: 10),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: .center,
           children: [
             SizedBox(
               width: 30,
@@ -126,7 +126,7 @@ class _BottomSheetRechargePhone1State extends State<BottomSheetRechargePhone1> {
               ),
             ),
             const SizedBox(width: 8),
-            Text(_operators[index], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+            Text(_operators[index], style: const TextStyle(fontSize: 18, fontWeight: .w500)),
           ],
         ),
       ),

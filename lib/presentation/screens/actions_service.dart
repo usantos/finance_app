@@ -56,7 +56,7 @@ class _ActionsServiceState extends State<ActionsService> {
       height: 120,
       child: ListView.separated(
         controller: _scrollController,
-        scrollDirection: Axis.horizontal,
+        scrollDirection: .horizontal,
         itemCount: actions.length,
         separatorBuilder: (_, __) => const SizedBox(width: kSeparator),
         itemBuilder: (context, index) {
@@ -97,18 +97,18 @@ class _ActionsServiceState extends State<ActionsService> {
     return SizedBox(
       width: kItemWidth,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: .min,
+        crossAxisAlignment: .center,
         children: [
           Material(
             color: AppColors.transparent,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: .circular(16),
             child: Ink(
               width: kIconBoxSize,
               height: kIconBoxSize,
-              decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(color: color, borderRadius: .circular(16)),
               child: InkWell(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: .circular(16),
                 onTap: onTap,
                 child: Center(child: Icon(icon, color: iconColor, size: 28)),
               ),
@@ -117,10 +117,10 @@ class _ActionsServiceState extends State<ActionsService> {
           const SizedBox(height: 8),
           Text(
             label,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+            style: const TextStyle(fontWeight: .w500, color: AppColors.black),
           ),
         ],
       ),

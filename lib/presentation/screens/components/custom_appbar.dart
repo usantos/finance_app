@@ -18,15 +18,15 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.primary,
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16, left: 16, right: 16, bottom: 16),
+        padding: .only(top: MediaQuery.of(context).padding.top + 16, left: 16, right: 16, bottom: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             title != null
                 ? Text(
                     title!,
                     maxLines: 1,
-                    style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(color: AppColors.white, fontWeight: .bold, fontSize: 20),
                   )
                 : const SizedBox.shrink(),
 

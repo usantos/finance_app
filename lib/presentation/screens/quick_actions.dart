@@ -13,7 +13,7 @@ class QuickActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: .spaceEvenly,
       children: [
         _QuickActionButton(
           icon: Icon(PhosphorIcons.pixLogo(), size: 30, color: AppColors.white),
@@ -58,13 +58,13 @@ class _QuickActionButton extends StatelessWidget {
           Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(30)),
+            decoration: BoxDecoration(color: AppColors.primary, borderRadius: .circular(30)),
             child: icon,
           ),
           const SizedBox(height: 8),
           Text(
             label,
-            style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.black),
+            style: const TextStyle(fontWeight: .w500, color: AppColors.black),
           ),
         ],
       ),

@@ -19,13 +19,13 @@ class _LoadSkeletonState extends State<LoadSkeleton> {
       children: List.generate(
         widget.itemCount,
         (index) => Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const .all(16),
           child: SkeletonItem(
             child: SkeletonAvatar(
               style: SkeletonAvatarStyle(
-                width: double.infinity,
+                width: .infinity,
                 height: widget.height ?? 60,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: .circular(12),
               ),
             ),
           ),

@@ -16,11 +16,11 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _cpfFieldKey = GlobalKey<FormFieldState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = .new();
+  final TextEditingController _cpfController = .new();
+  final TextEditingController _phoneController = .new();
+  final TextEditingController _emailController = .new();
+  final TextEditingController _passwordController = .new();
   bool _obscurePassword = true;
   String _rawCpf = "";
   String _rawPhone = "";
@@ -70,52 +70,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: AppColors.white, borderRadius: .circular(10)),
               width: MediaQuery.of(context).size.width * 0.95,
-              padding: const EdgeInsets.all(16.0),
+              padding: const .all(16.0),
               child: SingleChildScrollView(
-                padding: EdgeInsets.zero,
+                padding: .zero,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: .min,
+                  mainAxisAlignment: .center,
                   children: [
                     const SizedBox(height: 15),
                     const Text(
                       'Cadastro',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: AppColors.black),
+                      style: TextStyle(fontWeight: .bold, fontSize: 25, color: AppColors.black),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      keyboardType: TextInputType.text,
+                      keyboardType: .text,
                       controller: _nameController,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'Nome',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         prefixIcon: const Icon(Icons.person, size: 18, color: AppColors.black),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validateName,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       key: _cpfFieldKey,
-                      keyboardType: TextInputType.number,
+                      keyboardType: .number,
                       maxLength: 14,
                       buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
                       controller: _cpfController,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'CPF',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         prefixIcon: const Icon(Icons.assignment_ind, size: 18, color: AppColors.black),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validateCpf,
                       onChanged: (value) {
@@ -137,20 +137,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     const SizedBox(height: 16),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: .number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       maxLength: 11,
                       buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
                       controller: _phoneController,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'Telefone',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         prefixIcon: const Icon(Icons.phone, size: 18, color: AppColors.black),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validatePhone,
                       onChanged: (value) {
@@ -164,28 +164,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 24),
                     TextFormField(
                       controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: .emailAddress,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'Email',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         prefixIcon: const Icon(Icons.email, size: 18, color: AppColors.black),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validateEmail,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: .number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'Senha',
@@ -202,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validatePassword,
                     ),
@@ -214,12 +214,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return authVM.isLoading
                             ? const CircularProgressIndicator()
                             : SizedBox(
-                                width: double.infinity,
+                                width: .infinity,
                                 height: 48,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.primary,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                    shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                                   ),
                                   onPressed: () async {
                                     if (!_formKey.currentState!.validate()) {
@@ -250,7 +250,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     }
                                   },
                                   child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: .center,
                                     children: [
                                       Icon(Icons.app_registration, color: AppColors.white),
                                       SizedBox(width: 8),

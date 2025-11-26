@@ -14,8 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _cpfController = .new();
+  final TextEditingController _passwordController = .new();
   final _formKey = GlobalKey<FormState>();
   final _cpfFieldKey = GlobalKey<FormFieldState>();
   final FocusNode _cpfFocusNode = FocusNode();
@@ -82,14 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formKey,
           child: Center(
             child: Container(
-              decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(color: AppColors.white, borderRadius: .circular(10)),
               width: MediaQuery.of(context).size.width * 0.95,
-              padding: const EdgeInsets.all(16.0),
+              padding: const .all(16.0),
               child: SingleChildScrollView(
-                padding: EdgeInsets.zero,
+                padding: .zero,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: .min,
+                  mainAxisAlignment: .center,
                   children: [
                     Icon(Icons.account_balance_wallet_rounded, size: 64, color: AppColors.primary),
                     const SizedBox(height: 16),
@@ -102,14 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       key: _cpfFieldKey,
                       controller: _cpfController,
                       focusNode: _cpfFocusNode,
-                      keyboardType: TextInputType.number,
+                      keyboardType: .number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       maxLength: 11,
                       buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
                       style: const TextStyle(fontSize: 14),
                       readOnly: _isCpfMasked,
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         filled: true,
                         fillColor: AppColors.greyBackground,
                         labelText: 'CPF',
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               )
                             : null,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: (_) {
                         final cpf = _rawCpf;
@@ -166,13 +166,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
 
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: .number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
-                        enabledBorder: InputBorder.none,
+                        enabledBorder: .none,
                         labelText: 'Senha',
                         labelStyle: const TextStyle(fontSize: 14, color: AppColors.blackText),
                         filled: true,
@@ -189,19 +189,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                         ),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+                        border: OutlineInputBorder(borderRadius: .circular(4)),
                       ),
                       validator: Utils.validatePassword,
                     ),
 
                     const SizedBox(height: 24),
                     SizedBox(
-                      width: double.infinity,
+                      width: .infinity,
                       height: 48,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                          shape: RoundedRectangleBorder(borderRadius: .circular(7)),
                         ),
                         onPressed: _isLoading
                             ? null
@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: CircularProgressIndicator(color: AppColors.white, strokeWidth: 2.5),
                               )
                             : const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: .center,
                                 children: [
                                   Icon(Icons.login, color: AppColors.white),
                                   SizedBox(width: 8),
@@ -244,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16),
 
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: .center,
                       children: [
                         const Text('Não tem uma conta?', style: TextStyle(color: AppColors.blackText)),
                         TextButton(

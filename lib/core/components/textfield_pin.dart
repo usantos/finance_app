@@ -44,7 +44,7 @@ class TextFieldPinState extends State<TextFieldPin> {
     final pinTheme = PinTheme(
       width: widget.width,
       height: widget.height,
-      textStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 24, color: AppColors.black),
+      textStyle: TextStyle(fontWeight: .w500, fontSize: 24, color: AppColors.black),
       decoration: BoxDecoration(border: Border.all(color: AppColors.secondary)),
     );
 
@@ -68,10 +68,8 @@ class TextFieldPinState extends State<TextFieldPin> {
         widget.onStateChanged?.call(value);
       },
       cursor: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(margin: const EdgeInsets.only(bottom: 9), width: 32, height: 1, color: AppColors.secondary),
-        ],
+        mainAxisAlignment: .end,
+        children: [Container(margin: const .only(bottom: 9), width: 32, height: 1, color: AppColors.secondary)],
       ),
       focusedPinTheme: pinTheme.copyWith(
         decoration: pinTheme.decoration!.copyWith(border: Border.all(color: AppColors.secondary)),

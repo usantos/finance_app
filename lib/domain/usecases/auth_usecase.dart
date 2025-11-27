@@ -51,4 +51,9 @@ class AuthUseCase {
     final currentUser = await authRepository.getCurrentUser(token ?? "");
     return currentUser;
   }
+
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone)async{
+    final user = await userLocalDataSource.getUser();
+    return await authRepository.setNewPhoneNumber(newPhone, user!.user.id);
+  }
 }

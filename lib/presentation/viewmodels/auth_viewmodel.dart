@@ -15,6 +15,7 @@ class AuthViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   Account? _account;
+  String? _errorCode;
 
   AuthViewModel({
     required AuthUseCase authUseCase,
@@ -121,4 +122,31 @@ class AuthViewModel extends ChangeNotifier {
     }
     return _currentUser;
   }
+
+  Future<bool> setNewPhoneNumber(String newPhone) async {
+    _errorCode = null;
+    notifyListeners();
+
+    try {
+      final result = await _authUseCase.setNewPhoneNumber(newPhone);
+
+      _isLoading = false;
+
+      if (!result['success']) {
+        _errorMessage = result['message'];
+        _errorCode = result['code'];
+        notifyListeners();
+        return false;
+      }
+      checkCurrentUser();
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
 }

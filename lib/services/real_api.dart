@@ -400,4 +400,18 @@ class RealApi {
       return {"success": false, "message": "Erro ao ajustar limite do cartão de crédito"};
     }
   }
+
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId) async {
+    try {
+      final response = await _dio.post(
+        '/users/set_new_phone_number',
+        data: {'newPhone': newPhone, 'userId': userId},
+      );
+
+      return response.data;
+    } catch (e) {
+      debugPrint('Erro ao trocar número de telefone: $e');
+      return {"success": false, "message": "Erro ao trocar número de telefone"};
+    }
+  }
 }

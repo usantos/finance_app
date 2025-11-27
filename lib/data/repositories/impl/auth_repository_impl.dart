@@ -28,4 +28,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserResponse?> login(String cpf, String password) {
     return remoteDataSource.login(cpf, password);
   }
+
+  @override
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId) {
+    return remoteDataSource.setNewPhoneNumber(newPhone, userId);
+  }
 }

@@ -1,7 +1,10 @@
+import 'package:financial_app/core/components/custom_bottom_sheet.dart';
 import 'package:financial_app/core/components/double_pin_bottom_sheet.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/injection_container.dart';
+import 'package:financial_app/core/services/transfer_password_service.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
+import 'package:financial_app/presentation/screens/bottom_sheet_edit_phone.dart';
 import 'package:financial_app/presentation/viewmodels/account_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
@@ -53,7 +56,13 @@ class _BottomSheetEditProfileState extends State<BottomSheetEditProfile> {
               const SizedBox(height: 18),
               _rows(title: "Nome", value: authVM.currentUser?.user.name ?? ""),
               Divider(color: AppColors.grey, height: 36),
-              _rows(title: "Telefone", value: authVM.currentUser?.user.phone.maskPhoneMid() ?? ""),
+              _rows(
+                title: "Telefone",
+                value: authVM.currentUser?.user.phone.maskPhoneMid() ?? "",
+                onTap: () async {
+                  CustomBottomSheet.show(context, iconClose: true, height: 280, child: BottomSheetEditPhone());
+                },
+              ),
               Divider(color: AppColors.grey, height: 36),
               _rows(title: "Senha do aplicativo", value: "****"),
               Divider(color: AppColors.grey, height: 36),

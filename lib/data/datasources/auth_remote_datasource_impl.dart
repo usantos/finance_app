@@ -45,4 +45,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
     return null;
   }
+
+  @override
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId) async {
+    return await realApi.setNewPhoneNumber(newPhone, userId);
+  }
 }

@@ -22,11 +22,7 @@ class _LoadSkeletonState extends State<LoadSkeleton> {
           padding: const .all(16),
           child: SkeletonItem(
             child: SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                width: .infinity,
-                height: widget.height ?? 60,
-                borderRadius: .circular(12),
-              ),
+              style: SkeletonAvatarStyle(width: .infinity, height: widget.height ?? 60, borderRadius: .circular(12)),
             ),
           ),
         ),

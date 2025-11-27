@@ -30,7 +30,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId) {
-    return remoteDataSource.setNewPhoneNumber(newPhone, userId);
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId, String oldPhone) {
+    return remoteDataSource.setNewPhoneNumber(newPhone, userId, oldPhone);
   }
 }

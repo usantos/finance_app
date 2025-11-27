@@ -401,11 +401,11 @@ class RealApi {
     }
   }
 
-  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId) async {
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId, String oldPhone) async {
     try {
       final response = await _dio.post(
         '/users/set_new_phone_number',
-        data: {'newPhone': newPhone, 'userId': userId},
+        data: {'newPhone': newPhone, 'userId': userId, 'oldPhone': oldPhone},
       );
 
       return response.data;

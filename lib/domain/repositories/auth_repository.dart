@@ -7,5 +7,5 @@ abstract class AuthRepository {
   Future<UserResponse?> register(UserRequest userRequest);
   Future<LogoutResponse?> logout(String token);
   Future<UserResponse?> getCurrentUser(String token);
-  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId);
+  Future<Map<String, dynamic>> setNewPhoneNumber(String newPhone, String userId, String oldPhone);
 }

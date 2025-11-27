@@ -2,6 +2,7 @@ import 'package:financial_app/core/components/template.dart';
 import 'package:financial_app/core/extensions/string_ext.dart';
 import 'package:financial_app/core/theme/app_colors.dart';
 import 'package:financial_app/core/utils.dart';
+import 'package:financial_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:financial_app/presentation/viewmodels/transaction_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,8 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
   @override
   void initState() {
     super.initState();
-
+    final authVM = Provider.of<AuthViewModel>(context, listen: false);
+    authVM.checkCurrentUser();
     _telefoneController.addListener(() {
       final raw = _telefoneController.text.replaceAll(RegExp(r'\D'), '');
       if (_telefoneController.text != raw.toPhone()) {
@@ -83,8 +85,8 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TransactionViewModel>(
-      builder: (context, transactionVM, child) {
+    return Consumer2<TransactionViewModel, AuthViewModel>(
+      builder: (context, transactionVM, authVM, child) {
         final pixKeys = transactionVM.pixKeys;
 
         bool hasKey(String type) {
@@ -107,6 +109,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
+                      _telefoneController.text = authVM.currentUser?.user.phone ?? '';
                       _openTemplate(
                         title: 'Registrar telefone',
                         typeTitle: 'Telefone',
@@ -140,6 +143,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
+                      _cpfController.text = authVM.currentUser?.user.cpf ?? '';
                       _openTemplate(
                         title: 'Registrar CPF',
                         typeTitle: 'CPF',
@@ -173,6 +177,7 @@ class _BottomSheetCreatePixKeyState extends State<BottomSheetCreatePixKey> {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
+                      _emailController.text = authVM.currentUser?.user.email ?? '';
                       _openTemplate(
                         title: 'Registrar Email',
                         typeTitle: 'Email',
